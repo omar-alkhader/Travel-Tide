@@ -1,0 +1,19 @@
+{
+  "name": "travel-tide",
+  "version": "1.0.0",
+  "description": "gradution project",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/omar-alkhader/Travel-Tide.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/omar-alkhader/Travel-Tide/issues"
+  },
+  "homepage": "https://github.com/omar-alkhader/Travel-Tide#readme"
+}
