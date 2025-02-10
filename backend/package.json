@@ -4,7 +4,7 @@
   "description": "gradution project",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "nodemon server.js"
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,13 @@
   "bugs": {
     "url": "https://github.com/omar-alkhader/Travel-Tide/issues"
   },
-  "homepage": "https://github.com/omar-alkhader/Travel-Tide#readme"
+  "homepage": "https://github.com/omar-alkhader/Travel-Tide#readme",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.7",
+    "email-validator": "^2.0.4",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "pg": "^8.13.1"
+  }
 }
