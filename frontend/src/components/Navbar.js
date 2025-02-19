@@ -13,6 +13,11 @@ function Navbar() {
           <li><a href="#">My Booking</a></li>
         </ul>
       </nav>
+      <div className="signin">
+        <button className="sign-btn">
+          <a href="SignIn">Sign in</a>
+        </button>
+      </div>
     </header>
   );
 }

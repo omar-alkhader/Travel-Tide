@@ -1,5 +1,3 @@
-/* ProfilePage.css */
-
 .ProfilePage-profile-container {
   width: 60%;
   margin: 30px auto;
@@ -54,8 +52,9 @@
 }
 
 .ProfilePage-submit-button {
-  width: 100%;
+  width: 100px;
   padding: 12px;
+  margin-left: 1050px;
   background-color: #1b2b40;
   color: white;
   border: none;

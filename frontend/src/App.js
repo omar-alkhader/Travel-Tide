@@ -1,10 +1,12 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-
-import Navbar from "./components/Navbar";
+import Layout from "./components/Layout";
 import ProfileForm from "./components/ProfileForm";
 import RatingForm from "./components/RatingForm";
 import TripDetailsForm from "./components/TripDetailsForm";
+import AboutPage from "./page/AboutPage";
+import SignIn from "./page/SignIn";
+import SignUp from "./page/SignUp";
 
 import "./styles/NavBar.css";
 import "./styles/ProfilePage.css";
@@ -15,50 +17,17 @@ import "./styles/global.css";
 function App() {
   return (
     <Router>
-      <div className="container">
-        <Navbar />
-        <main>
-          <Routes>
-            <Route path="/" element={<ProfilePage />} />
-            <Route path="/review" element={<ReviewPage />} />
-            <Route path="/trip-details" element={<TripDetailsPage />} />
-          </Routes>
-        </main>
-      </div>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<ProfileForm />} />
+          <Route path="/review" element={<RatingForm />} />
+          <Route path="/trip-details" element={<TripDetailsForm />} />
+          <Route path="/about" element={<AboutPage />} />
+          <Route path="/signin" element={<SignIn />} />
+          <Route path="/signup" element={<SignUp />} />
+        </Route >
+      </Routes>
     </Router>
-  );
-}
-
-function ProfilePage() {
-  return (
-    <div>
-      <ProfileForm />
-      <footer className="ProfilePage-footer">
-      <p>Contact us at: traveltidal@gmail.com</p>
-      </footer>
-    </div>
-  );
-}
-
-function ReviewPage() {
-  return (
-    <div>
-      <RatingForm />
-      <footer className="review-pag-footer">
-      <p>Contact us at: traveltidal@gmail.com</p>
-      </footer>
-    </div>
-  );
-}
-
-function TripDetailsPage() {
-  return (
-    <div>
-      <TripDetailsForm />
-      <footer className="TripDetails-footer">
-        <p>Contact us at: traveltidal@gmail.com</p>
-      </footer>
-    </div>
   );
 }
 

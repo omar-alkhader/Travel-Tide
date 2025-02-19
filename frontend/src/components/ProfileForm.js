@@ -66,9 +66,7 @@ function ProfileForm() {
           </div>
         </div>
 
-        <button type="button" className="ProfilePage-submit-button" onClick={handleUpdate}>
-          Update
-        </button>
+        <button type="button" className="ProfilePage-submit-button" onClick={handleUpdate}> Update</button>
       </form>
     </section>
   );
