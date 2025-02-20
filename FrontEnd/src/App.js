@@ -17,7 +17,7 @@ import "./styles/global.css";
 
 function App() {
   return (
-    <Router>s
+    <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
           <Route index element={<ProfileForm />} />
