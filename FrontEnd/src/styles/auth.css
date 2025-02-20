@@ -1,0 +1,156 @@
+.auth-container { 
+    width: 100%;
+    max-width: 400px;
+    margin: 150px auto;
+    text-align: center;
+    padding: 20px;
+    background: white;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3), -5px -5px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+.auth-form {
+    display: flex;
+    flex-direction: column;
+}
+
+.auth-form input {
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+.auth-form button {
+    background-color: #2c3e50;
+    color: white;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width:40%;
+}
+
+.auth-form button:hover {
+    background-color: #1a252f;
+}
+
+.toggle-switch {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    border: 2px solid #2c3e50; /* Border color */
+    border-radius: 30px; /* Rounded edges */
+    overflow: hidden; /* Ensures smooth edges */
+    background: white;
+    width: fit-content;
+    margin: auto;
+    position: relative;
+}
+
+.toggle-switch button {
+    padding: 10px 25px;
+    border: none;
+    cursor: pointer;
+    background: white;
+    color: black;
+    font-size: 16px;
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+.toggle-switch .active {
+    background: #2c3e50;
+    color: white; /* Ensures smooth curve on selection */
+}
+
+.toggle-switch button:first-child.active {
+    border-radius: 10px 0 0 10px; /* Left button rounded */
+}
+
+.toggle-switch button:last-child.active {
+    border-radius: 0 10px 10px 0; /* Right button rounded */
+}
+
+/* Adding an animated background for smooth selection */
+.toggle-switch::before {
+    content: "";
+    position: absolute;
+    width: 50%; /* Half of the switch */
+    height: 100%;
+    background: #2c3e50;
+    border-radius: 10px;
+    transition: all 0.3s ease;
+    left: 0; /* Default position */
+    z-index: 0;
+}
+.toggle-switch.guide-active::before {
+    left: 50%; /* Moves to the right */
+}
+.options {
+    display: flex;
+    justify-content: space-between;
+    font-size: 14px;
+}
+.options label {
+    display: flex;
+    align-items: center;
+    gap: 8px; /* Adjust spacing between checkbox and text */
+    cursor: pointer;
+}
+.auth-container a {
+    text-decoration: none;
+    color: #2c3e50; 
+}
+.auth-container a:hover {
+    color: #707070;
+}
+.auth-container p{
+    margin-left: 1px;
+    text-decoration: none;
+}
+
+.input-container {
+position: relative;
+display: flex;
+align-items: center;
+width: 100%;
+margin-bottom: 15px;
+}
+
+.input-container .icon {
+position: absolute;
+left: 10px;
+color: #666;
+font-size: 18px;
+}
+
+.input-container input {
+width: 100%;
+padding: 10px 10px 10px 35px; /* Left padding for icon */
+border: 1px solid #ccc;
+border-radius: 5px;
+font-size: 16px;
+}
+
+.signin-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 15px;
+}
+
+.signin-options button {
+    width: 40%; /* Adjust width as needed */
+    padding: 12px;
+    
+}
+
+.signin-options .forgot-password {
+    text-decoration: none;
+    color: #2c3e50;
+    font-size: 17px;
+}
+
+.signin-options .forgot-password:hover {
+    color: #707070;
+}

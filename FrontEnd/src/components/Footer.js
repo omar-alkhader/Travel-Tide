@@ -1,5 +1,5 @@
 import React from "react";
-import "../styles/global.css"; // Ensure styling is applied
+import "../styles/global.css"; 
 
 const Footer = () => {
   return (
@@ -10,6 +10,9 @@ const Footer = () => {
           Contact us at: <br />
           traveltide@gmail.com
         </h4>
+        <div className="cc">
+        © {new Date().getFullYear()} TravelTide. All rights reserved.
+      </div>
       </div>
     </footer>
   );
