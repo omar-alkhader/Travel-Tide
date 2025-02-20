@@ -1,0 +1,67 @@
+.navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1b2b40;
+  width: 100%;
+  padding: 20px 0; /* Increase top and bottom padding */
+  min-height: 70px; /* Set a minimum height */
+  color: white;
+}
+.logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+    margin-left: 20px;
+  }
+
+.nav-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+
+.nav-links {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+.nav-links li {
+    padding: 5px 10px;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+}
+
+.nav-links a:hover {
+    color: #00bcd4;
+    text-decoration: none;
+}
+
+.sign-btn {
+  background-color: #006dd4;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 7px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-right: 8px;
+}
+
+.sign-btn a {
+  font-size: 15px;
+  text-decoration: none;
+  color: white;
+  font-weight: bold;
+}
+
+.sign-btn:hover {
+  background-color: #004da0;
+} 

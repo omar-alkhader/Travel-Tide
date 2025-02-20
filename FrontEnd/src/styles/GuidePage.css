@@ -1,0 +1,127 @@
+/* ===== Search Box Styling ===== */
+.GuidePage-search-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 30px;
+  margin-bottom: 20px;
+}
+
+/* Search Box */
+/* ===== Search Box Styling ===== */
+.GuidePage-search-container {
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+/* Search Box */
+.GuidePage-search-box {
+  background: #fff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  padding: 10px 15px;
+  width: 50%;
+  max-width: 500px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  gap: 17px;
+}
+
+/* Input Fields */
+.GuidePage-input {
+  flex: 1;
+  min-width: 150px;
+  background: #f5f5f5;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  outline: none;
+  padding: 6px;
+}
+
+/* Search Button */
+.GuidePage-search-button {
+  white-space: nowrap;
+  padding: 8px 20px;
+  background-color: #00bcd4;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.GuidePage-search-button:hover {
+  background-color: #0056b3;
+}
+
+
+/* ===== Guide Card Styling ===== */
+.GuidePage-guide-card {
+  width: 60%;
+  margin: 10px auto;
+  padding: 12px 20px;
+  background: #f5f5f5;
+  border-radius: 10px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.15);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.GuidePage-guide-card:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Guide Image */
+.GuidePage-guide-img {
+  width: 60px;
+  height: 60px;
+  object-fit: cover;
+  border-radius: 50%;
+  margin-right: 15px;
+}
+
+/* Guide Details */
+.GuidePage-guide-details {
+  flex-grow: 1;
+}
+
+.GuidePage-guide-details h5 {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+
+.GuidePage-guide-details p {
+  margin: 5px 0;
+  color: #555;
+}
+
+/* Guide Price */
+.GuidePage-guide-price {
+  text-align: right;
+}
+
+.GuidePage-guide-price strong {
+  font-size: 1rem;
+  color: #333;
+}
+
+/* Reserve Button */
+.GuidePage-btn-reserve {
+  background-color: #00bcd4;
+  color: white;
+  border-radius: 5px;
+  padding: 8px 16px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+.GuidePage-btn-reserve:hover {
+  background-color: #0056b3;
+}

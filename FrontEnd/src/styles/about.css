@@ -1,0 +1,39 @@
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(to bottom, #ffffff, #d9e3e8);
+    color: #333;
+}
+
+h1 {
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 50px;
+    text-align: center;
+}
+
+p {
+    font-size: 16px;
+    line-height: 1.6;
+    max-width: 800px;
+    margin-left: 550px;
+    text-align: center;
+    text-align: justify;    
+}
+
+h3 {
+    font-size: 22px;
+    font-weight: bold;
+    margin-top: 30px;
+    text-align: center;
+}
+
+h4{
+    font-weight: lighter;
+}
+
+ul{
+    margin-left: 530px;
+    
+}
