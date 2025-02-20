@@ -3,35 +3,37 @@ body {
     background: linear-gradient(to bottom, #e0e7ec, #e0e7ec);
     margin: 0;
     padding: 0;
-    display: flex;
-    flex-direction: column;
     min-height: 100vh;
     color: #333;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .container {
-    flex: 1;
+    flex: 1 0 auto; /* This makes the container grow but not shrink */
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
+    width: 100%;
+    max-width: 100%;
+    padding: 0;
+    margin: 0;
+}
+
+main {
+    flex: 1 0 auto; /* This makes the main content area grow */
+    padding: 20px;
+    min-height: 100px; /* Ensure there's at least some height */
 }
 
 .site-footer {
     background-color: #ffffff;
-    padding: 20px;
-    text-align: left;
-    box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
-    position: relative;
-    bottom: 0;
-    left: 0;
+    padding: 20px 30px;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3), -5px -5px 10px rgba(0, 0, 0, 0.1);
     width: 100%;
-    margin-top: auto;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Aligns text to the left */
-    padding-left: 30px; /* Pushes text a bit from the left edge */
+    box-sizing: border-box;
+    flex-shrink: 0; /* Prevents the footer from shrinking */
 }
-
 .footerBottom {
     display: flex;
     flex-direction: column;

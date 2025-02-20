@@ -13,13 +13,16 @@ h1 {
     text-align: center;
 }
 
+.about-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 0 20px;
+}
+
 .about-container p {
     font-size: 16px;
     line-height: 1.6;
-    max-width: 800px;
-    margin-left: 550px;
-    text-align: center ;
-    text-align: justify ;  
+    text-align: justify;
 }
 
 h3 {
@@ -29,11 +32,13 @@ h3 {
     text-align: center;
 }
 
-h4{
+h4 {
     font-weight: lighter;
 }
 
-ul{
-    margin-left: 530px;
-    
+ul {
+    width: 80%;
+    max-width: 700px;
+    margin: 0 auto;
+    padding-left: 40px;
 }

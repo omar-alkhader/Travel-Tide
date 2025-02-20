@@ -1,21 +1,21 @@
 .navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-color: #1b2b40;
-    padding: 15px 30px;
-    color: white;
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3), -5px -5px 10px rgba(0, 0, 0, 0.1);
-  }
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background-color: #1b2b40;
+  padding: 15px 30px;
+  color: white;
+  box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3), -5px -5px 10px rgba(0, 0, 0, 0.1);
+}
 
 .logo {
     font-size: 24px;
     font-weight: bold;
     color: white;
+    padding-left: 30px;
   }
 
 .nav-center {
-  
     flex: 1;
     display: flex;
     justify-content: center;
@@ -27,6 +27,7 @@
     list-style: none;
     margin: 0;
     padding: 0;
+    
   }
 
 .nav-links li {

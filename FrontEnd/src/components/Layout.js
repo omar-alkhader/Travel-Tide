@@ -5,11 +5,13 @@ import "../styles/global.css";
 
 const Layout = () => {
   return (
-    <div className="container">
+    <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Navbar />
-      <main>
-        <Outlet /> {/* This will load the correct page content */}
-      </main>
+      <div className="container">
+        <main>
+          <Outlet /> {/* This will load the correct page content */}
+        </main>
+      </div>
       <Footer />
     </div>
   );
