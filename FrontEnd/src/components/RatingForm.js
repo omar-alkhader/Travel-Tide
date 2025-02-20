@@ -29,7 +29,7 @@ function RatingForm() {
                 onChange={(e) => setReview(e.target.value)}
             ></textarea>
             <div className="review-page-rating">
-          
+            <p>How would you rate your experience?</p>
                 <div className="review-page-stars">
                     {[1, 2, 3, 4, 5].map((star) => (
                         <span
