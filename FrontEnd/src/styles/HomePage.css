@@ -1,0 +1,110 @@
+.HomePage-hero-section {
+    height: 400px;
+    background: url('../assets/dead-sea.jpg') no-repeat center center;
+    background-size: cover;
+    color: white;
+    position: relative;
+    margin-top: 0; /* Ensure the image starts below the navbar */
+    
+  }
+  
+  .HomePage-booking-options {
+    background: rgba(255, 255, 255, 0.9);
+    padding: 15px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 1200px;
+  }
+  
+  .HomePage-hero-section .HomePage-nav-tabs .HomePage-nav-link {
+    color: #333;
+    font-weight: bold;
+  }
+  
+  .HomePage-hero-section .HomePage-nav-tabs .HomePage-nav-link.HomePage-active {
+    background-color: #5bc0de;
+    color: white;
+  }
+  
+  .HomePage-form-inline .HomePage-form-control {
+    width: auto;
+    min-width: 150px;
+  }
+  
+  .HomePage-places-section h2 {
+    font-size: 2rem;
+    font-weight: bold;
+  }
+  
+  .HomePage-places-section p {
+    font-size: 1.1rem;
+    margin-bottom: 20px;
+  }
+  
+  .HomePage-places-section img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+  
+  .HomePage-form-inline .HomePage-form-control {
+    border-radius: 20px;
+    background-color: #f0f0f0;
+    border: none;
+    padding: 10px 15px;
+    margin: 5px;
+  }
+  
+  .HomePage-form-inline .HomePage-btn {
+    border-radius: 20px;
+    padding: 10px 20px;
+  }
+  
+  .HomePage-navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #1b2b40;
+    padding: 15px 30px;
+    color: white;
+  }
+  
+  .HomePage-logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: white;
+  }
+  
+  .HomePage-nav-center {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+  }
+  
+  .HomePage-nav-links {
+    display: flex;
+    gap: 30px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  
+  .HomePage-nav-links li {
+    padding: 5px 10px;
+  }
+  
+  .HomePage-nav-links a {
+    text-decoration: none;
+    color: white;
+    font-size: 16px;
+  }
+  
+  .HomePage-nav-links a:hover {
+    color: #00bcd4;
+    text-decoration: none;
+  }
