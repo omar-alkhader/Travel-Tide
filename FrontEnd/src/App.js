@@ -10,6 +10,8 @@ import SignUp from "./pages/SignUp";
 import ForgotPassword from "./pages/ForgotPassword"; 
 import PaymentPage from "./pages/PaymentPage";
 import GuidePage from "./pages/GuidePage";
+import Home from "./pages/Home";
+
 
 import "./styles/NavBar.css";
 import "./styles/ProfilePage.css";
@@ -18,6 +20,8 @@ import "./styles/TripDetailsPage.css";
 import "./styles/global.css";
 import "./styles/PaymentPage.css"; 
 import "./styles/GuidePage.css"; 
+import "./styles/HomePage.css"; 
+
 
 
 function App() {
@@ -25,8 +29,9 @@ function App() {
     <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
+        <Route path="/home" element={<Home />} />
         <Route path="/guides" element={<GuidePage />} />
-          <Route index element={<ProfileForm />} />
+          <Route path= "/profile" element={<ProfileForm />} />
           <Route path="/pay" element={<PaymentPage />} />
           <Route path="/review" element={<RatingForm />} />
           <Route path="/trip-details" element={<TripDetailsForm />} />
