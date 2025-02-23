@@ -11,6 +11,7 @@ import ForgotPassword from "./pages/ForgotPassword";
 import PaymentPage from "./pages/PaymentPage";
 import GuidePage from "./pages/GuidePage";
 import Home from "./pages/Home";
+import PackagePage from "./pages/PackagePage"; 
 
 
 import "./styles/NavBar.css";
@@ -21,17 +22,18 @@ import "./styles/global.css";
 import "./styles/PaymentPage.css"; 
 import "./styles/GuidePage.css"; 
 import "./styles/HomePage.css"; 
-
-
+import "./styles/PackagePage.css"; 
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path="/" element={<Layout />}>
+        <Route path="/package" element={<PackagePage />} />  
+   
         <Route path="/home" element={<Home />} />
         <Route path="/guides" element={<GuidePage />} />
-          <Route path= "/profile" element={<ProfileForm />} />
+          <Route index element={<ProfileForm />} />
           <Route path="/pay" element={<PaymentPage />} />
           <Route path="/review" element={<RatingForm />} />
           <Route path="/trip-details" element={<TripDetailsForm />} />
@@ -46,3 +48,4 @@ function App() {
 }
 
 export default App;
+
