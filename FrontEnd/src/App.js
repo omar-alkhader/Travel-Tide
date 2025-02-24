@@ -31,9 +31,9 @@ function App() {
         <Route path="/" element={<Layout />}>
         <Route path="/package" element={<PackagePage />} />  
    
-        <Route path="/home" element={<Home />} />
+        <Route index element={<Home />} />
         <Route path="/guides" element={<GuidePage />} />
-          <Route index element={<ProfileForm />} />
+          <Route path="/home" element={<ProfileForm />} />
           <Route path="/pay" element={<PaymentPage />} />
           <Route path="/review" element={<RatingForm />} />
           <Route path="/trip-details" element={<TripDetailsForm />} />
