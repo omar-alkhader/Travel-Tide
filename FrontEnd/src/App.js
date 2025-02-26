@@ -14,11 +14,11 @@ import Home from "./pages/Home";
 import PackagePage from "./pages/PackagePage"; 
 
 
+import "./styles/global.css";
 import "./styles/NavBar.css";
 import "./styles/ProfilePage.css";
 import "./styles/ReviewPage.css";
 import "./styles/TripDetailsPage.css";
-import "./styles/global.css";
 import "./styles/PaymentPage.css"; 
 import "./styles/GuidePage.css"; 
 import "./styles/HomePage.css"; 
