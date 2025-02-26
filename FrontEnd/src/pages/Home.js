@@ -6,12 +6,13 @@ import "../styles/NavBar.css";
 import "../styles/global.css";
 import "../styles/HomePage.css";
 
-
 function Home() {
   return (
-    <div>
+    <div className="container-fluid p-0 m-0">
       <HeroSection />
-      <PlacesSection />
+      <div className="container">
+        <PlacesSection />
+      </div>
     </div>
   );
 }
