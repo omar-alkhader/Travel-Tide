@@ -7,10 +7,8 @@ const Layout = () => {
   return (
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Navbar />
-      <div className="container">
-        <main>
-          <Outlet /> {/* This will load the correct page content */}
-        </main>
+      <div className="fluid-container">
+        <Outlet /> {/* This will load the correct page content */}
       </div>
       <Footer />
     </div>
