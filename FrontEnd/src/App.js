@@ -12,6 +12,8 @@ import PaymentPage from "./pages/PaymentPage";
 import GuidePage from "./pages/GuidePage";
 import Home from "./pages/Home";
 import PackagePage from "./pages/PackagePage"; 
+import RequestPage from "./pages/RequestPage";
+import ChatPage from "./pages/ChatPage";
 
 
 import "./styles/global.css";
@@ -23,6 +25,8 @@ import "./styles/PaymentPage.css";
 import "./styles/GuidePage.css"; 
 import "./styles/HomePage.css"; 
 import "./styles/PackagePage.css"; 
+import "./styles/RequestPage.css"; 
+
 
 function App() {
   return (
@@ -33,6 +37,8 @@ function App() {
    
         <Route index element={<Home />} />
         <Route path="/guides" element={<GuidePage />} />
+        <Route path="/request" element={<RequestPage />} />
+        <Route path="/chat/:touristName" element={<ChatPage />} />
           <Route path="/home" element={<ProfileForm />} />
           <Route path="/pay" element={<PaymentPage />} />
           <Route path="/review" element={<RatingForm />} />
@@ -48,4 +54,5 @@ function App() {
 }
 
 export default App;
+
 
