@@ -4,7 +4,9 @@ import { Link } from "react-router-dom";
 function Navbar() {
   return (
     <header className="navbar">
-      <div className="logo">Travel Tide</div>
+      <div className="logo">
+        <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>Travel Tide</Link>
+      </div>
       <nav className="nav-center">
         <ul className="nav-links">
           <li>
