@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
@@ -6,15 +7,23 @@ function Navbar() {
       <div className="logo">Travel Tide</div>
       <nav className="nav-center">
         <ul className="nav-links">
-          <li><a href="#">Packages</a></li>
-          <li><a href="#">Flight</a></li>
-          <li><a href="#">Hotel</a></li>
-          <li><a href="#">My Booking</a></li>
+          <li>
+            <Link to="/package">Packages</Link>
+          </li>
+          <li>
+            <Link to="/" state={{ activeTab: "flights" }}>Flight</Link>
+          </li>
+          <li>
+            <Link to="/" state={{ activeTab: "hotels" }}>Hotel</Link>
+          </li>
+          <li>
+            <Link to="/">My Booking</Link>
+          </li>
         </ul>
       </nav>
       <div className="signin">
         <button className="sign-btn">
-          <a href="SignIn">Sign in</a>
+          <Link to="/SignIn">Sign in</Link>
         </button>
       </div>
     </header>
