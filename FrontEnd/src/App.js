@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 import Layout from "./components/Layout";
 import ProfileForm from "./components/ProfileForm";
 import RatingForm from "./components/RatingForm";
@@ -27,14 +27,24 @@ import "./styles/HomePage.css";
 import "./styles/PackagePage.css"; 
 import "./styles/RequestPage.css"; 
 
+function ScrollToTop() {
+  const { pathname } = useLocation();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [pathname]);
+
+  return null;
+}
 
 function App() {
   return (
     <Router>
+      <ScrollToTop /> 
       <Routes>
         <Route path="/" element={<Layout />}>
         <Route path="/package" element={<PackagePage />} />  
-   
+        <Route path="/about" element={<AboutPage />} />
         <Route index element={<Home />} />
         <Route path="/guides" element={<GuidePage />} />
         <Route path="/request" element={<RequestPage />} />
@@ -54,5 +64,3 @@ function App() {
 }
 
 export default App;
-
-
