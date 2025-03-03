@@ -1,13 +1,8 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-
 
 function ProfileForm() {
-  const navigate = useNavigate();
-
   const handleUpdate = () => {
     alert('Profile updated successfully!');
-    navigate('/review');
   };
 
   return (
