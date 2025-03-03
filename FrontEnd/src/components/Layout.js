@@ -1,4 +1,4 @@
-import { Outlet, useOutletContext } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import React, { useState } from "react";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
@@ -14,7 +14,7 @@ const Layout = () => {
     <div style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
       <Navbar />
       <div className="fluid-container">
-        <Outlet context={{ setIsChatOpen }} /> {/* Provide context to children */}
+        <Outlet context={{ setIsChatOpen }} /> 
       </div>
       <Footer />
       <ChatButton isOpen={isChatOpen} setIsOpen={setIsChatOpen} />
