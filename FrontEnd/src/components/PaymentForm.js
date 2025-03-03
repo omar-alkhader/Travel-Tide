@@ -52,14 +52,14 @@ function PaymentForm() {
   return (
     <div className="checkout-page-container">
       <h2 className="Checkout-title">Checkout:</h2>
-      
+
       <div className="checkout-main-layout">
         {/* Top Section: Two Columns */}
         <div className="checkout-top-section">
           {/* Left column - Traveler Box */}
           <div className="checkout-box traveler-box">
             <h3 className="Checkout-section-title">Traveler 1:</h3>
-            
+
             <div className="traveler-form">
               <div className="form-row">
                 <div className="form-group">
@@ -73,7 +73,7 @@ function PaymentForm() {
                     required
                   />
                 </div>
-                
+
                 <div className="form-group">
                   <label className="form-label">Middle Name</label>
                   <input
@@ -84,7 +84,7 @@ function PaymentForm() {
                     onChange={handleTravelerChange}
                   />
                 </div>
-                
+
                 <div className="form-group">
                   <label className="form-label">Last Name*</label>
                   <input
@@ -97,7 +97,7 @@ function PaymentForm() {
                   />
                 </div>
               </div>
-              
+
               <div className="form-row">
                 <div className="form-group">
                   <label className="form-label">Country/Territory Code*</label>
@@ -116,7 +116,7 @@ function PaymentForm() {
                     <option value="+359">Bulgaria (+359)</option>
                   </select>
                 </div>
-                
+
                 <div className="form-group">
                   <label className="form-label">Phone Number*</label>
                   <input
@@ -128,7 +128,7 @@ function PaymentForm() {
                     required
                   />
                 </div>
-                
+
                 <div className="form-group">
                   <label className="form-label">Passport Number*</label>
                   <input
@@ -141,7 +141,7 @@ function PaymentForm() {
                   />
                 </div>
               </div>
-              
+
               <div className="form-row">
                 <div className="form-group dob-group">
                   <label className="form-label">Date of Birth*</label>
@@ -160,7 +160,7 @@ function PaymentForm() {
                         </option>
                       ))}
                     </select>
-                    
+
                     <select
                       className="Checkout-select birth-select"
                       id="birthMonth"
@@ -175,7 +175,7 @@ function PaymentForm() {
                         </option>
                       ))}
                     </select>
-                    
+
                     <select
                       className="Checkout-select birth-select"
                       id="birthYear"
@@ -229,7 +229,7 @@ function PaymentForm() {
                 <div className="price-amount">${priceDetails.finalPrice}.00</div>
               </div>
             </div>
-            
+
             <form onSubmit={handleSubmit}>
               <button type="submit" className="PayPage-btn">
                 Complete Purchase
@@ -237,11 +237,11 @@ function PaymentForm() {
             </form>
           </div>
         </div>
-        
+
         {/* Bottom Section: Payment */}
         <div className="checkout-box payment-box">
           <h3 className="Checkout-section-title">Payment:</h3>
-          
+
           <div className="checkout-payment-icons">
             <img src={visaLogo} alt="Visa" className="PayPage-logo" />
           </div>
@@ -276,55 +276,55 @@ function PaymentForm() {
               </div>
             </div>
 
-            
-<div className="form-row">
-  <div className="form-group full-width">
-    <label className="form-label">Expiration date*</label>
-    <div className="expiry-inputs">
-      <select
-        className="PayPage-select payment-half-width"
-        id="expMonth"
-        value={formData.expMonth}
-        onChange={handlePaymentChange}
-        required
-      >
-        <option value="" disabled>Month</option>
-        {Array.from({ length: 12 }, (_, i) => (
-          <option key={i + 1} value={String(i + 1).padStart(2, "0")}>
-            {String(i + 1).padStart(2, "0")}
-          </option>
-        ))}
-      </select>
-      <select
-        className="PayPage-select payment-half-width"
-        id="expYear"
-        value={formData.expYear}
-        onChange={handlePaymentChange}
-        required
-      >
-        <option value="" disabled>Year</option>
-        {Array.from({ length: 10 }, (_, i) => (
-          <option key={i} value={2025 + i}>{2025 + i}</option>
-        ))}
-      </select>
-    </div>
-  </div>
-</div>
 
-<div className="form-row">
-  <div className="form-group full-width">
-    <label className="form-label">Security code*</label>
-    <input
-      type="password"
-      className="cvv-input"
-      id="cvv"
-      value={formData.cvv}
-      onChange={handlePaymentChange}
-      maxLength="3"
-      required
-    />
-  </div>
-</div>
+            <div className="form-row">
+              <div className="form-group full-width">
+                <label className="form-label">Expiration date*</label>
+                <div className="expiry-inputs">
+                  <select
+                    className="PayPage-select payment-half-width"
+                    id="expMonth"
+                    value={formData.expMonth}
+                    onChange={handlePaymentChange}
+                    required
+                  >
+                    <option value="" disabled>Month</option>
+                    {Array.from({ length: 12 }, (_, i) => (
+                      <option key={i + 1} value={String(i + 1).padStart(2, "0")}>
+                        {String(i + 1).padStart(2, "0")}
+                      </option>
+                    ))}
+                  </select>
+                  <select
+                    className="PayPage-select payment-half-width"
+                    id="expYear"
+                    value={formData.expYear}
+                    onChange={handlePaymentChange}
+                    required
+                  >
+                    <option value="" disabled>Year</option>
+                    {Array.from({ length: 10 }, (_, i) => (
+                      <option key={i} value={2025 + i}>{2025 + i}</option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div className="form-row">
+              <div className="form-group full-width">
+                <label className="form-label">Security code*</label>
+                <input
+                  type="password"
+                  className="cvv-input"
+                  id="cvv"
+                  value={formData.cvv}
+                  onChange={handlePaymentChange}
+                  maxLength="3"
+                  required
+                />
+              </div>
+            </div>
           </div>
         </div>
       </div>
