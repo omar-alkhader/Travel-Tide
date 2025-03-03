@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import { AuthProvider } from "./context/AuthContext";
 import Layout from "./components/Layout";
 import ProfileForm from "./components/ProfileForm";
 import RatingForm from "./components/RatingForm";
@@ -39,6 +40,7 @@ function ScrollToTop() {
 
 function App() {
   return (
+    <AuthProvider>
     <Router>
       <ScrollToTop /> 
       <Routes>
@@ -60,6 +62,7 @@ function App() {
         </Route>
       </Routes>
     </Router>
+    </AuthProvider>
   );
 }
 
