@@ -1,5 +1,5 @@
-import React, { useState,useEffect } from "react";
-import { useNavigate,useOutletContext,useLocation } from "react-router-dom";
+import React, { useState} from "react";
+import { useNavigate,useOutletContext } from "react-router-dom";
 import background from "../assets/dead-sea.jpg";
 import cyprus from "../assets/cyprus.jpg";
 import petra from "../assets/petra.jpg";
@@ -9,26 +9,13 @@ import antalya from "../assets/antalya.jpg";
 import wadirum from "../assets/Wadi-Rum.jpg";
 import deadsea from "../assets/dead-sea.jpg";
 import { FaGlobe, FaPlane, FaHotel, FaMapMarkedAlt,FaUser, FaChevronLeft, FaChevronRight} from 'react-icons/fa';
-import Home from "../pages/Home";
 
 
 function HomePage() {
   const { setIsChatOpen } = useOutletContext();
   const [activeTab, setActiveTab] = useState("flights"); 
   const navigate = useNavigate();
-  const location = useLocation();
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
-
-  useEffect(() => {
-    if (location.state?.activeTab) {
-      setActiveTab(location.state.activeTab);
-      // Clear state after using it to prevent persisting on refresh
-      window.history.replaceState({}, document.title);
-    }
-  }, [location]);
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
   
   // Hotel State
   const [destination, setDestination] = useState("");
