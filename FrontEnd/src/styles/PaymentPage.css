@@ -1,44 +1,245 @@
-.PayPage-card {
-    width: 400px;
-    background: #fff;
-    border-radius: 10px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+/* Checkout Layout Structure */
+.checkout-page-container {
     padding: 20px;
-    margin-top: 50px; /* Adjust this value as needed */
-
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-.PayPage-icons {
+.Checkout-title {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 30px;
+    color: #1b2b40;
+    text-align: left;
+}
+
+.checkout-main-layout {
     display: flex;
-    justify-content: center;
-    margin-bottom: 10px;
+    flex-direction: column;
+    gap: 30px;
 }
 
-.PayPage-logo {
-    width: 120px;
-    height: auto;
+.checkout-top-section {
+    display: flex;
+    gap: 30px;
 }
 
-.PayPage-control, .PayPage-select {
+.checkout-box {
+    background-color: #ffffff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    padding: 25px;
+}
+
+/* Box sizes */
+.traveler-box {
+    flex: 2;
+    min-height: 380px;
+}
+
+.price-details-box {
+    flex: 1;
+    min-width: 330px;
+    max-width: 350px;
+    display: flex;
+    flex-direction: column;
+}
+
+.payment-box {
     width: 100%;
-    padding: 10px;
+    min-height: 300px;
+}
+
+.Checkout-section-title {
+    font-size: 20px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: #1b2b40;
+}
+
+/* Form Layout */
+.traveler-form, .payment-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.form-row {
+    display: flex;
+    gap: 20px;
+}
+
+.form-group {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.form-group.full-width {
+    flex: auto;
+}
+
+/* Input field sizes */
+.Checkout-input {
+    width: 226px !important;
+    height: 49px !important;
+    padding: 10px 15px;
     font-size: 16px;
     background: #f8f9fa;
     border: 1px solid #ced4da;
     border-radius: 5px;
 }
 
+.Checkout-select {
+    width: 226px !important;
+    height: 49px !important;
+    padding: 10px 15px;
+    font-size: 16px;
+    background: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    cursor: pointer;
+    appearance: auto;
+}
+
+/* Date of birth selects */
+.dob-inputs {
+    display: flex;
+    gap: 10px;
+}
+
+.birth-select {
+    width: 149px !important;
+    height: 49px !important;
+}
+
+/* Payment fields */
+.PayPage-control.payment-full-width {
+    width: 420px !important;
+    height: 49px !important;
+    padding: 10px 15px;
+    font-size: 16px;
+    background: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+}
+
+.expiry-inputs {
+    display: flex;
+    gap: 10px;
+}
+
+.PayPage-select.payment-half-width {
+    width: 149px !important;
+    height: 49px !important;
+    padding: 10px 15px;
+    font-size: 16px;
+    background: #f8f9fa;
+    border: 1px solid #ced4da;
+    border-radius: 5px;
+    appearance: auto;
+}
+
+.expiry-cvv-row {
+    justify-content: flex-start;
+}
+
+/* Price Details Styles */
+.price-details {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.price-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.price-row.header-row {
+    font-weight: 600;
+    border-bottom: 2px solid #ddd;
+}
+
+.price-row.guide-row {
+    background-color: #f9f9f9;
+}
+
+.price-row.total-row {
+    font-weight: 600;
+    border-bottom: 2px solid #ddd;
+}
+
+.price-row.reward-row {
+    color: #28a745;
+}
+
+.price-row.final-row {
+    font-weight: 700;
+    font-size: 1.1em;
+    border-bottom: none;
+    margin-top: 10px;
+    margin-bottom: 20px;
+}
+
+.price-label {
+    flex: 1;
+}
+
+.price-amount {
+    text-align: right;
+    min-width: 80px;
+}
+
+/* Purchase Button */
 .PayPage-btn {
     background-color: #007bff;
     color: white;
-    padding: 10px;
+    padding: 10px 15px;
     font-size: 16px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     width: 100%;
+    height: 49px;
+    margin-top: auto;
 }
 
 .PayPage-btn:hover {
     background-color: #0056b3;
+}
+
+/* Payment Icons */
+.checkout-payment-icons {
+    display: flex;
+    justify-content: flex-start;
+    margin-bottom: 20px;
+}
+
+.PayPage-logo {
+    width: 80px;
+    height: auto;
+}
+
+/* Responsive adjustments */
+@media (max-width: 992px) {
+    .checkout-top-section {
+        flex-direction: column;
+    }
+    
+    .price-details-box {
+        max-width: 100%;
+    }
+    
+    .Checkout-input, .Checkout-select {
+        width: 100% !important;
+    }
+    
+    .PayPage-control.payment-full-width {
+        width: 100% !important;
+    }
 }
