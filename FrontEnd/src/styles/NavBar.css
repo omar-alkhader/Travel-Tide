@@ -9,7 +9,7 @@
 }
 
 .navbar-logo {
-  height: 50px;
+  height: 40px;
   margin-right: 10px;
 }
 
@@ -147,11 +147,3 @@
   }
 }
 
-.error-message {
-  color: #e53935;
-  margin-bottom: 15px;
-  padding: 8px;
-  background-color: #ffebee;
-  border-radius: 4px;
-  font-size: 14px;
-}
