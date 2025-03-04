@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useAuth } from "../context/AuthContext";
 import { FaUserCircle } from "react-icons/fa";
+// Import the logo
+import logo from "../assets/logo.png"; // Adjust the path/filename as needed
 
 function Navbar() {
   const { user, logout } = useAuth();
@@ -30,7 +32,10 @@ function Navbar() {
   return (
     <header className="navbar">
       <div className="logo">
-        <Link to="/" style={{ textDecoration: 'none', color: 'inherit' }}>Travel Tide</Link>
+        <Link to="/" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center' }}>
+          <img src={logo} alt="Travel Tide Logo" className="navbar-logo" />
+          <span>Travel Tide</span>
+        </Link>
       </div>
       <nav className="nav-center">
         <ul className="nav-links">
