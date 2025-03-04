@@ -17,6 +17,7 @@ function HomePage() {
   const navigate = useNavigate();
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
   
+  
   // Hotel State
   const [destination, setDestination] = useState("");
   const [checkIn, setCheckIn] = useState("");
