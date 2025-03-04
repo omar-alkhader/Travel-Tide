@@ -17,7 +17,7 @@ import RequestPage from "./pages/RequestPage";
 import ChatPage from "./pages/ChatPage";
 import FlightsPage from "./components/FlightsPage";
 import HotelsPage from "./components/HotelsPage";
-
+import TravelPackagePage from "./components/TravelPackagePage";
 
 import "./styles/global.css";
 import "./styles/NavBar.css";
@@ -63,6 +63,7 @@ function App() {
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/flights" element={<FlightsPage />} />
             <Route path="/hotels" element={<HotelsPage />} />
+            <Route path="/packages" element={<TravelPackagePage />} />
           </Route>
         </Routes>
       </Router>
