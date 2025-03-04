@@ -1,0 +1,468 @@
+/* General Container */
+.hotels-page-container {
+    font-family: 'Arial', sans-serif;
+    padding: 20px 0;
+    background-color: #f5f8fa;
+}
+
+/* Hotel Search Box */
+.hotel-search-container {
+    width: 100%;
+    max-width: 1250px;
+    margin-left: 65px;
+}
+
+.hotel-search-info {
+    height: 78px;
+    background-color: #fff;
+    border-radius: 10px 10px 0px 0px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 25px;
+}
+
+.hotel-search-info:only-child {
+    border-radius: 10px;
+}
+
+.hotel-search-details {
+    display: flex;
+    gap: 80px;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    padding: 0 40px;
+}
+
+.hotel-info-group {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: 120px;
+}
+
+.hotel-info-group label {
+    font-size: 16px;
+    color: #666;
+    margin-bottom: 5px;
+    font-weight: 500;
+}
+
+.hotel-info-group span {
+    font-size: 16px;
+    color: #333;
+    font-weight: 500;
+}
+
+.hotel-modify-btn {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 8px 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.hotel-modify-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Expandable search form */
+.hotel-search-form {
+    background-color: #f5f8fa;
+    border-radius: 0px 0px 20px 20px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+}
+
+.hotel-form-content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 15px;
+    padding: 10px 0;
+}
+
+.hotel-input-group {
+    position: relative;
+    width: 150px;
+}
+
+.hotel-icon {
+    position: absolute;
+    left: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #007bff;
+    z-index: 1;
+}
+
+.hotel-input {
+    width: 100%;
+    height: 40px;
+    padding: 5px 15px 5px 40px;
+    border: 1px solid #e0e0e0;
+    border-radius: 20px;
+    background-color: #f9f9f9;
+    font-size: 14px;
+    outline: none;
+    box-sizing: border-box;
+}
+
+.hotel-search-button {
+    height: 40px;
+    min-width: 120px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.hotel-search-button:hover {
+    background-color: #0056b3;
+}
+
+/* Hotels Content Container */
+.hotels-content-container {
+    display: flex;
+    margin: 30px auto;
+    max-width: 1200px;
+    gap: 30px;
+}
+
+/* Filters Section */
+.hotels-filters {
+    flex: 0 0 250px;
+    background-color: #fff;
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    align-self: flex-start;
+    position: sticky;
+    top: 20px;
+}
+
+.filters-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #eee;
+}
+
+.filters-header h4 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+}
+
+.reset-filters {
+    background: none;
+    border: none;
+    color: #007bff;
+    cursor: pointer;
+    font-size: 14px;
+    padding: 0;
+}
+
+.filter-section {
+    margin-bottom: 25px;
+}
+
+.filter-section h5 {
+    font-size: 16px;
+    margin-bottom: 15px;
+    color: #333;
+}
+
+/* Price Slider */
+.price-slider-container {
+    padding: 0 5px;
+}
+
+.price-display {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #666;
+}
+.dual-slider::before {
+    content: "";
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    background-color: #e0e0e0;
+    top: 50%;
+    left: 0;
+    transform: translateY(-50%);
+    z-index: 0;
+}
+
+.dual-slider {
+    position: relative;
+    height: 40px;
+}
+.dual-slider {
+    position: relative;
+    height: 40px;
+}
+
+.slider {
+    position: absolute;
+    width: 100%;
+    height: 5px;
+    -webkit-appearance: none;
+    background: transparent;
+    pointer-events: none;
+}
+
+.slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #007bff;
+    cursor: pointer;
+    pointer-events: auto;
+}
+
+.slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #007bff;
+    cursor: pointer;
+    pointer-events: auto;
+    border: none;
+}
+
+.min-slider,
+.max-slider {
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+/* Star Rating Options */
+.star-option {
+    margin-bottom: 12px;
+}
+
+.checkbox-container {
+    display: flex;
+    align-items: center;
+    position: relative;
+    padding-left: 35px;
+    cursor: pointer;
+    font-size: 14px;
+    user-select: none;
+}
+
+.checkbox-container input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+}
+
+.checkmark {
+    position: absolute;
+    left: 0;
+    height: 20px;
+    width: 20px;
+    background-color: #f1f1f1;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.checkbox-container:hover input~.checkmark {
+    background-color: #e9e9e9;
+}
+
+.checkbox-container input:checked~.checkmark {
+    background-color: #007bff;
+    border-color: #007bff;
+}
+
+.checkmark:after {
+    content: "";
+    position: absolute;
+    display: none;
+}
+
+.checkbox-container input:checked~.checkmark:after {
+    display: block;
+}
+
+.checkbox-container .checkmark:after {
+    left: 7px;
+    top: 3px;
+    width: 6px;
+    height: 12px;
+    border: solid white;
+    border-width: 0 2px 2px 0;
+    transform: rotate(45deg);
+}
+
+.star-rating {
+    display: flex;
+    align-items: center;
+}
+
+.star-icon {
+    color: #ffc107;
+    font-size: 16px;
+    margin-right: 2px;
+}
+
+/* Hotel Results */
+.hotels-results {
+    flex: 1;
+}
+
+/* Hotel Card */
+.hotel-card {
+    width: 972px;
+    height: 274px;
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    display: flex;
+    overflow: hidden;
+}
+
+.hotel-card-image {
+    width: 274px;
+    height: 274px;
+    overflow: hidden;
+}
+
+.hotel-card-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.hotel-card-details {
+    flex: 1;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.hotel-name {
+    font-size: 24px;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: #333;
+    align-self: flex-start;
+}
+
+.hotel-stars {
+    display: flex;
+    margin-bottom: 15px;
+}
+
+.hotel-address {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+    color: #666;
+}
+
+.address-icon {
+    margin-right: 8px;
+    color: #007bff;
+}
+
+.room-type {
+    margin-top: auto;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.room-label {
+    font-weight: 600;
+    margin-right: 8px;
+    color: #333;
+}
+
+.room-value {
+    color: #666;
+}
+
+/* Hotel Card Price Section */
+.hotel-card-price {
+    width: 170px;
+    background-color: #f8f9fa;
+    border-left: 1px solid #eee;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    position: relative;
+}
+
+.price-amount {
+    font-size: 24px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 20px;
+}
+
+.book-now-btn {
+    width: 100%;
+    padding: 12px 0;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.book-now-btn:hover {
+    background-color: #0056b3;
+}
+
+/* No results message */
+.no-hotels {
+    flex: 1;
+    background: #fff;
+    border-radius: 10px;
+    padding: 40px;
+    margin-top: 10px;
+    text-align: center;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 300px;
+}
+
+.no-hotels p:first-child {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    color: #333;
+}
+
+.no-hotels p:last-child {
+    color: #666;
+}
