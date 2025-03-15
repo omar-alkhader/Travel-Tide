@@ -1,8 +1,20 @@
 const express = require("express");
+const cookieParser = require("cookie-parser");
 const userRoute = require("./routes/userRoute");
+const reviewRoute = require("./routes/reviewRoute");
 const countryRoute = require("./routes/countryRoute");
+const hotelRoute = require("./routes/hotelRoute");
+const AppError = require("./utlis/AppError");
+const globalErrorHandler = require("./controllers/errorController");
 const app = express();
+app.use(cookieParser());
 app.use(express.json());
+app.use("/api/reviews", reviewRoute);
 app.use("/api/users", userRoute);
 app.use("/api/countries", countryRoute);
+app.use("/api/hotels", hotelRoute);
+app.all("*", (req, res, next) => {
+  next(new AppError(`invalid url ${req.originalUrl} on this server !`, 404));
+});
+app.use(globalErrorHandler);
 module.exports = app;
