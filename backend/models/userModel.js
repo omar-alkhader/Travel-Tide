@@ -1,25 +1,34 @@
 const db = require("../db");
 const bcrypt = require("bcryptjs");
 class User {
-  static async createUser(username, email, password) {
+  static async createUser(name, email, password) {
     const hashedPassword = await bcrypt.hash(password, 10);
     const query = `
-      INSERT INTO users (username, email, password)
+      INSERT INTO users (name, email, password)
       VALUES ($1, $2, $3) RETURNING *;
     `;
-    const values = [username, email, hashedPassword];
+    const values = [name, email, hashedPassword];
     const result = await db.query(query, values);
-    return result.rows[0];
+    return result;
   }
   static async findAllUsers() {
     const query = ` SELECT *
             FROM users
         `;
     const result = await db.query(query);
-    const data = result.rows;
-    return data;
+    return result;
   }
-  static async getUser(id) {
+  static async getUserByEmail(email) {
+    const query = `
+            SELECT *
+            FROM users
+            WHERE email = $1
+        `;
+    const params = [email];
+    const result = await db.query(query, params);
+    return result;
+  }
+  static async findUserByIdAndDelete(id) {
     const query = `
             SELECT *
             FROM users
@@ -27,7 +36,7 @@ class User {
         `;
     const params = [id];
     const result = await db.query(query, params);
-    return result.rows[0];
+    return result;
   }
 }
 module.exports = User;

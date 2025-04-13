@@ -14,7 +14,7 @@ function signToken(id) {
     expiresIn: "14d",
   });
 }
-function createSendToken(res, statusCode, user) {
+exports.createSendToken = (res, statusCode, user) => {
   const token = signToken(user.id);
   const cookieOptions = {
     expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
@@ -25,29 +25,32 @@ function createSendToken(res, statusCode, user) {
     user,
     token,
   });
-}
-exports.signup = catchAsync(async (req, res, next) => {
-  const { email, username, password, passwordConfirm } = req.body;
+};
+exports.checkCandidate = async function (
+  email,
+  password,
+  passwordConfirm,
+  next
+) {
+  if (!validator.validate(email)) {
+    return next(new AppError("this email is not vaild", 400));
+  }
   if (password !== passwordConfirm) {
     return next(
       new AppError("password and passwordConfirm are not the same", 400)
     );
   }
+};
+exports.signup = catchAsync(async (req, res, next) => {
+  const { email, username, password, passwordConfirm } = req.body;
+  await this.checkCandidate(email, username, password, passwordConfirm, next);
   const hashedPassword = await bcrypt.hash(password, 10);
-  const query = await pool.query(
-    `
-                INSERT INTO users(username,email,password)
-                VALUES($1,$2,$3) RETURNING *
-            `,
-    [username, email, hashedPassword]
-  );
-  const user = query.rows[0];
-  const token = signToken(user.id);
 
+  const user = (await userModel.createUser(username, email, hashedPassword))
+    .rows[0];
   res.status(201).json({
     status: "success",
     user,
-    token,
   });
 });
 exports.login = catchAsync(async (req, res, next) => {
@@ -55,7 +58,7 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!email || !password)
     return next(new AppError("please enter email and password", 400));
   const validEmail = validator.validate(email);
-  if (!validEmail) next(new AppError("please Enter valid Email", 400));
+  if (!validEmail) return next(new AppError("please Enter valid Email", 400));
   const rows = await pool.query(
     `
             SELECT *

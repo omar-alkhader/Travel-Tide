@@ -8,6 +8,7 @@ const errorController = (err, req, res, next) => {
   const status = err.status || "error";
   const message = err.message || "something went wrong";
   let error = Object.create(err);
+
   console.log(error.code);
   res.status(statusCode).json({
     status,

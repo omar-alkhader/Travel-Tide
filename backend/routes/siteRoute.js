@@ -1,0 +1,10 @@
+const express = require("express");
+const siteController = require("../controllers/siteController");
+const route = express.Router();
+route.get("/", siteController.getAllSites);
+route.get("/city/:city_id", siteController.getSitesByCity);
+route.post("/", siteController.createSite);
+route.get("/:id", siteController.getSite);
+route.patch("/:id", siteController.updateSite);
+route.delete("/:id", siteController.deleteSite);
+module.exports = route;
