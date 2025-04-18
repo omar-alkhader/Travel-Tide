@@ -62,7 +62,7 @@ exports.deleteGuide = catchAsync(async (req, res, next) => {
 exports.insertGuide = catchAsync(async (req, res, next) => {
   const { name, email, password, passwordConfirm } = req.body;
   if (!validate.validate(email)) {
-    return next(new AppError("please provide validEmail"));
+    return next(new AppError("please provide validEmail", 400));
   }
   if (!password || !passwordConfirm) {
     return next(new AppError("please enter password and passwordConfirm", 400));

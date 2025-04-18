@@ -1,5 +1,10 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Routes,
+  Route,
+  useLocation,
+} from "react-router-dom";
 import { AuthProvider } from "./context/AuthContext";
 import Layout from "./components/Layout";
 import ProfileForm from "./components/ProfileForm";
@@ -29,7 +34,15 @@ import "./styles/GuidePage.css";
 import "./styles/HomePage.css";
 import "./styles/PackagePage.css";
 import "./styles/RequestPage.css";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 60 * 1000,
+    },
+  },
+});
 function ScrollToTop() {
   const { pathname } = useLocation();
 
@@ -42,32 +55,34 @@ function ScrollToTop() {
 
 function App() {
   return (
-    <AuthProvider>
-      <Router>
-        <ScrollToTop />
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route path="/package" element={<PackagePage />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route index element={<Home />} />
-            <Route path="/guides" element={<GuidePage />} />
-            <Route path="/request" element={<RequestPage />} />
-            <Route path="/chat/:touristName" element={<ChatPage />} />
-            <Route path="/home" element={<ProfileForm />} />
-            <Route path="/pay" element={<PaymentPage />} />
-            <Route path="/review" element={<RatingForm />} />
-            <Route path="/trip-details" element={<TripDetailsForm />} />
-            <Route path="/about" element={<AboutPage />} />
-            <Route path="/signin" element={<SignIn />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/flights" element={<FlightsPage />} />
-            <Route path="/hotels" element={<HotelsPage />} />
-            <Route path="/packages" element={<TravelPackagePage />} />
-          </Route>
-        </Routes>
-      </Router>
-    </AuthProvider>
+    <QueryClientProvider client={queryClient}>
+      <AuthProvider>
+        <Router>
+          <ScrollToTop />
+          <Routes>
+            <Route path="/" element={<Layout />}>
+              <Route path="/package" element={<PackagePage />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route index element={<Home />} />
+              <Route path="/guides" element={<GuidePage />} />
+              <Route path="/request" element={<RequestPage />} />
+              <Route path="/chat/:touristName" element={<ChatPage />} />
+              <Route path="/home" element={<ProfileForm />} />
+              <Route path="/pay" element={<PaymentPage />} />
+              <Route path="/review" element={<RatingForm />} />
+              <Route path="/trip-details" element={<TripDetailsForm />} />
+              <Route path="/about" element={<AboutPage />} />
+              <Route path="/signin" element={<SignIn />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/flights" element={<FlightsPage />} />
+              <Route path="/hotels" element={<HotelsPage />} />
+              <Route path="/packages" element={<TravelPackagePage />} />
+            </Route>
+          </Routes>
+        </Router>
+      </AuthProvider>
+    </QueryClientProvider>
   );
 }
 

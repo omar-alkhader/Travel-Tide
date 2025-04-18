@@ -1,85 +1,137 @@
-const pool = require("../db");
 const AppError = require("../utlis/AppError");
 const catchAsync = require("../utlis/catchAsync");
 const cityModel = require("../models/CityModel");
+
+const BASE_URL = process.env.BASE_URL || "http://localhost:6600/images/cities/";
+
+const processPhotoUrl = (city) => {
+  if (!city || !city.photo) return city;
+  return {
+    ...city,
+    photo: `${BASE_URL}${city.photo}`, // Replace photo with the full URL
+  };
+};
+
+// Get all cities
 exports.getAllCities = catchAsync(async (req, res, next) => {
   const cities = await cityModel.findAllCities();
+  const processedCities = cities.map(processPhotoUrl); // Process all cities
   res.status(200).json({
     status: "success",
     data: {
-      cities,
+      cities: processedCities,
     },
   });
 });
+
+// Get a single city
 exports.getCity = catchAsync(async (req, res, next) => {
   const { id } = req.params;
 
-  if (!isFinite(id)) next(new AppError("please provide valid city id", 404));
+  if (!isFinite(id))
+    return next(new AppError("Please provide a valid city ID", 404));
+
   const city = await cityModel.findCityById(id);
+
+  if (!city) return next(new AppError("City not found", 404));
+
+  const processedCity = processPhotoUrl(city); // Process the photo URL
   res.status(200).json({
     status: "success",
     data: {
-      city,
+      city: processedCity,
     },
   });
 });
+
+// Update a city
 exports.updateCity = catchAsync(async (req, res, next) => {
   const { id } = req.params;
   const updates = req.body;
-  if (!updates || Object.keys(updates).length == 0) {
-    return next(new AppError("you didn't update anything", 400));
+
+  if (!updates || Object.keys(updates).length === 0) {
+    return next(new AppError("You didn't update anything", 400));
   }
-  const validColumn = ["name", "photo", "country_id"];
-  const filteredEntires = Object.entries(updates).filter(([col]) =>
-    validColumn.includes(col)
+
+  const validColumns = ["name", "photo", "country_id"];
+  const filteredEntries = Object.entries(updates).filter(([col]) =>
+    validColumns.includes(col)
   );
-  if (filteredEntires.length == 0) {
-    return next(new AppError("invalid column names", 400));
+  if (filteredEntries.length === 0) {
+    return next(new AppError("Invalid column names", 400));
   }
-  const updatedCity = await cityModel.findCityByIdAndUpdate(id, updates);
-  if (updatedCity.rowCount === 0) {
-    return next(new AppError("user not found", 404));
+
+  const validUpdates = Object.fromEntries(filteredEntries);
+
+  const updatedCity = await cityModel.findCityByIdAndUpdate(id, validUpdates);
+  if (!updatedCity) {
+    return next(new AppError("City not found", 404));
   }
+
+  const processedCity = processPhotoUrl(updatedCity); // Process the updated city
   res.status(200).json({
     status: "success",
     data: {
-      updatedCity,
+      city: processedCity,
     },
   });
 });
+
+// Delete a city
 exports.deleteCity = catchAsync(async (req, res, next) => {
   const { id } = req.params;
+
   const deletedCity = await cityModel.findCityByIdAndDelete(id);
-  if (deletedCountry.rowCount === 0) {
-    return next(new AppError("Country not found", 400));
+
+  if (!deletedCity) {
+    return next(new AppError("City not found", 404));
   }
+
+  const processedCity = processPhotoUrl(deletedCity); // Process the deleted city
   res.status(200).json({
     status: "success",
     data: {
-      deletedCity,
+      city: processedCity,
     },
   });
 });
+
+// Create a new city
 exports.createCity = catchAsync(async (req, res, next) => {
   const { name, photo, country_id } = req.body;
+
   if (!name || !photo || !country_id) {
-    return next(new AppError("please provide name and photo and country", 400));
+    return next(
+      new AppError("Please provide name, photo, and country ID", 400)
+    );
   }
-  const city = await cityModel.insertCity(req.body);
+
+  const newCity = await cityModel.insertCity(req.body);
+
+  const processedCity = processPhotoUrl(newCity); // Process the created city
   res.status(200).json({
     status: "success",
     data: {
-      city,
+      city: processedCity,
     },
   });
 });
+
+// Get cities by country
 exports.getCitiesByCountry = catchAsync(async (req, res, next) => {
   const { country_id } = req.params;
+
   const cities = await cityModel.findCityByCountry(country_id);
+
+  if (!cities.length) {
+    return next(new AppError("No cities found for the specified country", 404));
+  }
+
+  const processedCities = cities.map(processPhotoUrl); // Process all cities in the country
   res.status(200).json({
     status: "success",
     data: {
-      cities,
+      cities: processedCities,
     },
   });
 });

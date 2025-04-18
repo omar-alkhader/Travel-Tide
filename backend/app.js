@@ -13,6 +13,12 @@ const AppError = require("./utlis/AppError");
 const globalErrorHandler = require("./controllers/errorController");
 const app = express();
 const path = require("path");
+const cors = require("cors");
+app.use(
+  cors({
+    origin: "http://localhost:3000", // your React dev server
+  })
+);
 app.use(cookieParser());
 app.use(express.json());
 app.use("/images", express.static(path.join(__dirname, "public/images")));

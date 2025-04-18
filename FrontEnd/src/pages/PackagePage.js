@@ -8,6 +8,7 @@ import jordanImg from "../assets/jordan.jpg";
 import bulgariaImg from "../assets/bulgaria.jpg";
 import cyprusImg from "../assets/cyprus.jpg";
 import turkeyImg from "../assets/turkey.jpg";
+import { useQuery } from "@tanstack/react-query";
 
 const packages = [
   { id: "egypt", name: "Egypt", image: egyptImg },
@@ -18,13 +19,26 @@ const packages = [
 ];
 
 const PackagePage = () => {
+  const { data } = useQuery({
+    queryKey: ["countries"],
+    queryFn: async () => {
+      const res = await fetch("http://127.0.0.1:6600/api/countries");
+      const data = await res.json();
+      return data;
+    },
+  });
+  if (!data) {
+    return;
+  }
+  const { countries } = data;
+  console.log(countries);
   return (
     <Container className="text-center my-5">
       <h2>Choose Your Package</h2>
       <Row className="mt-4">
-        {packages.map((pkg) => (
+        {countries.map((pkg) => (
           <Col md={4} key={pkg.id} className="d-flex justify-content-center">
-            <PackageCard id={pkg.id} name={pkg.name} image={pkg.image} />
+            <PackageCard id={pkg.id} name={pkg.name} image={pkg.photo} />
           </Col>
         ))}
       </Row>
@@ -33,4 +47,3 @@ const PackagePage = () => {
 };
 
 export default PackagePage;
-

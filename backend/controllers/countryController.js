@@ -1,75 +1,113 @@
-const pool = require("../db");
 const AppError = require("../utlis/AppError");
 const catchAsync = require("../utlis/catchAsync");
 const countryModel = require("../models/countryModel");
+
+const BASE_URL =
+  process.env.BASE_URL || "http://localhost:6600/images/countries/";
+
+const processPhotoUrl = (country) => {
+  if (!country || !country.photo) return country;
+  return {
+    ...country,
+    photo: `${BASE_URL}${country.photo}`, // Replace photo with the full URL
+  };
+};
+
+// Get all countries
 exports.getAllCountries = catchAsync(async (req, res, next) => {
   const countries = await countryModel.findAllCountries();
+  const processedCountries = countries.map(processPhotoUrl); // Process all countries
   res.status(200).json({
     status: "success",
-    data: {
-      countries,
-    },
+
+    countries: processedCountries,
   });
 });
+
+// Get a single country
 exports.getCountry = catchAsync(async (req, res, next) => {
   const { id } = req.params;
 
-  if (!isFinite(id)) next(new AppError("please provide valid city id", 404));
-  const country = countryModel.findCountryById(id);
+  if (!isFinite(id))
+    return next(new AppError("Please provide a valid country ID", 404));
+
+  const country = await countryModel.findCountryById(id);
+
+  if (!country) return next(new AppError("Country not found", 404));
+
+  const processedCountry = processPhotoUrl(country); // Process the photo URL
   res.status(200).json({
     status: "success",
-    data: {
-      country,
-    },
+    country: processedCountry,
   });
 });
+
+// Update a country
 exports.updateCountry = catchAsync(async (req, res, next) => {
   const { id } = req.params;
   const updates = req.body;
-  if (!updates || Object.keys(updates).length == 0) {
-    return next(new AppError("you didn't update anything", 400));
+
+  if (!updates || Object.keys(updates).length === 0) {
+    return next(new AppError("You didn't update anything", 400));
   }
-  const validColumn = ["name", "photo"];
-  const filteredEntires = Object.entries(updates).filter(([col]) =>
-    validColumn.includes(col)
+
+  const validColumns = ["name", "photo"];
+  const filteredEntries = Object.entries(updates).filter(([col]) =>
+    validColumns.includes(col)
   );
-  if (filteredEntires.length == 0) {
-    return next(new AppError("invalid column names", 400));
+  if (filteredEntries.length === 0) {
+    return next(new AppError("Invalid column names", 400));
   }
-  const updatedUser = await countryModel.findCountryByIdAndUpdate(id, updates);
-  if (updatedUser.rowCount === 0) {
-    return next(new AppError("user not found", 404));
+
+  const validUpdates = Object.fromEntries(filteredEntries);
+
+  const updatedCountry = await countryModel.findCountryByIdAndUpdate(
+    id,
+    validUpdates
+  );
+  if (!updatedCountry) {
+    return next(new AppError("Country not found", 404));
   }
+
+  const processedCountry = processPhotoUrl(updatedCountry); // Process the updated country
   res.status(200).json({
     status: "success",
-    data: {
-      updatedUser,
-    },
+    country: processedCountry,
   });
 });
+
+// Delete a country
 exports.deleteCountry = catchAsync(async (req, res, next) => {
   const { id } = req.params;
+
   const deletedCountry = await countryModel.findCountryByIdAndDelete(id);
-  if (deletedCountry.rowCount === 0) {
-    return next(new AppError("Country not found", 400));
+
+  if (!deletedCountry) {
+    return next(new AppError("Country not found", 404));
   }
+
+  const processedCountry = processPhotoUrl(deletedCountry); // Process the deleted country
   res.status(200).json({
     status: "success",
-    data: {
-      deletedCountry,
-    },
+    country: processedCountry,
   });
 });
+
+// Create a new country
 exports.createCountry = catchAsync(async (req, res, next) => {
   const { name, photo } = req.body;
+
   if (!name || !photo) {
-    return next(new AppError("please provide name and photo", 400));
+    return next(new AppError("Please provide name and photo", 400));
   }
-  const country = await countryModel.insertCountry(req.body);
+
+  const newCountry = await countryModel.insertCountry(req.body);
+
+  const processedCountry = processPhotoUrl(newCountry); // Process the created country
   res.status(200).json({
     status: "success",
     data: {
-      country,
+      country: processedCountry,
     },
   });
 });
