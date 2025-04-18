@@ -5,7 +5,25 @@ const PackageCard = ({ id, name, image }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/package/${id}`);
+    if (id === "turkey") {
+      navigate("/turkey");
+    } 
+    
+  else  if (id === "egypt") {
+      navigate("/egypt");
+    } 
+    
+    else  if (id === "cyprus") {
+      navigate("/cyprus");
+    } 
+
+    else  if (id === "jordan") {
+      navigate("/jordan");
+    } 
+  
+    else {
+      navigate(`/package/${id}`);
+    }
   };
 
   return (
