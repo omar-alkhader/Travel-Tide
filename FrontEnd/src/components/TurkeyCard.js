@@ -5,7 +5,8 @@ const TurkeyCard = ({ id, name, image }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    navigate(`/turkey_city/${id}`);
+    // Navigate to the Trip Details Page
+    navigate("/trip-details", { state: { cityId: id, cityName: name } });
   };
 
   return (
