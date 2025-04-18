@@ -23,6 +23,10 @@ import ChatPage from "./pages/ChatPage";
 import FlightsPage from "./components/FlightsPage";
 import HotelsPage from "./components/HotelsPage";
 import TravelPackagePage from "./components/TravelPackagePage";
+import Turkey from "./pages/Turkey"; 
+import Egypt from "./pages/egypt";
+import Cyprus from "./pages/cyprus"; 
+import Jordan from "./pages/jordan"; 
 
 import "./styles/global.css";
 import "./styles/NavBar.css";
@@ -78,6 +82,11 @@ function App() {
               <Route path="/flights" element={<FlightsPage />} />
               <Route path="/hotels" element={<HotelsPage />} />
               <Route path="/packages" element={<TravelPackagePage />} />
+              <Route path="/turkey" element={<Turkey />} />
+              <Route path="/egypt" element={<Egypt />} />
+              <Route path="/cyprus" element={<Cyprus />} />
+              <Route path="/jordan" element={<Jordan />} />
+  
             </Route>
           </Routes>
         </Router>
