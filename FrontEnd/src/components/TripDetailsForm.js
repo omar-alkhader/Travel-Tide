@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import RoomDetails from "./RoomDetails";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 
 function TripDetailsForm() {
   const [rooms, setRooms] = useState(1);
   const navigate = useNavigate();
+  const location = useLocation();
+  const { cityName } = location.state || { cityName: "Unknown City" };
 
   const handleRoomChange = (e) => {
     setRooms(e.target.value);
@@ -18,10 +20,12 @@ function TripDetailsForm() {
   return (
     <form id="tripForm" className="TripDetails-form">
       <h1>Trip Details</h1>
+      <h2>Destination: {cityName}</h2>
+
       <div className="TripDetails-row">
         <div className="TripDetails-group">
           <label htmlFor="arrivalCity">Arrival City</label>
-          <input type="text" id="arrivalCity" defaultValue="Varna, Bulgaria" />
+          <input type="text" id="arrivalCity" defaultValue={cityName} />
         </div>
         <div className="TripDetails-group">
           <label htmlFor="departureDate">Departure Date</label>
