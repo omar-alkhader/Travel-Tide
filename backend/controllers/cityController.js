@@ -130,8 +130,6 @@ exports.getCitiesByCountry = catchAsync(async (req, res, next) => {
   const processedCities = cities.map(processPhotoUrl); // Process all cities in the country
   res.status(200).json({
     status: "success",
-    data: {
-      cities: processedCities,
-    },
+    cities: processedCities,
   });
 });

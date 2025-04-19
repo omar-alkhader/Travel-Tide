@@ -2,9 +2,6 @@ import React from "react";
 import TurkeyCard from "../components/TurkeyCard";
 import { Container, Row, Col } from "react-bootstrap";
 
-
-
-
 import { useQuery } from "@tanstack/react-query";
 
 const Turkey = () => {
@@ -25,7 +22,7 @@ const Turkey = () => {
     return <div>Failed to load cities.</div>;
   }
 
-  const turkeyCities = data.data.cities.filter(city => city.country_id === 3);
+  const turkeyCities = data.data.cities.filter((city) => city.country_id === 3);
 
   return (
     <Container className="text-center my-5">
