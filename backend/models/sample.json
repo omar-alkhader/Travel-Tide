@@ -1,0 +1,101 @@
+[
+  {
+    "airline": "Emirates",
+    "departure": {
+      "flight_id": 1,
+      "airline_name": "Emirates",
+      "flight_number": "EK101",
+      "flight_type": "Departure",
+      "departure_city": "Amman",
+      "arrival_city": "Dubai",
+      "departure_time": "2025-04-10T08:00:00.000Z",
+      "arrival_time": "2025-04-10T12:00:00.000Z",
+      "number_of_stops": 0,
+      "trip_duration_hrs": 4.0,
+      "price": 350.0,
+      "currency": "JOD",
+      "seats": 5
+    },
+    "return": {
+      "flight_id": 2,
+      "airline_name": "Emirates",
+      "flight_number": "EK102",
+      "flight_type": "Return",
+      "departure_city": "Dubai",
+      "arrival_city": "Amman",
+      "departure_time": "2025-04-20T18:00:00.000Z",
+      "arrival_time": "2025-04-20T22:00:00.000Z",
+      "number_of_stops": 0,
+      "trip_duration_hrs": 4.0,
+      "price": 350.0,
+      "currency": "JOD",
+      "seats": 10
+    }
+  },
+  {
+    "airline": "Qatar Airways",
+    "departure": {
+      "flight_id": 5,
+      "airline_name": "Qatar Airways",
+      "flight_number": "QR201",
+      "flight_type": "Departure",
+      "departure_city": "Amman",
+      "arrival_city": "Doha",
+      "departure_time": "2025-04-11T09:00:00.000Z",
+      "arrival_time": "2025-04-11T12:30:00.000Z",
+      "number_of_stops": 0,
+      "trip_duration_hrs": 3.5,
+      "price": 400.0,
+      "currency": "JOD",
+      "seats": 8
+    },
+    "return": {
+      "flight_id": 6,
+      "airline_name": "Qatar Airways",
+      "flight_number": "QR202",
+      "flight_type": "Return",
+      "departure_city": "Doha",
+      "arrival_city": "Amman",
+      "departure_time": "2025-04-21T16:00:00.000Z",
+      "arrival_time": "2025-04-21T19:30:00.000Z",
+      "number_of_stops": 0,
+      "trip_duration_hrs": 3.5,
+      "price": 400.0,
+      "currency": "JOD",
+      "seats": 3
+    }
+  },
+  {
+    "airline": "Turkish Airlines",
+    "departure": {
+      "flight_id": 9,
+      "airline_name": "Turkish Airlines",
+      "flight_number": "TK301",
+      "flight_type": "Departure",
+      "departure_city": "Amman",
+      "arrival_city": "Istanbul",
+      "departure_time": "2025-04-15T07:00:00.000Z",
+      "arrival_time": "2025-04-15T11:00:00.000Z",
+      "number_of_stops": 0,
+      "trip_duration_hrs": 4.0,
+      "price": 500.0,
+      "currency": "JOD",
+      "seats": 10
+    },
+    "return": {
+      "flight_id": 10,
+      "airline_name": "Turkish Airlines",
+      "flight_number": "TK302",
+      "flight_type": "Return",
+      "departure_city": "Istanbul",
+      "arrival_city": "Amman",
+      "departure_time": "2025-04-25T17:00:00.000Z",
+      "arrival_time": "2025-04-25T21:00:00.000Z",
+      "number_of_stops": 0,
+      "trip_duration_hrs": 4.0,
+      "price": 500.0,
+      "currency": "JOD",
+      "seats": 5
+    }
+  }
+]

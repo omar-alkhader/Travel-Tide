@@ -124,6 +124,7 @@ const airlines = [
 const fetchFlights = async (search) => {
   const { arrivalCity, departureCity, departureDate, returnDate, travelers } =
     search;
+
   const response = await fetch(
     `http://127.0.0.1:6600/api/flights/roundtrips?departure_city=${departureCity}&arrival_city=${arrivalCity}&departure_date=${departureDate}&return_date=${returnDate}&num_participant=${travelers}`
   );
@@ -138,7 +139,7 @@ function FlightsPage() {
   const [priceRange, setPriceRange] = useState([300, 500]);
   const [selectedAirlines, setSelectedAirlines] = useState({});
   const [isInitialLoad, setIsInitialLoad] = useState(true);
-
+  const [test, setTest] = useState(null);
   // Get search parameters from URL query
   const queryParams = new URLSearchParams(location.search);
   const initialDepartureCity = queryParams.get("departureCity") || "";
@@ -147,12 +148,11 @@ function FlightsPage() {
   const initialReturnDate = queryParams.get("returnDate") || "";
   const initialTravelers = queryParams.get("travelers") || "1";
   const search = useSelector((state) => state.searchFlight);
-  console.log(search);
-  const { data } = useQuery({
-    queryKey: ["flights"],
+  const { data, isPending } = useQuery({
+    queryKey: ["flights", search],
     queryFn: () => fetchFlights(search),
   });
-  console.log(data);
+  // console.log(flightsData);
   useEffect(() => {
     // Check if this is a page refresh by examining the navigation type
     const isPageRefresh =
@@ -170,7 +170,15 @@ function FlightsPage() {
       setIsInitialLoad(true);
     }
   }, []);
-
+  useEffect(() => {
+    setTest(data?.flights);
+  }, [data]);
+  console.log(test);
+  console.log(isPending);
+  if (isPending) {
+    console.log("HEllo");
+  }
+  console.log(data);
   // Function to filter flights
   const filterFlights = () => {
     let filtered = [...flightsData];
@@ -292,8 +300,8 @@ function FlightsPage() {
 
           {/* Flight Results */}
           <div className="flights-results">
-            {flights.length > 0 ? (
-              flights.map((flight) => (
+            {test?.length > 0 ? (
+              test.map((flight) => (
                 <FlightCard key={flight.id} flight={flight} />
               ))
             ) : (

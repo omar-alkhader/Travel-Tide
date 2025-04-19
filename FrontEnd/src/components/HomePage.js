@@ -20,6 +20,7 @@ import {
 import { useDispatch } from "react-redux";
 import { setSearchFlight } from "../redux/flightSearchReducer";
 import { setSearchGuide } from "../redux/guideSearchReducer";
+import { setSearchHotel } from "../redux/hotelSearchReducer";
 
 function HomePage() {
   const { setIsChatOpen } = useOutletContext();
@@ -37,7 +38,7 @@ function HomePage() {
   const [guideCity, setGuideCity] = useState("");
   const [guideDate, setGuideDate] = useState("");
   // Hotel State
-  const [destination, setDestination] = useState("");
+  const [hotelDestination, setHotelDestination] = useState("");
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [nights, setNights] = useState(1);
@@ -183,18 +184,38 @@ function HomePage() {
           </ul>
         </div>
 
+        {/*
+          const [hotelDestination, setHotelDestination] = useState("");
+  const [checkIn, setCheckIn] = useState("");
+  const [checkOut, setCheckOut] = useState("");
+  const [nights, setNights] = useState(1);
+         */}
         {/* Booking options */}
         <div className="HomePage-booking-options ">
           <div className="tab-content">
             {/* Hotel Booking Form */}
             {activeTab === "hotels" && (
-              <form className="HomePage-form-inline form-inline justify-content-center">
+              <form
+                className="HomePage-form-inline form-inline justify-content-center"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  dispatch(
+                    setSearchHotel({
+                      city: hotelDestination,
+                      checkIn,
+                      checkOut,
+                      nights,
+                    })
+                  );
+                  navigate("/hotels");
+                }}
+              >
                 <input
                   type="text"
                   className="HomePage-form-control form-control m-2"
                   placeholder="Enter Destination"
-                  value={destination}
-                  onChange={(e) => setDestination(e.target.value)}
+                  value={hotelDestination}
+                  onChange={(e) => setHotelDestination(e.target.value)}
                 />
                 <input
                   type="date"

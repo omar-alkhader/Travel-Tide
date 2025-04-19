@@ -2,247 +2,377 @@ const db = require("../db");
 const AppError = require("../utlis/AppError");
 const catchAsync = require("../utlis/catchAsync");
 
-// exports.searchRoundTripFlights = catchAsync(async (req, res) => {
+// exports.searchRoundTripFlights = catchAsync(async (req, res, next) => {
 //   const {
 //     num_participant,
 //     departure_date,
 //     return_date,
 //     departure_city,
 //     arrival_city,
-//     return_departure_city,
-//     return_arrival_city,
 //   } = req.query;
-//   console.log("hello from here");
-//   if (!num_participant || !departure_date || !return_date) {
+
+//   // Validate required parameters
+//   if (
+//     !num_participant ||
+//     !departure_date ||
+//     !return_date ||
+//     !departure_city ||
+//     !arrival_city
+//   ) {
 //     return next(
 //       new AppError(
-//         "num_participant, departure_date, and return_date are required.",
+//         "num_participant, departure_date, return_date, departure_city, and arrival_city are required.",
 //         400
 //       )
 //     );
 //   }
 
-//   // Get all flights with enough seats and later than earliest departure
-//   const query = `
-//       SELECT * FROM Flights
-//       WHERE seats >= $1
-//         AND departure_date >= $2
-//     `;
-//   const { rows } = await db.query(query, [num_participant, departure_date]);
-
-//   const groupedByAirline = {};
-
-//   for (const flight of rows) {
-//     const airline = flight.airline_name;
-//     if (!groupedByAirline[airline]) {
-//       groupedByAirline[airline] = { departures: [], returns: [] };
-//     }
-
-//     const isDeparture =
-//       new Date(flight.departure_date) >= new Date(departure_date) &&
-//       new Date(flight.departure_date) < new Date(return_date) &&
-//       (!departure_city || flight.departure_city === departure_city) &&
-//       (!arrival_city || flight.arrival_city === arrival_city);
-
-//     const isReturn =
-//       new Date(flight.departure_date) >= new Date(return_date) &&
-//       (!return_departure_city ||
-//         flight.departure_city === return_departure_city) &&
-//       (!return_arrival_city || flight.arrival_city === return_arrival_city);
-
-//     if (isDeparture) groupedByAirline[airline].departures.push(flight);
-//     if (isReturn) groupedByAirline[airline].returns.push(flight);
+//   // Convert num_participant to an integer
+//   const numParticipants = parseInt(num_participant, 10);
+//   console.log(numParticipants);
+//   if (isNaN(numParticipants)) {
+//     return next(new AppError("num_participant must be a valid integer.", 400));
 //   }
 
-//   const result = {};
+//   console.log("Query Parameters:", {
+//     numParticipants,
+//     departure_date,
+//     return_date,
+//     departure_city,
+//     arrival_city,
+//   });
 
-//   for (const airline in groupedByAirline) {
-//     const { departures, returns } = groupedByAirline[airline];
-//     const pairs = [];
+//   // SQL queries
+//   const departureQuery = `
+//     SELECT * FROM Flights
+//     WHERE trip_type = 'departure'
+//       AND seats >= $1
+//       AND departure_date = $2
+//       AND departure_city = $3
+//       AND arrival_city = $4
+//   `;
 
-//     departures.forEach((depart) => {
-//       const matchingReturn = returns.find(
-//         (ret) =>
+//   const returnQuery = `
+//     SELECT * FROM Flights
+//     WHERE trip_type = 'return'
+//       AND seats >= $1
+//       AND departure_date = $2
+//       AND departure_city = $4
+//       AND arrival_city = $3
+//   `;
+
+//   try {
+//     // Execute queries
+//     const departureFlights = await db.query(departureQuery, [
+//       numParticipants,
+//       departure_date,
+//       departure_city,
+//       arrival_city,
+//     ]);
+
+//     const returnFlights = await db.query(returnQuery, [
+//       numParticipants,
+//       return_date,
+//       departure_city,
+//       arrival_city,
+//     ]);
+
+//     console.log("Departure Flights:", departureFlights.rows);
+//     console.log("Return Flights:", returnFlights.rows);
+
+//     const groupedByAirline = {};
+
+//     // Group departures and returns by airline
+//     for (const depart of departureFlights.rows) {
+//       for (const ret of returnFlights.rows) {
+//         if (
 //           ret.departure_city === depart.arrival_city &&
 //           ret.arrival_city === depart.departure_city &&
 //           new Date(ret.departure_date) > new Date(depart.departure_date)
-//       );
+//         ) {
+//           const airline = depart.airline_name;
 
-//       if (matchingReturn) {
-//         pairs.push({
-//           departure: {
-//             departure_city: depart.departure_city,
-//             flight_number: depart.flight_number,
-//             airline_icon: depart.airline_icon,
-//             seats: depart.seats,
-//             arrival_city: depart.arrival_city,
-//             departure_time: depart.departure_time,
-//             arrival_time: depart.arrival_time,
-//             departure_date: depart.departure_date,
-//             arrival_date: depart.arrival_date,
-//             num_stops: depart.num_stops,
-//             duration: depart.trip_duration,
-//             price: depart.price_jod,
-//           },
-//           return: {
-//             num_stops: matchingReturn.num_stops,
-//             arrival_time: matchingReturn.arrival_time,
-//             departure_time: matchingReturn.departure_time,
-//             airline_icon: matchingReturn.airline_icon,
-//             flight_number: matchingReturn.flight_number,
-//             departure_city: matchingReturn.departure_city,
-//             arrival_city: matchingReturn.arrival_city,
-//             departure_date: matchingReturn.departure_date,
-//             arrival_date: matchingReturn.arrival_date,
-//             price: matchingReturn.price_jod,
-//             seats: matchingReturn.seats,
-//             duration: matchingReturn.trip_duration,
-//           },
-//         });
+//           if (!groupedByAirline[airline]) {
+//             groupedByAirline[airline] = [];
+//           }
+
+//           groupedByAirline[airline].push({
+//             departure: {
+//               flight_number: depart.flight_number,
+//               departure_city: depart.departure_city,
+//               arrival_city: depart.arrival_city,
+//               departure_date: depart.departure_date,
+//               arrival_date: depart.arrival_date,
+//               price: depart.price_jod,
+//               seats: depart.seats,
+//               duration: depart.trip_duration,
+//             },
+//             return: {
+//               flight_number: ret.flight_number,
+//               departure_city: ret.departure_city,
+//               arrival_city: ret.arrival_city,
+//               departure_date: ret.departure_date,
+//               arrival_date: ret.arrival_date,
+//               price: ret.price_jod,
+//               seats: ret.seats,
+//               duration: ret.trip_duration,
+//             },
+//           });
+//         }
 //       }
-//     });
+//     }
 
-//     if (pairs.length > 0) result[airline] = pairs;
+//     const totalPairs = Object.values(groupedByAirline).flat().length;
+
+//     res.status(200).json({
+//       status: "success",
+//       results: totalPairs,
+//       data: groupedByAirline,
+//     });
+//   } catch (err) {
+//     console.error("Database Query Error:", err);
+//     return next(new AppError("An error occurred while fetching flights.", 500));
+//   }
+// });
+
+// exports.searchRoundTripFlights = async (req, res) => {
+//   const {
+//     num_participant: numParticipants,
+//     departure_date: departureDate,
+//     return_date: returnDate,
+//     departure_city: departureCity,
+//     arrival_city: arrivalCity,
+//   } = req.query;
+
+//   // Validate input
+//   if (
+//     !departureCity ||
+//     !arrivalCity ||
+//     !departureDate ||
+//     !returnDate ||
+//     !numParticipants
+//   ) {
+//     return res.status(400).json({ message: "Invalid input parameters" });
 //   }
 
-//   res.status(200).json({
-//     status: "success",
-//     results: Object.values(result).flat().length,
-//     data: result,
-//   });
-// });
-exports.searchRoundTripFlights = catchAsync(async (req, res, next) => {
+//   try {
+//     // Query for round-trip flights
+//     const flights = await db.query(
+//       `
+//       SELECT
+//         dep.id AS departure_flight_id,
+//         dep.airline_name AS airline,
+//         dep.flight_number AS departure_flight_number,
+//         dep.departure_city AS departure_city,
+//         dep.arrival_city AS arrival_city,
+//         dep.departure_time AS departure_time,
+//         dep.departure_date AS departure_date,
+//         dep.arrival_time AS arrival_time,
+//         dep.arrival_date AS arrival_date,
+//         dep.price AS departure_price,
+//         dep.num_stops AS departure_stops,
+//         dep.trip_duration AS departure_duration,
+//         dep.seats AS departure_seats,
+
+//         ret.id AS return_flight_id,
+//         ret.flight_number AS return_flight_number,
+//         ret.departure_city AS return_departure_city,
+//         ret.arrival_city AS return_arrival_city,
+//         ret.departure_time AS return_departure_time,
+//         ret.departure_date AS return_departure_date,
+//         ret.arrival_time AS return_arrival_time,
+//         ret.arrival_date AS return_arrival_date,
+//         ret.price AS return_price,
+//         ret.num_stops AS return_stops,
+//         ret.trip_duration AS return_duration,
+//         ret.seats AS return_seats
+//       FROM flights AS dep
+//       JOIN flights AS ret
+//         ON dep.arrival_city = ret.departure_city
+//         AND dep.departure_city = ret.arrival_city
+//         AND dep.airline_name = ret.airline_name -- Ensure the same airline
+//       WHERE
+//         dep.departure_city = $1
+//         AND dep.arrival_city = $2
+//         AND dep.departure_date = $3
+//         AND dep.seats >= $4
+//         AND ret.departure_date = $5
+//         AND ret.seats >= $4;
+//       `,
+//       [departureCity, arrivalCity, departureDate, numParticipants, returnDate]
+//     );
+
+//     // Map the results to the desired format
+//     const formattedFlights = flights.rows.map((flight) => ({
+//       id: flight.departure_flight_id,
+//       price: flight.departure_price,
+//       airline: flight.airline,
+//       flightNumber: flight.departure_flight_number,
+//       departure: {
+//         city: flight.departure_city,
+//         time: flight.departure_time,
+//         date: flight.departure_date,
+//       },
+//       arrival: {
+//         city: flight.arrival_city,
+//         time: flight.arrival_time,
+//         date: flight.arrival_date,
+//       },
+//       stops: flight.departure_stops,
+//       duration: flight.departure_duration,
+//       returnFlight: {
+//         id: flight.return_flight_id,
+//         airline: flight.airline,
+//         flightNumber: flight.return_flight_number,
+//         departure: {
+//           city: flight.return_departure_city,
+//           time: flight.return_departure_time,
+//           date: flight.return_departure_date,
+//         },
+//         arrival: {
+//           city: flight.return_arrival_city,
+//           time: flight.return_arrival_time,
+//           date: flight.return_arrival_date,
+//         },
+//         stops: flight.return_stops,
+//         duration: flight.return_duration,
+//       },
+//     }));
+
+//     // Return the response
+//     res.status(200).json({
+//       status: "success",
+//       results: formattedFlights.length,
+//       flights: formattedFlights,
+//     });
+//   } catch (err) {
+//     console.error("Error searching round-trip flights:", err);
+//     res.status(500).json({ message: "Internal server error" });
+//   }
+// };
+exports.searchRoundTripFlights = async (req, res) => {
   const {
-    num_participant,
-    departure_date,
-    return_date,
-    departure_city,
-    arrival_city,
+    num_participant: numParticipants,
+    departure_date: departureDate,
+    return_date: returnDate,
+    departure_city: departureCity,
+    arrival_city: arrivalCity,
   } = req.query;
 
-  // Validate required parameters
+  // Validate input
   if (
-    !num_participant ||
-    !departure_date ||
-    !return_date ||
-    !departure_city ||
-    !arrival_city
+    !departureCity ||
+    !arrivalCity ||
+    !departureDate ||
+    !returnDate ||
+    !numParticipants
   ) {
-    return next(
-      new AppError(
-        "num_participant, departure_date, return_date, departure_city, and arrival_city are required.",
-        400
-      )
-    );
+    return res.status(400).json({ message: "Invalid input parameters" });
   }
-
-  // Convert num_participant to an integer
-  const numParticipants = parseInt(num_participant, 10);
-  console.log(numParticipants);
-  if (isNaN(numParticipants)) {
-    return next(new AppError("num_participant must be a valid integer.", 400));
-  }
-
-  console.log("Query Parameters:", {
-    numParticipants,
-    departure_date,
-    return_date,
-    departure_city,
-    arrival_city,
-  });
-
-  // SQL queries
-  const departureQuery = `
-    SELECT * FROM Flights 
-    WHERE trip_type = 'departure'
-      AND seats >= $1
-      AND departure_date = $2
-      AND departure_city = $3
-      AND arrival_city = $4
-  `;
-
-  const returnQuery = `
-    SELECT * FROM Flights 
-    WHERE trip_type = 'return'
-      AND seats >= $1
-      AND departure_date = $2
-      AND departure_city = $4
-      AND arrival_city = $3
-  `;
 
   try {
-    // Execute queries
-    const departureFlights = await db.query(departureQuery, [
-      numParticipants,
-      departure_date,
-      departure_city,
-      arrival_city,
-    ]);
+    // Query for round-trip flights
+    const flights = await db.query(
+      `
+      SELECT 
+        dep.id AS departure_flight_id,
+        dep.airline_name AS airline,
+        dep.flight_number AS departure_flight_number,
+        dep.departure_city AS departure_city,
+        dep.arrival_city AS arrival_city,
+        dep.departure_time AS departure_time,
+        dep.departure_date AS departure_date,
+        dep.arrival_time AS arrival_time,
+        dep.arrival_date AS arrival_date,
+        dep.price AS departure_price,
+        dep.num_stops AS departure_stops,
+        TO_CHAR(dep.trip_duration, 'HH24:MI:SS') AS departure_duration, -- Ensure duration is a string
+        dep.seats AS departure_seats,
 
-    const returnFlights = await db.query(returnQuery, [
-      numParticipants,
-      return_date,
-      departure_city,
-      arrival_city,
-    ]);
+        ret.id AS return_flight_id,
+        ret.flight_number AS return_flight_number,
+        ret.departure_city AS return_departure_city,
+        ret.arrival_city AS return_arrival_city,
+        ret.departure_time AS return_departure_time,
+        ret.departure_date AS return_departure_date,
+        ret.arrival_time AS return_arrival_time,
+        ret.arrival_date AS return_arrival_date,
+        ret.price AS return_price,
+        ret.num_stops AS return_stops,
+        TO_CHAR(ret.trip_duration, 'HH24:MI:SS') AS return_duration, -- Ensure duration is a string
+        ret.seats AS return_seats
+      FROM flights AS dep
+      JOIN flights AS ret
+        ON dep.arrival_city = ret.departure_city
+        AND dep.departure_city = ret.arrival_city
+        AND dep.airline_name = ret.airline_name -- Ensure the same airline
+      WHERE 
+        dep.departure_city = $1 
+        AND dep.arrival_city = $2
+        AND dep.departure_date = $3
+        AND dep.seats >= $4
+        AND ret.departure_date = $5
+        AND ret.seats >= $4;
+      `,
+      [departureCity, arrivalCity, departureDate, numParticipants, returnDate]
+    );
 
-    console.log("Departure Flights:", departureFlights.rows);
-    console.log("Return Flights:", returnFlights.rows);
+    // Map the results to the desired format
+    const formattedFlights = flights.rows.map((flight) => {
+      // Calculate total price for all participants
+      const totalDeparturePrice = flight.departure_price * numParticipants;
+      const totalReturnPrice = flight.return_price * numParticipants;
+      const totalPrice = totalDeparturePrice + totalReturnPrice;
+      console.log(totalDeparturePrice, totalReturnPrice);
+      return {
+        id: flight.departure_flight_id,
+        pricePerPerson: flight.departure_price,
+        totalPrice, // Total price for all participants
+        airline: flight.airline,
+        flightNumber: flight.departure_flight_number,
+        departure: {
+          city: flight.departure_city,
+          time: flight.departure_time,
+          date: flight.departure_date,
+        },
+        arrival: {
+          city: flight.arrival_city,
+          time: flight.arrival_time,
+          date: flight.arrival_date,
+        },
+        stops: flight.departure_stops,
+        duration: flight.departure_duration, // Duration as a string
+        returnFlight: {
+          id: flight.return_flight_id,
+          airline: flight.airline,
+          flightNumber: flight.return_flight_number,
+          departure: {
+            city: flight.return_departure_city,
+            time: flight.return_departure_time,
+            date: flight.return_departure_date,
+          },
+          arrival: {
+            city: flight.return_arrival_city,
+            time: flight.return_arrival_time,
+            date: flight.return_arrival_date,
+          },
+          stops: flight.return_stops,
+          duration: flight.return_duration, // Duration as a string
+        },
+      };
+    });
 
-    const groupedByAirline = {};
-
-    // Group departures and returns by airline
-    for (const depart of departureFlights.rows) {
-      for (const ret of returnFlights.rows) {
-        if (
-          ret.departure_city === depart.arrival_city &&
-          ret.arrival_city === depart.departure_city &&
-          new Date(ret.departure_date) > new Date(depart.departure_date)
-        ) {
-          const airline = depart.airline_name;
-
-          if (!groupedByAirline[airline]) {
-            groupedByAirline[airline] = [];
-          }
-
-          groupedByAirline[airline].push({
-            departure: {
-              flight_number: depart.flight_number,
-              departure_city: depart.departure_city,
-              arrival_city: depart.arrival_city,
-              departure_date: depart.departure_date,
-              arrival_date: depart.arrival_date,
-              price: depart.price_jod,
-              seats: depart.seats,
-              duration: depart.trip_duration,
-            },
-            return: {
-              flight_number: ret.flight_number,
-              departure_city: ret.departure_city,
-              arrival_city: ret.arrival_city,
-              departure_date: ret.departure_date,
-              arrival_date: ret.arrival_date,
-              price: ret.price_jod,
-              seats: ret.seats,
-              duration: ret.trip_duration,
-            },
-          });
-        }
-      }
-    }
-
-    const totalPairs = Object.values(groupedByAirline).flat().length;
-
+    // Return the response
     res.status(200).json({
       status: "success",
-      results: totalPairs,
-      data: groupedByAirline,
+      results: formattedFlights.length,
+      flights: formattedFlights,
     });
   } catch (err) {
-    console.error("Database Query Error:", err);
-    return next(new AppError("An error occurred while fetching flights.", 500));
+    console.error("Error searching round-trip flights:", err);
+    res.status(500).json({ message: "Internal server error" });
   }
-});
+};
 exports.getFlightById = catchAsync(async (req, res) => {
   console.log("hello from id");
   const { id } = req.params;

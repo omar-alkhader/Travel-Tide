@@ -15,15 +15,6 @@ function FlightSearchBox({
   const [returnDate, setReturnDate] = useState(initialReturnDate);
   const [travelers, setTravelers] = useState(initialTravelers);
   const [showSearchForm, setShowSearchForm] = useState(false);
-  console.log(
-    departureCity,
-    arrivalCity,
-    departureDate,
-    returnDate,
-    travelers,
-    showSearchForm
-  );
-  console.log("hello");
   const navigate = useNavigate();
 
   // Update state when props change

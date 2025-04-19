@@ -7,7 +7,9 @@ const initialState = {
   returnDate: "",
   travelers: 1,
 };
-
+function setInput(string) {
+  return string.split(" ").join("-").toLowerCase();
+}
 const searchFlightSlice = createSlice({
   name: "searchFlight",
   initialState,

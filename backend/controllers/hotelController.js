@@ -1,3 +1,4 @@
+const db = require("../db");
 const hotelModel = require("../models/hotelModel");
 const AppError = require("../utlis/AppError");
 const catchAsync = require("../utlis/catchAsync");
@@ -20,9 +21,10 @@ exports.createHotel = catchAsync(async (req, res, next) => {
   });
 });
 exports.getHotel = catchAsync(async (req, res, next) => {
-  if (!req.params.id) {
+  if (!req.params.cityName) {
     return next(new AppError("pleave provide valid id"), 404);
   }
+
   const hotel = await hotelModel.getHotel(req.params.id);
   res.status(200).json({
     status: "success",
@@ -32,10 +34,18 @@ exports.getHotel = catchAsync(async (req, res, next) => {
   });
 });
 exports.getHotelByCity = catchAsync(async (req, res, next) => {
-  if (!req.params.city_id) {
+  const { cityName } = req.params;
+  if (!cityName) {
     return next(new AppError("pleave provide valid city_id"), 404);
   }
-  const hotels = await hotelModel.getHotelsByCity(req.params.city_id);
+  const cityResult = await db.query(`SELECT id FROM city WHERE name = $1`, [
+    cityName,
+  ]);
+  if (cityResult.rows.length === 0) {
+    return next(new AppError("City not found", 404));
+  }
+  const cityId = cityResult.rows[0].id;
+  const hotels = await hotelModel.getHotelsByCity(cityId);
   res.status(200).json({
     status: "success",
     data: {
