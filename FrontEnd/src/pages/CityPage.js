@@ -10,7 +10,7 @@ const CityPage = () => {
   console.log(searchParams.get("country_id"));
   const country_id = searchParams.get("country_id");
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["city"],
+    queryKey: ["city", country_id],
     queryFn: async () => {
       const res = await fetch(
         `http://127.0.0.1:6600/api/cities/country/${country_id}`
