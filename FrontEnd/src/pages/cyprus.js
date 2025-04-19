@@ -5,29 +5,35 @@ import { Container, Row, Col } from "react-bootstrap";
 // Import images from assets folder
 
 
-import ayianapaImg from "../assets/Ayia Napa.jpg";
-import larnacaImg from "../assets/Larnaca.jpg";
-import paphosImg from "../assets/Paphos.jpg";
-import limassolImg from "../assets/Limassol.jpg";
-
-const cyprus_city = [
-    { id: "ayianapa", name: "Ayianapa", image: ayianapaImg },
-    { id: "larnaca", name: "Larnaca", image: larnacaImg },
-    { id: "paphos", name: "Paphos", image: paphosImg },
-    { id: "limassol", name: "Limassol", image: limassolImg },
-  
-  ];
-
-
+import { useQuery } from "@tanstack/react-query";
 
 const Cyprus = () => {
+  const { data, isLoading, isError } = useQuery({
+    queryKey: ["city"],
+    queryFn: async () => {
+      const res = await fetch("http://127.0.0.1:6600/api/cities");
+      const data = await res.json();
+      return data;
+    },
+  });
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError || !data?.data?.cities) {
+    return <div>Failed to load cities.</div>;
+  }
+
+  const cyprusCities = data.data.cities.filter(city => city.country_id ===2);
+
   return (
     <Container className="text-center my-5">
       <h2>Choose Your Package</h2>
       <Row className="mt-4">
-        {cyprus_city.map((pkg) => (
-          <Col md={4} key={pkg.id} className="d-flex justify-content-center">
-            <CyprusCard id={pkg.id} name={pkg.name} image={pkg.image} />
+        {cyprusCities.map((city) => (
+          <Col md={4} key={city.id} className="d-flex justify-content-center">
+            <CyprusCard id={city.id} name={city.name} image={city.photo} />
           </Col>
         ))}
       </Row>
