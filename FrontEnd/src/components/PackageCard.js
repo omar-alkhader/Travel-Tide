@@ -5,26 +5,13 @@ const PackageCard = ({ id, name, image }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    if (id === "turkey") {
-      navigate("/turkey");
-    } 
-    
-  else  if (id === "egypt") {
-      navigate("/egypt");
-    } 
-    
-    else  if (id === "cyprus") {
-      navigate("/cyprus");
-    } 
-
-    else  if (id === "jordan") {
-      navigate("/jordan");
-    } 
-  
-    else {
-      navigate(`/package/${id}`);
-    }
+    const lowerName = name.toLowerCase();
+    navigate(`/${lowerName}`);
   };
+  
+  
+
+
 
   return (
     <div className="package-card" onClick={handleClick}>
@@ -35,3 +22,4 @@ const PackageCard = ({ id, name, image }) => {
 };
 
 export default PackageCard;
+
