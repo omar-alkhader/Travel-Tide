@@ -23,6 +23,7 @@ import FlightsPage from "./components/FlightsPage";
 import HotelsPage from "./components/HotelsPage";
 import TravelPackagePage from "./components/TravelPackagePage";
 import BookingPage from "./components/BookingPage";
+import PackageDetailsPage from "./components/PackageDetailsPage";
 import Turkey from "./pages/Turkey";
 import Egypt from "./pages/egypt";
 import Cyprus from "./pages/cyprus";
