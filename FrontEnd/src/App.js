@@ -1,6 +1,5 @@
 import React, { useEffect } from "react";
-import {
-  BrowserRouter as Router,
+import { BrowserRouter as Router,
   Routes,
   Route,
   useLocation,
@@ -23,6 +22,7 @@ import ChatPage from "./pages/ChatPage";
 import FlightsPage from "./components/FlightsPage";
 import HotelsPage from "./components/HotelsPage";
 import TravelPackagePage from "./components/TravelPackagePage";
+import BookingPage from "./components/BookingPage";
 import Turkey from "./pages/Turkey";
 import Egypt from "./pages/egypt";
 import Cyprus from "./pages/cyprus";
@@ -84,6 +84,7 @@ function App() {
               <Route path="/hotels" element={<HotelsPage />} />
               <Route path="/packages" element={<TravelPackagePage />} />
               <Route path="/cities" element={<CityPage />} />
+              <Route path="/booking" element={<BookingPage />} />
               {/* <Route path="/turkey" element={<Turkey />} />
               <Route path="/egypt" element={<Egypt />} />
               <Route path="/cyprus" element={<Cyprus />} />

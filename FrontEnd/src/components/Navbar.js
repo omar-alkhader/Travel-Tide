@@ -49,7 +49,7 @@ function Navbar() {
             <Link to="/" state={{ activeTab: "hotels" }}>Hotel</Link>
           </li>
           <li>
-            <Link to="/">My Booking</Link>
+            <Link to="/booking">My Booking</Link>
           </li>
         </ul>
       </nav>
