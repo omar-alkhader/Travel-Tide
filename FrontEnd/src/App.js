@@ -85,6 +85,7 @@ function App() {
               <Route path="/packages" element={<TravelPackagePage />} />
               <Route path="/cities" element={<CityPage />} />
               <Route path="/booking" element={<BookingPage />} />
+               <Route path="/p" element={<PackageDetailsPage />} />
               {/* <Route path="/turkey" element={<Turkey />} />
               <Route path="/egypt" element={<Egypt />} />
               <Route path="/cyprus" element={<Cyprus />} />
