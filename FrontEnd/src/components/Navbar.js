@@ -4,13 +4,16 @@ import { useAuth } from "../context/AuthContext";
 import { FaUserCircle } from "react-icons/fa";
 // Import the logo
 import logo from "../assets/logo.png"; // Adjust the path/filename as needed
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../redux/userSlice";
+import { useMutation } from "@tanstack/react-query";
 
 function Navbar() {
-  const { user, logout } = useAuth();
+  const user = useSelector((state) => state.user.user);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
@@ -23,16 +26,33 @@ function Navbar() {
     };
   }, []);
 
-  const handleSignOut = () => {
-    logout();
-    setDropdownOpen(false);
+  const handleSignOut = async () => {
+    try {
+      await fetch(`http://127.0.0.1:6600/api/users/logout`, {
+        method: "POST",
+        credentials: "include",
+      });
+
+      dispatch(logout());
+      setDropdownOpen(false);
+    } catch (err) {
+      console.log("Log out failed ", err);
+    }
     navigate("/");
   };
 
   return (
     <header className="navbar">
       <div className="logo">
-        <Link to="/" style={{ textDecoration: 'none', color: 'inherit', display: 'flex', alignItems: 'center' }}>
+        <Link
+          to="/"
+          style={{
+            textDecoration: "none",
+            color: "inherit",
+            display: "flex",
+            alignItems: "center",
+          }}
+        >
           <img src={logo} alt="Travel Tide Logo" className="navbar-logo" />
           <span>Travel Tide</span>
         </Link>
@@ -43,10 +63,14 @@ function Navbar() {
             <Link to="/package">Packages</Link>
           </li>
           <li>
-            <Link to="/" state={{ activeTab: "flights" }}>Flight</Link>
+            <Link to="/" state={{ activeTab: "flights" }}>
+              Flight
+            </Link>
           </li>
           <li>
-            <Link to="/" state={{ activeTab: "hotels" }}>Hotel</Link>
+            <Link to="/" state={{ activeTab: "hotels" }}>
+              Hotel
+            </Link>
           </li>
           <li>
             <Link to="/">My Booking</Link>
@@ -65,9 +89,15 @@ function Navbar() {
 
             {dropdownOpen && (
               <div className="profile-dropdown">
-                <Link to="/home" onClick={() => setDropdownOpen(false)}>Profile</Link>
-                <Link to="/" onClick={() => setDropdownOpen(false)}>My Booking</Link>
-                <Link to="/review" onClick={() => setDropdownOpen(false)}>Review</Link>
+                <Link to="/home" onClick={() => setDropdownOpen(false)}>
+                  Profile
+                </Link>
+                <Link to="/" onClick={() => setDropdownOpen(false)}>
+                  My Booking
+                </Link>
+                <Link to="/review" onClick={() => setDropdownOpen(false)}>
+                  Review
+                </Link>
                 <button onClick={handleSignOut}>Sign out</button>
               </div>
             )}

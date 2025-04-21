@@ -16,7 +16,8 @@ const path = require("path");
 const cors = require("cors");
 app.use(
   cors({
-    origin: "http://localhost:3000", // your React dev server
+    origin: "http://localhost:3000",
+    credentials: true, // your React dev server
   })
 );
 app.use(cookieParser());
