@@ -13,7 +13,7 @@ function TripDetailsForm() {
   };
 
   const handleSearch = () => {
-    alert("Search button clicked!");
+    
     navigate("/p");
   };
 
