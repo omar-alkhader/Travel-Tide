@@ -14,7 +14,7 @@ function TripDetailsForm() {
 
   const handleSearch = () => {
     alert("Search button clicked!");
-    navigate("/");
+    navigate("/p");
   };
 
   return (
