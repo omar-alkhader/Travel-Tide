@@ -1,9 +1,11 @@
 import React, { useState } from "react";
-import RoomDetails from "./RoomDetails";
 import { useNavigate, useLocation } from "react-router-dom";
 
 function TripDetailsForm() {
   const [rooms, setRooms] = useState(1);
+  const [arrivalDate, setArrivalDate] = useState("");
+  const [departureDate, setDepartureDate] = useState("");
+  const [nights, setNights] = useState(0);
   const navigate = useNavigate();
   const location = useLocation();
   const { cityName } = location.state || { cityName: "Unknown City" };
@@ -12,9 +14,26 @@ function TripDetailsForm() {
     setRooms(e.target.value);
   };
 
+  const handleDateChange = (e, type) => {
+    const value = e.target.value;
+    if (type === "arrival") {
+      setArrivalDate(value);
+    } else {
+      setDepartureDate(value);
+    }
+
+    const startDate = type === "arrival" ? new Date(value) : new Date(arrivalDate);
+    const endDate = type === "departure" ? new Date(value) : new Date(departureDate);
+
+    if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
+      const diffTime = endDate - startDate;
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+      setNights(diffDays > 0 ? diffDays : 0);
+    }
+  };
+
   const handleSearch = () => {
-    
-    navigate("/p");
+    navigate("/packages");
   };
 
   return (
@@ -28,16 +47,30 @@ function TripDetailsForm() {
           <input type="text" id="arrivalCity" defaultValue={cityName} />
         </div>
         <div className="TripDetails-group">
+          <label htmlFor="departureCity">Departure City</label>
+          <input type="text" id="departureCity" />
+        </div>
+        <div className="TripDetails-group">
+          <label htmlFor="arrivalDate">Arrival Date</label>
+          <input
+            type="date"
+            id="arrivalDate"
+            value={arrivalDate}
+            onChange={(e) => handleDateChange(e, "arrival")}
+          />
+        </div>
+        <div className="TripDetails-group">
           <label htmlFor="departureDate">Departure Date</label>
-          <input type="date" id="departureDate" defaultValue="2025-01-23" />
+          <input
+            type="date"
+            id="departureDate"
+            value={departureDate}
+            onChange={(e) => handleDateChange(e, "departure")}
+          />
         </div>
         <div className="TripDetails-group">
           <label htmlFor="nights">Nights</label>
-          <input type="number" id="nights" defaultValue="7" />
-        </div>
-        <div className="TripDetails-group">
-          <label htmlFor="returnDate">Return Date</label>
-          <input type="date" id="returnDate" defaultValue="2025-01-30" />
+          <input type="number" id="nights" value={nights} readOnly />
         </div>
       </div>
 
@@ -50,28 +83,10 @@ function TripDetailsForm() {
           </select>
         </div>
         <div className="TripDetails-group">
-          <label htmlFor="rating">Rating</label>
-          <input type="text" id="rating" defaultValue="Anything" />
-        </div>
-        <div className="TripDetails-group">
-          <label htmlFor="mealType">Meal Type</label>
-          <input type="text" id="mealType" defaultValue="Inclusive" />
+          <label htmlFor="traveller">Traveller</label>
+          <input type="number" id="traveller" defaultValue="" />
         </div>
       </div>
-
-      <div className="TripDetails-group">
-        <label htmlFor="rooms">Rooms</label>
-        <input
-          type="number"
-          id="rooms"
-          min="1"
-          max="10"
-          defaultValue="1"
-          onChange={handleRoomChange}
-        />
-      </div>
-
-      <RoomDetails roomCount={rooms} />
 
       <button type="button" className="TripDetails-button" onClick={handleSearch}>
         Search
