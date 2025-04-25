@@ -196,3 +196,19 @@
 .popup-delete-button:hover {
   background-color: #cc0000;
 }
+
+.remove-guide-button {
+  margin-left: 15px;
+  padding: 5px 8px;
+  background-color: #ff9900;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.remove-guide-button:hover {
+  background-color: #e68a00;
+}
