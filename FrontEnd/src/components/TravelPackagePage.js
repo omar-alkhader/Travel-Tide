@@ -151,7 +151,6 @@ const packagesData = [
 function TravelPackagePage() {
     const [selectedFlight, setSelectedFlight] = useState(null);
     const [showFlightModal, setShowFlightModal] = useState(false);
-
     // Handle flight selection for modal
     const handleViewFlight = (flight) => {
         setSelectedFlight(flight);

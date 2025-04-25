@@ -13,8 +13,7 @@ function TripDetailsForm() {
   };
 
   const handleSearch = () => {
-    
-    navigate("/p");
+    navigate("/packages");
   };
 
   return (
@@ -73,7 +72,11 @@ function TripDetailsForm() {
 
       <RoomDetails roomCount={rooms} />
 
-      <button type="button" className="TripDetails-button" onClick={handleSearch}>
+      <button
+        type="button"
+        className="TripDetails-button"
+        onClick={handleSearch}
+      >
         Search
       </button>
     </form>
