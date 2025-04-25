@@ -5,6 +5,7 @@ import cancelIcon from "../assets/cancel.png";
 
 function BookingPage() {
     const [showCancelPopup, setShowCancelPopup] = useState(false);
+    const [hasGuide, setHasGuide] = useState(true); // Initially set to true (has guide)
     const navigate = useNavigate();
 
     const handleCancelTrip = () => {
@@ -25,6 +26,10 @@ function BookingPage() {
         navigate("/pay");
     };
 
+    const handleRemoveGuide = () => {
+        setHasGuide(false);
+    };
+
     return (
         <div className="booking-page-container">
             <div className="booking-header">
@@ -40,6 +45,7 @@ function BookingPage() {
                                 <th>Travel Date</th>
                                 <th>Booking Date</th>
                                 <th>Travelers</th>
+                                <th>Guide</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -48,6 +54,17 @@ function BookingPage() {
                                 <td>2025-03-15</td>
                                 <td>2025-03-01</td>
                                 <td>2</td>
+                                <td>
+                                    {hasGuide ? "Yes" : "No"}
+                                    {hasGuide && (
+                                        <button 
+                                            className="remove-guide-button" 
+                                            onClick={handleRemoveGuide}
+                                        >
+                                            Remove Guide
+                                        </button>
+                                    )}
+                                </td>
                             </tr>
                         </tbody>
                     </table>
@@ -66,13 +83,15 @@ function BookingPage() {
                         <span>Tax:</span>
                         <span>35 JOD</span>
                     </div>
-                    <div className="price-row">
-                        <span>Guide Price:</span>
-                        <span>50 JOD</span>
-                    </div>
+                    {hasGuide && (
+                        <div className="price-row">
+                            <span>Guide Price:</span>
+                            <span>50 JOD</span>
+                        </div>
+                    )}
                     <div className="price-row total">
                         <span>Total Price:</span>
-                        <span>335 JOD</span>
+                        <span>{hasGuide ? "335" : "285"} JOD</span>
                     </div>
                     <button className="checkout-button" onClick={handleCheckout}>
                         Checkout
