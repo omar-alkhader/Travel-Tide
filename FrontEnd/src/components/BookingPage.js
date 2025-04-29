@@ -50,9 +50,12 @@ function BookingPage() {
     };
 
     const handleDeleteTrip = () => {
-        // Here you would make an API call to delete the trip
-        // For now we'll just navigate back to home
+
         navigate("/");
+    };
+
+    const navigateToGuidePage = () => {
+        navigate("/guides");
     };
 
     // Calculate total guide price
@@ -104,8 +107,8 @@ function BookingPage() {
                             Cancel Trip
                         </button>
                         {guides.length > 0 && (
-                            <button className="remove-guide-button" onClick={openGuidesPopup}>
-                                Remove Guide
+                            <button className="manage-guides-button" onClick={openGuidesPopup}>
+                                Manage Guides
                             </button>
                         )}
                     </div>
@@ -186,10 +189,13 @@ function BookingPage() {
                         </div>
                         <div className="popup-buttons">
                             <button
-                                className="popup-cancel-button"
-                                onClick={closeGuidesPopup}
+                                className="add-guide-button"
+                                onClick={() => {
+                                    closeGuidesPopup();
+                                    navigateToGuidePage();
+                                }}
                             >
-                                Cancel
+                                Add Guide
                             </button>
                             <button
                                 className="remove-all-guides-btn"
