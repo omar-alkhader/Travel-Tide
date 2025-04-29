@@ -99,7 +99,6 @@
   transition: background-color 0.3s ease;
 }
 
-
 .checkout-button {
   margin-top: 15px;
   background-color: #007bff;
@@ -170,7 +169,7 @@
   background-color: #ff0000;
   color: white;
   width: auto;
-  padding: 10px 20px;
+  padding: 6px 20px;
 }
 
 .remove-all-guides-btn:hover {
@@ -231,13 +230,8 @@
   margin-bottom: 10px;
 }
 
-
 .cancel-popup .popup-content {
   width: 350px;
-}
-
-.guides-popup {
-  z-index: 1000;
 }
 
 .guides-popup .popup-content {
@@ -320,4 +314,49 @@
 
 .guide-item span:nth-child(2) {
   color: #555;
+}
+
+.add-guide-button {
+  margin-top: 20px;
+  padding: 7px 15px;
+  color: #007bff;
+  border: 2px solid #007bff;
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.add-guide-button:hover {
+  background-color: #007bff;
+  color: #fff;
+}
+
+
+.popup-buttons .add-guide-button {
+  background-color: #007bff !important; 
+  color: white !important;
+  border: none;
+  padding: 6px 20px;
+  margin-top: 0;
+}
+
+.popup-buttons .add-guide-button:hover {
+  background-color: #0056b3 !important;
+}
+
+.manage-guides-button {
+  margin-top: 20px;
+  padding: 7px 15px;
+  color: #007bff;
+  border: 2px solid #007bff;
+  border-radius: 4px;
+  background-color: transparent;
+  cursor: pointer;
+  transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.manage-guides-button:hover {
+  background-color: #ff9900;
+  color: #fff;
 }
