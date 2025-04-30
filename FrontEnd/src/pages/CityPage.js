@@ -29,6 +29,8 @@ const CityPage = () => {
   const { cities } = data;
   console.log(data);
   return (
+    <>
+    <PreLoader/>
     <Container className="text-center my-5">
       <h2>Choose Your Package</h2>
       <Row className="mt-4">
@@ -39,6 +41,7 @@ const CityPage = () => {
         ))}
       </Row>
     </Container>
+  </>
   );
 };
 
