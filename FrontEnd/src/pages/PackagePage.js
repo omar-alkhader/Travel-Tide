@@ -1,6 +1,8 @@
 import React from "react";
 import PackageCard from "../components/PackageCard";
 import { Container, Row, Col } from "react-bootstrap";
+import PreLoader from "../components/PreLoader";
+
 
 // Import images from assets folder
 import egyptImg from "../assets/egypt.jpg";
