@@ -153,6 +153,8 @@ function HotelsPage() {
   }, [priceRange, starRatings]);
 
   return (
+    <> 
+    <PreLoader/>
     <div className="hotels-page-container">
       <div className="container mt-4">
         <HotelSearchBox
@@ -244,7 +246,8 @@ function HotelsPage() {
         </div>
       </div>
     </div>
-  );
+   </>
+   );
 }
 
 export default HotelsPage;
