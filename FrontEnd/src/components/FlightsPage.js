@@ -222,20 +222,21 @@ function FlightsPage() {
     filterFlights();
   }, [priceRange, selectedAirlines]);
 
-  return (
-    <div className="flights-page-container">
+   return (
+    <> 
+    <PreLoader/>
+    <div className="hotels-page-container">
       <div className="container mt-4">
-        <FlightSearchBox
-          initialDepartureCity={initialDepartureCity}
-          initialArrivalCity={initialArrivalCity}
-          initialDepartureDate={initialDepartureDate}
-          initialReturnDate={initialReturnDate}
+        <HotelSearchBox
+          initialDestination={initialDestination}
+          initialCheckIn={initialCheckIn}
+          initialCheckOut={initialCheckOut}
           initialTravelers={initialTravelers}
         />
 
-        <div className="flights-content-container">
+        <div className="hotels-content-container">
           {/* Filters Section */}
-          <div className="flights-filters">
+          <div className="hotels-filters">
             <div className="filters-header">
               <h4>Filters</h4>
               <button className="reset-filters" onClick={resetFilters}>
@@ -254,8 +255,8 @@ function FlightsPage() {
                 <div className="dual-slider">
                   <input
                     type="range"
-                    min="300"
-                    max="500"
+                    min="100"
+                    max="250"
                     value={priceRange[0]}
                     onChange={(e) =>
                       setPriceRange([parseInt(e.target.value), priceRange[1]])
@@ -264,8 +265,8 @@ function FlightsPage() {
                   />
                   <input
                     type="range"
-                    min="300"
-                    max="500"
+                    min="100"
+                    max="250"
                     value={priceRange[1]}
                     onChange={(e) =>
                       setPriceRange([priceRange[0], parseInt(e.target.value)])
@@ -276,21 +277,24 @@ function FlightsPage() {
               </div>
             </div>
 
-            {/* Airlines Filter */}
+            {/* Star Rating Filter */}
             <div className="filter-section">
-              <h5>Airlines</h5>
-              {airlines.map((airline) => (
-                <div key={airline.code} className="airline-option">
+              <h5>Star Rating</h5>
+              {[5, 4, 3, 2, 1].map((star) => (
+                <div key={star} className="star-option">
                   <label className="checkbox-container">
                     <input
                       type="checkbox"
-                      checked={!!selectedAirlines[airline.name]}
-                      onChange={() => handleAirlineChange(airline.name)}
+                      checked={starRatings[star]}
+                      onChange={() => handleStarChange(star)}
                     />
                     <span className="checkmark"></span>
-                    <div className="airline-info">
-                      <span className="airline-name">{airline.name}</span>
-                      <span className="airline-price">{airline.price}</span>
+                    <div className="star-rating">
+                      {Array(star)
+                        .fill()
+                        .map((_, i) => (
+                          <FaStar key={i} className="star-icon" />
+                        ))}
                     </div>
                   </label>
                 </div>
@@ -298,15 +302,13 @@ function FlightsPage() {
             </div>
           </div>
 
-          {/* Flight Results */}
-          <div className="flights-results">
-            {test?.length > 0 ? (
-              test.map((flight) => (
-                <FlightCard key={flight.id} flight={flight} />
-              ))
+          {/* Hotel Results */}
+          <div className="hotels-results">
+            {hotels.length > 0 ? (
+              hotels.map((hotel) => <HotelCard key={hotel.id} hotel={hotel} />)
             ) : (
-              <div className="no-flights">
-                <p>No flights match your search criteria.</p>
+              <div className="no-hotels">
+                <p>No hotels match your search criteria.</p>
                 <p>Try adjusting your filters or search parameters.</p>
               </div>
             )}
@@ -314,7 +316,8 @@ function FlightsPage() {
         </div>
       </div>
     </div>
-  );
+   </>
+   );
 }
 
 export default FlightsPage;
