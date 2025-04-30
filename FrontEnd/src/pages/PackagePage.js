@@ -33,6 +33,8 @@ const PackagePage = () => {
   const { countries } = data;
   console.log(countries);
   return (
+    <>
+    <PreLoader/>
     <Container className="text-center my-5">
       <h2>Choose Your Package</h2>
       <Row className="mt-4">
@@ -43,6 +45,7 @@ const PackagePage = () => {
         ))}
       </Row>
     </Container>
+  </>
   );
 };
 
