@@ -1,0 +1,44 @@
+.preloader {
+  height: 100vh;
+  width: 100%;
+  background: #00cfe8; /* use your current blue background */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  z-index: 555;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  flex-direction: row; /* make sure it's horizontal */
+  gap: 20px; /* optional spacing between spinner and text */
+}
+
+
+.preloader .text-container {
+  display: flex;
+  justify-content: space-between;
+  height: 60px;
+  width: 260px;
+  font-size: 20px;
+  font-weight: 800;
+  overflow: hidden;
+  color: #fff;
+  align-items: center;
+}
+.spinner {
+  border: 5px solid rgba(255, 255, 255, 0.3);
+  border-top: 5px solid #ffffff;
+  border-radius: 50%;
+  width: 50px;
+  height: 50px;
+  animation: spin 1s linear infinite;
+  margin-right: 20px; /* space between spinner and text */
+  margin-top: 2px;
+  
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
