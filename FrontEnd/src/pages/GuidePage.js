@@ -64,6 +64,8 @@ function GuidePage() {
   }, []);
 
   return (
+    <>
+    <PreLoader/>
     <div className="container mt-4">
       <SearchBox
         onSearch={handleSearch}
@@ -81,7 +83,8 @@ function GuidePage() {
         )}
       </div>
     </div>
-  );
+   </>
+   );
 }
 
 export default GuidePage;
