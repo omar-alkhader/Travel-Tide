@@ -1,6 +1,8 @@
 import React from "react";
 import TurkeyCard from "../components/TurkeyCard";
 import { Container, Row, Col } from "react-bootstrap";
+import PreLoader from "../components/PreLoader";
+
 
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
