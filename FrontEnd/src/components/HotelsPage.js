@@ -6,6 +6,8 @@ import "../styles/HotelPage.css";
 import { FaStar } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
+import PreLoader from "../components/PreLoader";
+
 
 // Sample hotel data
 const hotelsData = [
