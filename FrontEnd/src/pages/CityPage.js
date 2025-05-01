@@ -1,10 +1,10 @@
 import React from "react";
-import TurkeyCard from "../components/TurkeyCard";
 import { Container, Row, Col } from "react-bootstrap";
+import PreLoader from "../components/PreLoader";
 
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
-
+import CityCard from "../components/CityCard";
 const CityPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   console.log(searchParams.get("country_id"));
@@ -29,16 +29,19 @@ const CityPage = () => {
   const { cities } = data;
   console.log(data);
   return (
-    <Container className="text-center my-5">
-      <h2>Choose Your Package</h2>
-      <Row className="mt-4">
-        {cities.map((city) => (
-          <Col md={4} key={city.id} className="d-flex justify-content-center">
-            <TurkeyCard id={city.id} name={city.name} image={city.photo} />
-          </Col>
-        ))}
-      </Row>
-    </Container>
+    <>
+      <PreLoader />
+      <Container className="text-center my-5">
+        <h2>Choose Your Package</h2>
+        <Row className="mt-4">
+          {cities.map((city) => (
+            <Col md={4} key={city.id} className="d-flex justify-content-center">
+              <CityCard id={city.id} name={city.name} image={city.photo} />
+            </Col>
+          ))}
+        </Row>
+      </Container>
+    </>
   );
 };
 

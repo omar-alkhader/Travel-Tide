@@ -3,6 +3,7 @@ const express = require("express");
 const route = express.Router();
 route.get("/", hotelController.getAllHotels);
 route.post("/", hotelController.createHotel);
+route.get("/package", hotelController.getHotelsWithFlight);
 route.get("/:id", hotelController.getHotel);
 route.get("/city/:cityName", hotelController.getHotelByCity);
 module.exports = route;

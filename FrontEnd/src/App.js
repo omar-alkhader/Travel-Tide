@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
-import { BrowserRouter as Router,
+import {
+  BrowserRouter as Router,
   Routes,
   Route,
   useLocation,
@@ -24,12 +25,15 @@ import HotelsPage from "./components/HotelsPage";
 import TravelPackagePage from "./components/TravelPackagePage";
 import BookingPage from "./components/BookingPage";
 import PackageDetailsPage from "./components/PackageDetailsPage";
-import LoadPage from "./components/LoadPage";
+<<<<<<< HEAD
+=======
 import ErrorPage from './components/ErrorPage';
+import PreLoader from "./components/PreLoader";
 import Turkey from "./pages/Turkey";
 import Egypt from "./pages/egypt";
 import Cyprus from "./pages/cyprus";
 import Jordan from "./pages/jordan";
+>>>>>>> 4e8236df806dcc5791df753a807549ca90aa5538
 
 import "./styles/global.css";
 import "./styles/NavBar.css";
@@ -41,7 +45,7 @@ import "./styles/GuidePage.css";
 import "./styles/HomePage.css";
 import "./styles/PackagePage.css";
 import "./styles/RequestPage.css";
-import "./styles/Load.css";
+import "./styles/preloader.css";
 import "./styles/ErrorPage.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import CityPage from "./pages/CityPage";
@@ -90,8 +94,9 @@ function App() {
               <Route path="/packages" element={<TravelPackagePage />} />
               <Route path="/cities" element={<CityPage />} />
               <Route path="/booking" element={<BookingPage />} />
+              <Route path="/p" element={<PackageDetailsPage />} />
                <Route path="/p" element={<PackageDetailsPage />} />
-               <Route path="/load" element={<LoadPage />} />
+               <Route path="/load" element={<PreLoader />} />
                <Route path="/error" element={<ErrorPage />} />
               {/* <Route path="/turkey" element={<Turkey />} />
               <Route path="/egypt" element={<Egypt />} />

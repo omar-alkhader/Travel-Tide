@@ -1,6 +1,8 @@
 import React from "react";
 import PackageCard from "../components/PackageCard";
 import { Container, Row, Col } from "react-bootstrap";
+import PreLoader from "../components/PreLoader";
+
 
 // Import images from assets folder
 import egyptImg from "../assets/egypt.jpg";
@@ -33,6 +35,8 @@ const PackagePage = () => {
   const { countries } = data;
   console.log(countries);
   return (
+    <>
+    <PreLoader/>
     <Container className="text-center my-5">
       <h2>Choose Your Package</h2>
       <Row className="mt-4">
@@ -43,6 +47,7 @@ const PackagePage = () => {
         ))}
       </Row>
     </Container>
+  </>
   );
 };
 
