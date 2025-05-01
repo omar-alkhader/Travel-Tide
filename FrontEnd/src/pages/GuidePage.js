@@ -12,12 +12,13 @@ import { useQuery } from "@tanstack/react-query";
 import ErrorPage from "../components/ErrorPage";
 
 const guidesData = [
-  { name: "John Doe", address: "Downtown, City", price: "50 JOD" },
-  { name: "Jane Smith", address: "Beachside, City", price: "60 JOD" },
-  { name: "Mark Johnson", address: "Mountain View, City", price: "55 JOD" },
-  { name: "Emily Davis", address: "Old Town, City", price: "45 JOD" },
-  { name: "Michael Brown", address: "City Center, City", price: "70 JOD" },
+  { name: "John Doe", address: "Downtown, City", price: "50 JOD", touristCount: "14/25" },
+  { name: "Jane Smith", address: "Beachside, City", price: "60 JOD", touristCount: "8/25" },
+  { name: "Mark Johnson", address: "Mountain View, City", price: "55 JOD", touristCount: "19/25" },
+  { name: "Emily Davis", address: "Old Town, City", price: "45 JOD", touristCount: "4/25" },
+  { name: "Michael Brown", address: "City Center, City", price: "70 JOD", touristCount: "20/25" },
 ];
+
 
 function GuidePage() {
   const location = useLocation();
