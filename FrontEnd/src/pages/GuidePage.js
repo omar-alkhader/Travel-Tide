@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import GuideCard from "../components/GuideCard";
 import SearchBox from "../components/SearchBox";
+import PreLoader from "../components/PreLoader";
+
 
 import "../styles/NavBar.css";
 import "../styles/global.css";
@@ -64,6 +66,8 @@ function GuidePage() {
   }, []);
 
   return (
+    <>
+    <PreLoader/>
     <div className="container mt-4">
       <SearchBox
         onSearch={handleSearch}
@@ -81,7 +85,8 @@ function GuidePage() {
         )}
       </div>
     </div>
-  );
+   </>
+   );
 }
 
 export default GuidePage;

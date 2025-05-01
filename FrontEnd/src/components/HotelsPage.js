@@ -6,6 +6,8 @@ import "../styles/HotelPage.css";
 import { FaStar } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
+import PreLoader from "../components/PreLoader";
+
 
 // Sample hotel data
 const hotelsData = [
@@ -153,6 +155,8 @@ function HotelsPage() {
   }, [priceRange, starRatings]);
 
   return (
+    <> 
+    <PreLoader/>
     <div className="hotels-page-container">
       <div className="container mt-4">
         <HotelSearchBox
@@ -244,7 +248,8 @@ function HotelsPage() {
         </div>
       </div>
     </div>
-  );
+   </>
+   );
 }
 
 export default HotelsPage;

@@ -5,6 +5,8 @@ import FlightCard from "../components/FlightCard";
 import "../styles/FlightsPage.css";
 import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
+import PreLoader from "../components/PreLoader";
+
 
 // Sample flight data
 const flightsData = [
@@ -223,6 +225,8 @@ function FlightsPage() {
   }, [priceRange, selectedAirlines]);
 
   return (
+    <>
+    <PreLoader/>
     <div className="flights-page-container">
       <div className="container mt-4">
         <FlightSearchBox
@@ -314,6 +318,7 @@ function FlightsPage() {
         </div>
       </div>
     </div>
+  </>
   );
 }
 
