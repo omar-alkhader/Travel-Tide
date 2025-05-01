@@ -334,6 +334,12 @@ function HomePage() {
                   className="HomePage-form-control form-control m-2"
                   onChange={(e) => setGuideDate(e.target.value)}
                 />
+               <input
+                  type="number"
+                  className="HomePage-form-control form-control m-2"
+                  placeholder="Travellers"
+                  onChange={(e) => setTravelers(e.target.value)}
+                />
                 <button
                   type="submit"
                   className="HomePage-btn HomePage-btn-custom m-2"
