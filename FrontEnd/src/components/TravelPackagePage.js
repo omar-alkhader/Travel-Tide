@@ -4,6 +4,8 @@ import FlightDetailsModal from "../components/FlightDetailsModal";
 import "../styles/TravelPackagePage.css";
 import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
+import ErrorPage from "./ErrorPage";
+import { setPackage } from "../redux/bookingSlice";
 
 // Sample package data (combining hotels and flights)
 const packagesData = [
@@ -215,8 +217,11 @@ function TravelPackagePage() {
   if (isPending) {
     return <div>is Loading</div>;
   }
+  // if (isError) {
+  //   return <div>no packages</div>;
+  // }
   if (isError) {
-    return <div>no packages</div>;
+    return <ErrorPage />;
   }
   return (
     <div className="travel-packages-page-container">
@@ -225,19 +230,23 @@ function TravelPackagePage() {
 
         <div className="travel-packages-content-container">
           {/* Package Results - Now full width */}
-          <div className="travel-packages-results">
-            {data.packages.map((pkg) => (
-              <TravelPackageCard
-                key={pkg.id}
-                package={pkg}
-                onViewFlight={handleViewFlight}
-              />
-            ))}
-          </div>
+
+          {!isError && (
+            <div className="travel-packages-results">
+              {data.packages.map((pkg) => (
+                <TravelPackageCard
+                  key={pkg.id}
+                  package={pkg}
+                  onViewFlight={handleViewFlight}
+                />
+              ))}
+            </div>
+          )}
         </div>
       </div>
 
       {/* Flight Details Modal */}
+      {isError && <div></div>}
       {showFlightModal && selectedFlight && (
         <FlightDetailsModal
           flight={selectedFlight}

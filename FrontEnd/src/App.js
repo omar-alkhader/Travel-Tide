@@ -25,15 +25,9 @@ import HotelsPage from "./components/HotelsPage";
 import TravelPackagePage from "./components/TravelPackagePage";
 import BookingPage from "./components/BookingPage";
 import PackageDetailsPage from "./components/PackageDetailsPage";
-<<<<<<< HEAD
-=======
-import ErrorPage from './components/ErrorPage';
+
+import ErrorPage from "./components/ErrorPage";
 import PreLoader from "./components/PreLoader";
-import Turkey from "./pages/Turkey";
-import Egypt from "./pages/egypt";
-import Cyprus from "./pages/cyprus";
-import Jordan from "./pages/jordan";
->>>>>>> 4e8236df806dcc5791df753a807549ca90aa5538
 
 import "./styles/global.css";
 import "./styles/NavBar.css";
@@ -95,9 +89,9 @@ function App() {
               <Route path="/cities" element={<CityPage />} />
               <Route path="/booking" element={<BookingPage />} />
               <Route path="/p" element={<PackageDetailsPage />} />
-               <Route path="/p" element={<PackageDetailsPage />} />
-               <Route path="/load" element={<PreLoader />} />
-               <Route path="/error" element={<ErrorPage />} />
+              <Route path="/p" element={<PackageDetailsPage />} />
+              <Route path="/load" element={<PreLoader />} />
+              <Route path="/error" element={<ErrorPage />} />
               {/* <Route path="/turkey" element={<Turkey />} />
               <Route path="/egypt" element={<Egypt />} />
               <Route path="/cyprus" element={<Cyprus />} />

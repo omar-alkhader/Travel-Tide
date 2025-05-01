@@ -1,10 +1,15 @@
 import React, { useState } from "react";
 import { FaMapMarkerAlt, FaStar, FaPlane } from "react-icons/fa";
 import defaultHotelImage from "../assets/hotel-default.jpg";
-
+import { useDispatch } from "react-redux";
+import { setPackage } from "../redux/bookingSlice";
 function TravelPackageCard({ package: pkg, onViewFlight }) {
   const [showPriceDetails, setShowPriceDetails] = useState(false);
-
+  const dispatch = useDispatch();
+  function handleClick(e, pkg) {
+    e.preventDefault();
+    dispatch(setPackage(pkg));
+  }
   // Function to render star rating
   const renderStars = (stars) => {
     return Array(stars)
@@ -51,7 +56,9 @@ function TravelPackageCard({ package: pkg, onViewFlight }) {
         <div className="trip-dates">{pkg.tripDates}</div>
         <div className="price-amount">{pkg.price} JOD</div>
         {/* <div className="per-person">per person</div> */}
-        <button className="book-now-btn">Book Now</button>
+        <button className="book-now-btn" onClick={handleClick}>
+          Book Now
+        </button>
         <button
           className="price-details-btn"
           onClick={() => setShowPriceDetails(true)}

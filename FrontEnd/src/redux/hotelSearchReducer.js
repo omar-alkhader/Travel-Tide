@@ -2,6 +2,9 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   city: "",
+  checkIn: "",
+  checkOut: "",
+  nights: 1,
 };
 function setInput(string) {
   return string.split(" ").join("-").toLowerCase();
