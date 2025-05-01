@@ -150,7 +150,7 @@ function BookingPage() {
             {/* Popups remain unchanged */}
             {showCancelPopup && (
                 <div className="cancel-popup" onClick={handleOutsideClick}>
-                   <div className="popup-content">
+                    <div className="popup-content">
                         <span className="close-icon" onClick={closeCancelPopup}>
                             &times;
                         </span>
@@ -173,7 +173,7 @@ function BookingPage() {
 
             {showGuidesPopup && (
                 <div className="guides-popup" onClick={handleOutsideClick}>
-                   <div className="popup-content">
+                    <div className="popup-content">
                         <span className="close-icon" onClick={closeGuidesPopup}>
                             &times;
                         </span>
