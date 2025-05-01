@@ -4,12 +4,12 @@ import GuideCard from "../components/GuideCard";
 import SearchBox from "../components/SearchBox";
 import PreLoader from "../components/PreLoader";
 
-
 import "../styles/NavBar.css";
 import "../styles/global.css";
 import "../styles/GuidePage.css";
 import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
+import ErrorPage from "../components/ErrorPage";
 
 const guidesData = [
   { name: "John Doe", address: "Downtown, City", price: "50 JOD" },
@@ -24,8 +24,8 @@ function GuidePage() {
   const navigate = useNavigate();
   const [guides, setGuides] = useState(guidesData);
   const { city, date } = useSelector((state) => state.searchGuide);
-  const { data } = useQuery({
-    queryKey: ["guides"],
+  const { data, isError, isPending } = useQuery({
+    queryKey: ["guides", city, date],
     queryFn: async () => {
       const res = await fetch(
         `http://127.0.0.1:6600/api/guide-daily-sites/city/${city}/date/${date}`
@@ -64,10 +64,13 @@ function GuidePage() {
       handleSearch(initialPlace);
     }
   }, []);
-
+  if (isError) {
+    return <ErrorPage />;
+  }
+  if (isPending) {
+    return <PreLoader />;
+  }
   return (
-    <>
-    <PreLoader/>
     <div className="container mt-4">
       <SearchBox
         onSearch={handleSearch}
@@ -85,8 +88,7 @@ function GuidePage() {
         )}
       </div>
     </div>
-   </>
-   );
+  );
 }
 
 export default GuidePage;

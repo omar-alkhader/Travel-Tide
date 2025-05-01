@@ -27,7 +27,7 @@ exports.getGuidesDailySitesByCityAndDate = catchAsync(
     JOIN site s ON gds.site_id = s.id
     JOIN city c ON s.city_id = c.id
     JOIN Guide g ON gds.guide_id = g.id
-    WHERE c.name = $1 AND gds.visit_date = $2
+    WHERE LOWER(c.name) = LOWER($1) AND gds.visit_date = $2
   `;
 
     try {
@@ -38,7 +38,7 @@ exports.getGuidesDailySitesByCityAndDate = catchAsync(
       res.status(200).json({
         status: "success",
         results: rows.length,
-        data: rows,
+        guides: rows,
       });
     } catch (err) {
       console.error(err);
@@ -54,9 +54,7 @@ exports.getGuidesByDate = async (req, res) => {
   const guides = await GuideDailySites.getGuidesByDate(visit_date);
   res.status(200).json({
     status: "success",
-    data: {
-      guides,
-    },
+    guides,
   });
 };
 

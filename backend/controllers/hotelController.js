@@ -188,12 +188,12 @@ exports.getHotelsWithFlight = catchAsync(async (req, res, next) => {
 
   // 3. Combine hotels with flight
   const result = hotels.map((hotel) => ({
-    id: hotel.id,
     hotel: {
       name: hotel.name,
       address: hotel.address,
       stars: hotel.rating,
       image: hotelImageUrl + hotel.photo,
+      price: hotel.price * totalNights,
     },
     flight: flightInfo,
     price: hotel.price * totalNights + totalFlightPrice,

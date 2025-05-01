@@ -208,7 +208,6 @@ function TravelPackagePage() {
     setSelectedFlight(flight);
     setShowFlightModal(true);
   };
-  console.log(data);
   // Close flight modal
   const handleCloseModal = () => {
     setShowFlightModal(false);

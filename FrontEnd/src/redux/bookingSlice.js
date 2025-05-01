@@ -16,8 +16,10 @@ const bookingSlice = createSlice({
   initialState,
   reducers: {
     setPackage(state, action) {
-      setFlight(state, action.payload.flight);
-      setHotel(state, action.payload.hotel);
+      console.log(action.payload);
+      const { flight, hotel } = action.payload;
+      state.flight = flight;
+      state.hotel = hotel;
     },
 
     setFlight(state, action) {
