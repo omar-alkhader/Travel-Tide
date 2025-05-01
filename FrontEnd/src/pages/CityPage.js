@@ -1,10 +1,9 @@
 import React from "react";
-import TurkeyCard from "../components/TurkeyCard";
 import { Container, Row, Col } from "react-bootstrap";
 
 import { useQuery } from "@tanstack/react-query";
 import { useSearchParams } from "react-router-dom";
-
+import CityCard from "../components/CityCard";
 const CityPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   console.log(searchParams.get("country_id"));
@@ -34,7 +33,7 @@ const CityPage = () => {
       <Row className="mt-4">
         {cities.map((city) => (
           <Col md={4} key={city.id} className="d-flex justify-content-center">
-            <TurkeyCard id={city.id} name={city.name} image={city.photo} />
+            <CityCard id={city.id} name={city.name} image={city.photo} />
           </Col>
         ))}
       </Row>

@@ -2,6 +2,7 @@ const db = require("../db");
 const hotelModel = require("../models/hotelModel");
 const AppError = require("../utlis/AppError");
 const catchAsync = require("../utlis/catchAsync");
+const hotelImageUrl = "http://localhost:6600/images/hotels/";
 exports.getAllHotels = catchAsync(async (req, res, next) => {
   const hotels = hotelModel.findAllHotels();
   res.status(200).json({
@@ -60,8 +61,14 @@ exports.getHotelsWithFlight = catchAsync(async (req, res, next) => {
     departure_date,
     return_date,
     num_participant,
-  } = req.body;
-
+  } = req.query;
+  console.log({
+    departure_city,
+    arrival_city,
+    departure_date,
+    return_date,
+    num_participant,
+  });
   const participantCount = parseInt(num_participant);
 
   if (
@@ -124,7 +131,7 @@ exports.getHotelsWithFlight = catchAsync(async (req, res, next) => {
   console.log(ret.id);
   const flightInfo = {
     id: dep.id,
-    price: dep.price,
+    price: totalFlightPrice,
     airline: dep.airline_name,
     flightNumber: dep.flight_number,
     departure: {
@@ -186,10 +193,10 @@ exports.getHotelsWithFlight = catchAsync(async (req, res, next) => {
       name: hotel.name,
       address: hotel.address,
       stars: hotel.rating,
-      image: hotel.photo,
+      image: hotelImageUrl + hotel.photo,
     },
     flight: flightInfo,
-    price: hotel.price + totalFlightPrice,
+    price: hotel.price * totalNights + totalFlightPrice,
     tripDates,
     totalNights,
   }));
@@ -197,6 +204,6 @@ exports.getHotelsWithFlight = catchAsync(async (req, res, next) => {
   res.status(200).json({
     status: "success",
     results: result.length,
-    data: result,
+    packages: result,
   });
 });

@@ -1,18 +1,24 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
+import { setSearchPackage } from "../redux/packageSearch";
 
 function TripDetailsForm() {
   const [rooms, setRooms] = useState(1);
   const [arrivalDate, setArrivalDate] = useState("");
   const [departureDate, setDepartureDate] = useState("");
   const [nights, setNights] = useState(0);
+  const [arrivalCity, setArrivalCity] = useState("");
+  // const [departureCity, setDepartureCity] = useState("");
+  const [hasGuide, setHasGuide] = useState(false);
+  const [travellers, setTravellers] = useState(1);
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const { cityName } = location.state || { cityName: "Unknown City" };
-
-  const handleRoomChange = (e) => {
-    setRooms(e.target.value);
-  };
+  // const handleRoomChange = (e) => {
+  //   setRooms(e.target.value);
+  // };
 
   const handleDateChange = (e, type) => {
     const value = e.target.value;
@@ -22,8 +28,10 @@ function TripDetailsForm() {
       setDepartureDate(value);
     }
 
-    const startDate = type === "arrival" ? new Date(value) : new Date(arrivalDate);
-    const endDate = type === "departure" ? new Date(value) : new Date(departureDate);
+    const startDate =
+      type === "arrival" ? new Date(value) : new Date(arrivalDate);
+    const endDate =
+      type === "departure" ? new Date(value) : new Date(departureDate);
 
     if (!isNaN(startDate.getTime()) && !isNaN(endDate.getTime())) {
       const diffTime = endDate - startDate;
@@ -33,6 +41,28 @@ function TripDetailsForm() {
   };
 
   const handleSearch = () => {
+    const test = {
+      retrunDate: departureDate,
+      arrivalCity,
+      arrivalDate,
+      nights,
+      departureCity: cityName,
+      hasGuide,
+      travellers,
+    };
+    console.log(test);
+    dispatch(
+      setSearchPackage({
+        departureCity: cityName,
+        arrivalCity,
+        returnDate: departureDate, // correct now
+        departureDate: arrivalDate, // correct now
+        nights,
+        hasGuide,
+        travellers,
+      })
+    );
+
     navigate("/packages");
   };
 
@@ -48,7 +78,12 @@ function TripDetailsForm() {
         </div>
         <div className="TripDetails-group">
           <label htmlFor="departureCity">Departure City</label>
-          <input type="text" id="departureCity" />
+          <input
+            type="text"
+            id="departureCity"
+            value={arrivalCity}
+            onChange={(e) => setArrivalCity(e.target.value)}
+          />
         </div>
         <div className="TripDetails-group">
           <label htmlFor="arrivalDate">Arrival Date</label>
@@ -77,18 +112,30 @@ function TripDetailsForm() {
       <div className="TripDetails-row">
         <div className="TripDetails-group">
           <label htmlFor="guide">Guide</label>
-          <select id="guide">
+          <select
+            id="guide"
+            onChange={(e) => setHasGuide(e.target.value === "True")}
+          >
             <option>Yes</option>
             <option>No</option>
           </select>
         </div>
         <div className="TripDetails-group">
           <label htmlFor="traveller">Traveller</label>
-          <input type="number" id="traveller" defaultValue="" />
+          <input
+            type="number"
+            id="traveller"
+            value={travellers}
+            onChange={(e) => setTravellers(+e.target.value)}
+          />
         </div>
       </div>
 
-      <button type="button" className="TripDetails-button" onClick={handleSearch}>
+      <button
+        type="button"
+        className="TripDetails-button"
+        onClick={handleSearch}
+      >
         Search
       </button>
     </form>

@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import searchFlightReducer from "./redux/flightSearchReducer";
 import searchGuideReducer from "./redux/guideSearchReducer";
 import searchHotelReducer from "./redux/hotelSearchReducer";
+import searchPackageReducer from "./redux/packageSearch";
 import userSlice from "./redux/userSlice";
 const store = configureStore({
   reducer: {
@@ -9,6 +10,7 @@ const store = configureStore({
     searchGuide: searchGuideReducer,
     searchHotel: searchHotelReducer,
     user: userSlice,
+    searchPackage: searchPackageReducer,
   },
 });
 export default store;
