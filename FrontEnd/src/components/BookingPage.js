@@ -50,7 +50,6 @@ function BookingPage() {
     };
 
     const handleDeleteTrip = () => {
-
         navigate("/");
     };
 
@@ -76,8 +75,10 @@ function BookingPage() {
                         <thead>
                             <tr>
                                 <th>City</th>
-                                <th>Travel Date</th>
-                                <th>Booking Date</th>
+                                <th>Departure Date</th>
+                                <th>Return Date</th>
+                                <th>Check In</th>
+                                <th>Check Out</th>
                                 <th>Travelers</th>
                                 <th>Guides</th>
                             </tr>
@@ -86,7 +87,9 @@ function BookingPage() {
                             <tr>
                                 <td>Amman</td>
                                 <td>2025-03-15</td>
-                                <td>2025-03-01</td>
+                                <td>2025-03-22</td>
+                                <td>2025-03-15</td>
+                                <td>2025-03-21</td>
                                 <td>2</td>
                                 <td>
                                     {guides.length > 0 ? (
@@ -144,9 +147,10 @@ function BookingPage() {
                 </div>
             </div>
 
+            {/* Popups remain unchanged */}
             {showCancelPopup && (
                 <div className="cancel-popup" onClick={handleOutsideClick}>
-                    <div className="popup-content">
+                   <div className="popup-content">
                         <span className="close-icon" onClick={closeCancelPopup}>
                             &times;
                         </span>
@@ -163,12 +167,13 @@ function BookingPage() {
                             </button>
                         </div>
                     </div>
+
                 </div>
             )}
 
             {showGuidesPopup && (
                 <div className="guides-popup" onClick={handleOutsideClick}>
-                    <div className="popup-content">
+                   <div className="popup-content">
                         <span className="close-icon" onClick={closeGuidesPopup}>
                             &times;
                         </span>
@@ -205,6 +210,7 @@ function BookingPage() {
                             </button>
                         </div>
                     </div>
+
                 </div>
             )}
         </div>
