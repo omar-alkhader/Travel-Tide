@@ -177,6 +177,10 @@ async function getPackages(data) {
       travellers,
       departureDate
     );
+    /*
+      http://127.0.0.1:6600/api/hotels/package?departure_city=dubai&arrival_city=amman&num_participant=2&departure_date=2025-04-22&return_date=2025-04-29
+    */
+    //http://127.0.0.1:6600/api/hotels/package?departure_city=${arrivalCity}&arrival_city=${departureCity}&num_participant=${travellers}&departure_date=${departureDate}&return_date=${returnDate}
     const res = await fetch(
       `http://127.0.0.1:6600/api/hotels/package?departure_city=${arrivalCity}&arrival_city=${departureCity}&num_participant=${travellers}&departure_date=${departureDate}&return_date=${returnDate}`,
       {
@@ -192,6 +196,7 @@ async function getPackages(data) {
     return await res.json();
   } catch (err) {
     console.log(err);
+    throw err;
   }
 }
 function TravelPackagePage() {
@@ -232,9 +237,9 @@ function TravelPackagePage() {
 
           {!isError && (
             <div className="travel-packages-results">
-              {data.packages.map((pkg) => (
+              {data.packages.map((pkg, index) => (
                 <TravelPackageCard
-                  key={pkg.id}
+                  key={index}
                   package={pkg}
                   onViewFlight={handleViewFlight}
                 />

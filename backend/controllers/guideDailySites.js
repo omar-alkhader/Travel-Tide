@@ -6,7 +6,7 @@ const AppError = require("../utlis/AppError");
 // Get all daily site schedules for all guides
 exports.getGuidesDailySitesByCityAndDate = catchAsync(
   async (req, res, next) => {
-    const { city, date } = req.params;
+    const { city, date, travellers } = req.params;
     console.log("hello");
     // Validate that the city name and date are provided
     if (!city || !date) {

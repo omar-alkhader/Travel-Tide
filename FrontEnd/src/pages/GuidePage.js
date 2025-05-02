@@ -25,6 +25,7 @@ const guidesData = [
     address: "Beachside, City",
     price: 60,
     touristCount: "8/25",
+    maxLimit: 25,
   },
   {
     id: 3,
@@ -32,6 +33,7 @@ const guidesData = [
     address: "Mountain View, City",
     price: 55,
     touristCount: "19/25",
+    maxLimit: 25,
   },
   {
     id: 4,
@@ -39,6 +41,7 @@ const guidesData = [
     address: "Old Town, City",
     price: 45,
     touristCount: "4/25",
+    maxLimit: 25,
   },
   {
     id: 5,
@@ -46,6 +49,7 @@ const guidesData = [
     address: "City Center, City",
     price: 70,
     touristCount: "20/25",
+    maxLimit: 25,
   },
 ];
 

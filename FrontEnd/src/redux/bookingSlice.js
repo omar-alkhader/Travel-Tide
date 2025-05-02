@@ -20,13 +20,17 @@ const bookingSlice = createSlice({
       const { flight, hotel } = action.payload;
       state.flight = flight;
       state.hotel = hotel;
+      state.hasHotel = true;
+      state.hasFlight = true;
     },
 
     setFlight(state, action) {
       state.flight = action.payload;
+      state.hasFlight = true;
     },
     setHotel(state, action) {
       state.hotel = action.payload;
+      state.hasHotel = true;
     },
     addGuide(state, action) {
       const exists = state.guides.find((g) => g.id === action.payload.id);
@@ -55,6 +59,7 @@ export const {
   removeGuide,
   clearBooking,
   setPackage,
+  setGuide,
 } = bookingSlice.actions;
 
 export default bookingSlice.reducer;

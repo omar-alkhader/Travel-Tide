@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { setSearchPackage } from "../redux/packageSearch";
+import { setGuide } from "../redux/bookingSlice";
 
 function TripDetailsForm() {
   const [rooms, setRooms] = useState(1);
@@ -10,7 +11,7 @@ function TripDetailsForm() {
   const [nights, setNights] = useState(0);
   const [arrivalCity, setArrivalCity] = useState("");
   // const [departureCity, setDepartureCity] = useState("");
-  const [hasGuide, setHasGuide] = useState(false);
+  const [hasGuide, setHasGuide] = useState(true);
   const [travellers, setTravellers] = useState(1);
   const dispatch = useDispatch();
   const navigate = useNavigate();
@@ -62,10 +63,10 @@ function TripDetailsForm() {
         travellers,
       })
     );
-
+    dispatch(setGuide(hasGuide));
     navigate("/packages");
   };
-
+  console.log(hasGuide);
   return (
     <form id="tripForm" className="TripDetails-form">
       <h1>Trip Details</h1>
@@ -114,10 +115,10 @@ function TripDetailsForm() {
           <label htmlFor="guide">Guide</label>
           <select
             id="guide"
-            onChange={(e) => setHasGuide(e.target.value === "True")}
+            onChange={(e) => setHasGuide(e.target.value === "true")}
           >
-            <option>Yes</option>
-            <option>No</option>
+            <option value="true">Yes</option>
+            <option value="false">No</option>
           </select>
         </div>
         <div className="TripDetails-group">

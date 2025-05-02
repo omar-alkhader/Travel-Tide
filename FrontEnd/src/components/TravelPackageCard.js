@@ -53,7 +53,7 @@ function TravelPackageCard({ package: pkg, onViewFlight }) {
 
         <div className="room-type">
           <span className="room-label">Room Type:</span>
-          <span className="room-value">{pkg.hotel.roomType}</span>
+          <span className="room-value">{pkg.hotel.room_type}</span>
         </div>
 
         <button

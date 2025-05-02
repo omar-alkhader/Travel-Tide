@@ -84,7 +84,7 @@ exports.getHotelsWithFlight = catchAsync(async (req, res, next) => {
   const { rows: departureFlights } = await db.query(
     `
     SELECT * FROM flights
-    WHERE departure_city = $1 AND arrival_city = $2
+    WHERE LOWER(departure_city) = LOWER($1) AND LOWER(arrival_city) = LOWER($2)
     AND departure_date = $3
     AND seats >= $4
     ORDER BY departure_time ASC
@@ -102,7 +102,7 @@ exports.getHotelsWithFlight = catchAsync(async (req, res, next) => {
   const { rows: returnFlights } = await db.query(
     `
     SELECT * FROM flights
-    WHERE departure_city = $1 AND arrival_city = $2
+    WHERE LOWER(departure_city) = LOWER($1) AND LOWER(arrival_city) = LOWER($2)
     AND departure_date = $3
     AND seats >= $4
     AND airline_name = $5
@@ -167,7 +167,7 @@ exports.getHotelsWithFlight = catchAsync(async (req, res, next) => {
   // 2. Fetch hotels in arrival city
   const { rows: hotels } = await db.query(
     `
-    SELECT h.id, h.name, h.address, h.photo, h.rating, h.price, c.name AS city_name
+    SELECT h.id, h.name, h.address, h.photo, h.stars,h.room_type, h.price, c.name AS city_name
     FROM hotels h
     JOIN city c ON h.city_id = c.id
     WHERE LOWER(c.name) = LOWER($1)
@@ -190,9 +190,10 @@ exports.getHotelsWithFlight = catchAsync(async (req, res, next) => {
     hotel: {
       name: hotel.name,
       address: hotel.address,
-      stars: hotel.rating,
+      stars: hotel.stars,
       image: hotelImageUrl + hotel.photo,
       price: hotel.price * totalNights,
+      room_type: hotel.room_type,
     },
     flight: flightInfo,
     price: hotel.price * totalNights + totalFlightPrice,
