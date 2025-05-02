@@ -29,7 +29,6 @@ const bookingSlice = createSlice({
       state.hotel = action.payload;
     },
     addGuide(state, action) {
-      if (!state.hasGuide) return;
       const exists = state.guides.find((g) => g.id === action.payload.id);
       if (!exists) {
         state.guides.push(action.payload);

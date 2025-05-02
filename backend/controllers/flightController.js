@@ -430,7 +430,10 @@ exports.searchRoundTripFlights = catchAsync(async (req, res, next) => {
     );
 
     if (match) {
-      const totalPrice = (dep.price + match.price) * numParticipants;
+      const totalPrice = (+dep.price + +match.price) * +numParticipants;
+      console.log("1" + dep.price);
+      console.log("2" + match.price);
+      console.log("3" + numParticipants);
 
       matchedFlights.push({
         id: dep.id,

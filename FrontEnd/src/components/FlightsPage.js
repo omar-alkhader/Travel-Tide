@@ -6,7 +6,7 @@ import "../styles/FlightsPage.css";
 import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import PreLoader from "../components/PreLoader";
-
+import ErrorPage from "./ErrorPage";
 
 // Sample flight data
 const flightsData = [
@@ -150,7 +150,7 @@ function FlightsPage() {
   const initialReturnDate = queryParams.get("returnDate") || "";
   const initialTravelers = queryParams.get("travelers") || "1";
   const search = useSelector((state) => state.searchFlight);
-  const { data, isPending } = useQuery({
+  const { data, isPending, isError } = useQuery({
     queryKey: ["flights", search],
     queryFn: () => fetchFlights(search),
   });
@@ -223,102 +223,107 @@ function FlightsPage() {
   useEffect(() => {
     filterFlights();
   }, [priceRange, selectedAirlines]);
-
+  if (isPending) {
+    return <PreLoader />;
+  }
+  if (isError) {
+    return <ErrorPage />;
+  }
   return (
     <>
-    <PreLoader/>
-    <div className="flights-page-container">
-      <div className="container mt-4">
-        <FlightSearchBox
-          initialDepartureCity={initialDepartureCity}
-          initialArrivalCity={initialArrivalCity}
-          initialDepartureDate={initialDepartureDate}
-          initialReturnDate={initialReturnDate}
-          initialTravelers={initialTravelers}
-        />
+      <PreLoader />
+      <div className="flights-page-container">
+        <div className="container mt-4">
+          <FlightSearchBox
+            initialDepartureCity={initialDepartureCity}
+            initialArrivalCity={initialArrivalCity}
+            initialDepartureDate={initialDepartureDate}
+            initialReturnDate={initialReturnDate}
+            initialTravelers={initialTravelers}
+          />
 
-        <div className="flights-content-container">
-          {/* Filters Section */}
-          <div className="flights-filters">
-            <div className="filters-header">
-              <h4>Filters</h4>
-              <button className="reset-filters" onClick={resetFilters}>
-                Reset All
-              </button>
-            </div>
-
-            {/* Price Range Filter */}
-            <div className="filter-section">
-              <h5>Price Range</h5>
-              <div className="price-slider-container">
-                <div className="price-display">
-                  <span>{priceRange[0]} JOD</span>
-                  <span>{priceRange[1]} JOD</span>
-                </div>
-                <div className="dual-slider">
-                  <input
-                    type="range"
-                    min="300"
-                    max="500"
-                    value={priceRange[0]}
-                    onChange={(e) =>
-                      setPriceRange([parseInt(e.target.value), priceRange[1]])
-                    }
-                    className="slider min-slider"
-                  />
-                  <input
-                    type="range"
-                    min="300"
-                    max="500"
-                    value={priceRange[1]}
-                    onChange={(e) =>
-                      setPriceRange([priceRange[0], parseInt(e.target.value)])
-                    }
-                    className="slider max-slider"
-                  />
-                </div>
+          <div className="flights-content-container">
+            {/* Filters Section */}
+            <div className="flights-filters">
+              <div className="filters-header">
+                <h4>Filters</h4>
+                <button className="reset-filters" onClick={resetFilters}>
+                  Reset All
+                </button>
               </div>
-            </div>
 
-            {/* Airlines Filter */}
-            <div className="filter-section">
-              <h5>Airlines</h5>
-              {airlines.map((airline) => (
-                <div key={airline.code} className="airline-option">
-                  <label className="checkbox-container">
+              {/* Price Range Filter */}
+              <div className="filter-section">
+                <h5>Price Range</h5>
+                <div className="price-slider-container">
+                  <div className="price-display">
+                    <span>{priceRange[0]} JOD</span>
+                    <span>{priceRange[1]} JOD</span>
+                  </div>
+                  <div className="dual-slider">
                     <input
-                      type="checkbox"
-                      checked={!!selectedAirlines[airline.name]}
-                      onChange={() => handleAirlineChange(airline.name)}
+                      type="range"
+                      min="300"
+                      max="500"
+                      value={priceRange[0]}
+                      onChange={(e) =>
+                        setPriceRange([parseInt(e.target.value), priceRange[1]])
+                      }
+                      className="slider min-slider"
                     />
-                    <span className="checkmark"></span>
-                    <div className="airline-info">
-                      <span className="airline-name">{airline.name}</span>
-                      <span className="airline-price">{airline.price}</span>
-                    </div>
-                  </label>
+                    <input
+                      type="range"
+                      min="300"
+                      max="500"
+                      value={priceRange[1]}
+                      onChange={(e) =>
+                        setPriceRange([priceRange[0], parseInt(e.target.value)])
+                      }
+                      className="slider max-slider"
+                    />
+                  </div>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Flight Results */}
-          <div className="flights-results">
-            {test?.length > 0 ? (
-              test.map((flight) => (
-                <FlightCard key={flight.id} flight={flight} />
-              ))
-            ) : (
-              <div className="no-flights">
-                <p>No flights match your search criteria.</p>
-                <p>Try adjusting your filters or search parameters.</p>
               </div>
-            )}
+
+              {/* Airlines Filter */}
+              <div className="filter-section">
+                <h5>Airlines</h5>
+                {airlines.map((airline) => (
+                  <div key={airline.code} className="airline-option">
+                    <label className="checkbox-container">
+                      <input
+                        type="checkbox"
+                        checked={!!selectedAirlines[airline.name]}
+                        onChange={() => handleAirlineChange(airline.name)}
+                      />
+                      <span className="checkmark"></span>
+                      <div className="airline-info">
+                        <span className="airline-name">{airline.name}</span>
+                        <span className="airline-price">{airline.price}</span>
+                      </div>
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Flight Results */}
+            <div className="flights-results">
+              {test?.length > 0 ? (
+                test.map((flight) => (
+                  <FlightCard key={flight.id} flight={flight} />
+                ))
+              ) : (
+                <div className="no-flights">
+                  <p>No flights match your search criteria.</p>
+                  <p>Try adjusting your filters or search parameters.</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-  </>
+    </>
   );
 }
 

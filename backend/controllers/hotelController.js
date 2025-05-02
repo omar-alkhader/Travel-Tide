@@ -39,9 +39,10 @@ exports.getHotelByCity = catchAsync(async (req, res, next) => {
   if (!cityName) {
     return next(new AppError("pleave provide valid city_id"), 404);
   }
-  const cityResult = await db.query(`SELECT id FROM city WHERE name = $1`, [
-    cityName,
-  ]);
+  const cityResult = await db.query(
+    `SELECT id FROM city WHERE LOWER(name) = LOWER($1)`,
+    [cityName]
+  );
   if (cityResult.rows.length === 0) {
     return next(new AppError("City not found", 404));
   }
@@ -49,9 +50,7 @@ exports.getHotelByCity = catchAsync(async (req, res, next) => {
   const hotels = await hotelModel.getHotelsByCity(cityId);
   res.status(200).json({
     status: "success",
-    data: {
-      hotels,
-    },
+    hotels,
   });
 });
 exports.getHotelsWithFlight = catchAsync(async (req, res, next) => {

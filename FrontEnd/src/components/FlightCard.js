@@ -1,8 +1,20 @@
 import React from "react";
 import { FaPlane } from "react-icons/fa";
-function formatDuration(duration) {
-  const [hours, minutes] = duration.split(":");
-  return `${parseInt(hours)}h ${parseInt(minutes)}m`;
+// function formatDuration(duration) {
+//   return `${parseInt(duration.hours)}h ${parseInt(duration?.minutes ? )}m`;
+// }
+function formatDuration({ hours, minutes }) {
+  let durationString = "";
+
+  if (hours > 0) {
+    durationString += `${hours}h`;
+  }
+
+  if (minutes > 0) {
+    durationString += ` ${minutes}m`;
+  }
+
+  return durationString.trim(); // Remove extra space if there are no minutes
 }
 function FlightCard({ flight }) {
   return (

@@ -7,9 +7,9 @@ import { FaStar } from "react-icons/fa";
 import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import PreLoader from "../components/PreLoader";
+import ErrorPage from "./ErrorPage";
 
-
-// Sample hotel data
+// Sample hotel data (You can remove this once you're fetching from API)
 const hotelsData = [
   {
     id: 1,
@@ -29,48 +29,24 @@ const hotelsData = [
     roomType: "Premier Suite with City View",
     image: "/hotels/four-seasons.jpg",
   },
-  {
-    id: 3,
-    name: "W Amman",
-    address: "Rafiq Al Hariri Avenue, Amman",
-    stars: 4,
-    price: 180,
-    roomType: "Wonderful Room with Two Twin Beds",
-    image: "/hotels/w-hotel.jpg",
-  },
-  {
-    id: 4,
-    name: "Kempinski Hotel Amman",
-    address: "Abdul Hamid Shouman Street, Shmeisani",
-    stars: 5,
-    price: 190,
-    roomType: "Superior Room",
-    image: "/hotels/kempinski.jpg",
-  },
-  {
-    id: 5,
-    name: "The House Boutique Suites",
-    address: "Al-Hussein Bin Ali Street, Jabal Amman",
-    stars: 3,
-    price: 120,
-    roomType: "Junior Suite",
-    image: "/hotels/house-boutique.jpg",
-  },
+  // Add more mock data here
 ];
 
 function HotelsPage() {
   const location = useLocation();
   const navigate = useNavigate();
-  const [hotels, setHotels] = useState(hotelsData);
-  const [priceRange, setPriceRange] = useState([100, 250]);
+
+  const [hotels, setHotels] = useState([]); // State for filtered hotels
+  const [priceRange, setPriceRange] = useState([100, 250]); // Price range filter state
   const [starRatings, setStarRatings] = useState({
     5: false,
     4: false,
     3: false,
     2: false,
     1: false,
-  });
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
+  }); // Star ratings filter state
+
+  const [isInitialLoad, setIsInitialLoad] = useState(true); // Initial load state
 
   // Get search parameters from URL query
   const queryParams = new URLSearchParams(location.search);
@@ -78,8 +54,10 @@ function HotelsPage() {
   const initialCheckIn = queryParams.get("checkIn") || "";
   const initialCheckOut = queryParams.get("checkOut") || "";
   const initialTravelers = queryParams.get("travelers") || "1";
+
   const searchHotel = useSelector((state) => state.searchHotel);
-  const { data } = useQuery({
+  console.log(searchHotel);
+  const { data, isPending, isError } = useQuery({
     queryKey: ["hotels", searchHotel],
     queryFn: async () => {
       const res = await fetch(
@@ -89,44 +67,13 @@ function HotelsPage() {
       return data;
     },
   });
-  console.log(data);
+
+  // Store the hotels from the API response in state
   useEffect(() => {
-    const isPageRefresh =
-      window.performance &&
-      window.performance.navigation &&
-      window.performance.navigation.type === 1;
-
-    const navEntries = performance.getEntriesByType("navigation");
-    const isRefresh = navEntries.length > 0 && navEntries[0].type === "reload";
-
-    if (isPageRefresh || isRefresh) {
-      navigate("/hotels", { replace: true });
-      setIsInitialLoad(true);
+    if (data?.hotels) {
+      setHotels(data.hotels);
     }
-  }, []);
-
-  // Filter hotels
-  const filterHotels = () => {
-    let filtered = [...hotelsData];
-
-    // Filter by price range
-    filtered = filtered.filter(
-      (hotel) => hotel.price >= priceRange[0] && hotel.price <= priceRange[1]
-    );
-
-    // Filter by star rating if any are selected
-    const selectedStars = Object.entries(starRatings)
-      .filter(([_, selected]) => selected)
-      .map(([star, _]) => parseInt(star));
-
-    if (selectedStars.length > 0) {
-      filtered = filtered.filter((hotel) =>
-        selectedStars.includes(hotel.stars)
-      );
-    }
-
-    setHotels(filtered);
-  };
+  }, [data]);
 
   // Reset filters
   const resetFilters = () => {
@@ -138,15 +85,32 @@ function HotelsPage() {
       2: false,
       1: false,
     });
-    setHotels(hotelsData);
+    if (data?.hotels) {
+      setHotels(data.hotels); // Reset hotels to original fetched data
+    }
   };
 
-  // Handle star rating selection
-  const handleStarChange = (star) => {
-    setStarRatings((prev) => ({
-      ...prev,
-      [star]: !prev[star],
-    }));
+  // Handle price range filter
+  const filterHotels = () => {
+    if (!data?.hotels) return;
+    let filtered = [...data?.hotels]; // Start with the fetched hotels
+    // Apply price range filter
+    filtered = filtered.filter(
+      (hotel) => hotel.price >= priceRange[0] && hotel.price <= priceRange[1]
+    );
+
+    // Apply star rating filter
+    const selectedStars = Object.entries(starRatings)
+      .filter(([_, selected]) => selected)
+      .map(([star]) => parseInt(star));
+
+    if (selectedStars.length > 0) {
+      filtered = filtered.filter((hotel) =>
+        selectedStars.includes(hotel.stars)
+      );
+    }
+
+    setHotels(filtered); // Update hotels state with filtered results
   };
 
   // Apply filters when they change
@@ -154,102 +118,117 @@ function HotelsPage() {
     filterHotels();
   }, [priceRange, starRatings]);
 
+  if (isPending) {
+    return <PreLoader />;
+  }
+
+  if (isError) {
+    return <ErrorPage />;
+  }
+
   return (
-    <> 
-    <PreLoader/>
-    <div className="hotels-page-container">
-      <div className="container mt-4">
-        <HotelSearchBox
-          initialDestination={initialDestination}
-          initialCheckIn={initialCheckIn}
-          initialCheckOut={initialCheckOut}
-          initialTravelers={initialTravelers}
-        />
+    <>
+      <PreLoader />
+      <div className="hotels-page-container">
+        <div className="container mt-4">
+          <HotelSearchBox
+            initialDestination={initialDestination}
+            initialCheckIn={initialCheckIn}
+            initialCheckOut={initialCheckOut}
+            initialTravelers={initialTravelers}
+          />
 
-        <div className="hotels-content-container">
-          {/* Filters Section */}
-          <div className="hotels-filters">
-            <div className="filters-header">
-              <h4>Filters</h4>
-              <button className="reset-filters" onClick={resetFilters}>
-                Reset All
-              </button>
-            </div>
-
-            {/* Price Range Filter */}
-            <div className="filter-section">
-              <h5>Price Range</h5>
-              <div className="price-slider-container">
-                <div className="price-display">
-                  <span>{priceRange[0]} JOD</span>
-                  <span>{priceRange[1]} JOD</span>
-                </div>
-                <div className="dual-slider">
-                  <input
-                    type="range"
-                    min="100"
-                    max="250"
-                    value={priceRange[0]}
-                    onChange={(e) =>
-                      setPriceRange([parseInt(e.target.value), priceRange[1]])
-                    }
-                    className="slider min-slider"
-                  />
-                  <input
-                    type="range"
-                    min="100"
-                    max="250"
-                    value={priceRange[1]}
-                    onChange={(e) =>
-                      setPriceRange([priceRange[0], parseInt(e.target.value)])
-                    }
-                    className="slider max-slider"
-                  />
-                </div>
+          <div className="hotels-content-container">
+            {/* Filters Section */}
+            <div className="hotels-filters">
+              <div className="filters-header">
+                <h4>Filters</h4>
+                <button className="reset-filters" onClick={resetFilters}>
+                  Reset All
+                </button>
               </div>
-            </div>
 
-            {/* Star Rating Filter */}
-            <div className="filter-section">
-              <h5>Star Rating</h5>
-              {[5, 4, 3, 2, 1].map((star) => (
-                <div key={star} className="star-option">
-                  <label className="checkbox-container">
+              {/* Price Range Filter */}
+              <div className="filter-section">
+                <h5>Price Range</h5>
+                <div className="price-slider-container">
+                  <div className="price-display">
+                    <span>{priceRange[0]} JOD</span>
+                    <span>{priceRange[1]} JOD</span>
+                  </div>
+                  <div className="dual-slider">
                     <input
-                      type="checkbox"
-                      checked={starRatings[star]}
-                      onChange={() => handleStarChange(star)}
+                      type="range"
+                      min="100"
+                      max="250"
+                      value={priceRange[0]}
+                      onChange={(e) =>
+                        setPriceRange([parseInt(e.target.value), priceRange[1]])
+                      }
+                      className="slider min-slider"
                     />
-                    <span className="checkmark"></span>
-                    <div className="star-rating">
-                      {Array(star)
-                        .fill()
-                        .map((_, i) => (
-                          <FaStar key={i} className="star-icon" />
-                        ))}
-                    </div>
-                  </label>
+                    <input
+                      type="range"
+                      min="100"
+                      max="250"
+                      value={priceRange[1]}
+                      onChange={(e) =>
+                        setPriceRange([priceRange[0], parseInt(e.target.value)])
+                      }
+                      className="slider max-slider"
+                    />
+                  </div>
                 </div>
-              ))}
-            </div>
-          </div>
-
-          {/* Hotel Results */}
-          <div className="hotels-results">
-            {hotels.length > 0 ? (
-              hotels.map((hotel) => <HotelCard key={hotel.id} hotel={hotel} />)
-            ) : (
-              <div className="no-hotels">
-                <p>No hotels match your search criteria.</p>
-                <p>Try adjusting your filters or search parameters.</p>
               </div>
-            )}
+
+              {/* Star Rating Filter */}
+              <div className="filter-section">
+                <h5>Star Rating</h5>
+                {[5, 4, 3, 2, 1].map((star) => (
+                  <div key={star} className="star-option">
+                    <label className="checkbox-container">
+                      <input
+                        type="checkbox"
+                        checked={starRatings[star]}
+                        onChange={() => {
+                          setStarRatings((prev) => ({
+                            ...prev,
+                            [star]: !prev[star],
+                          }));
+                        }}
+                      />
+                      <span className="checkmark"></span>
+                      <div className="star-rating">
+                        {Array(star)
+                          .fill()
+                          .map((_, i) => (
+                            <FaStar key={i} className="star-icon" />
+                          ))}
+                      </div>
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Hotel Results */}
+            <div className="hotels-results">
+              {hotels.length > 0 ? (
+                hotels.map((hotel) => (
+                  <HotelCard key={hotel.id} hotel={hotel} />
+                ))
+              ) : (
+                <div className="no-hotels">
+                  <p>No hotels match your search criteria.</p>
+                  <p>Try adjusting your filters or search parameters.</p>
+                </div>
+              )}
+            </div>
           </div>
         </div>
       </div>
-    </div>
-   </>
-   );
+    </>
+  );
 }
 
 export default HotelsPage;

@@ -12,13 +12,42 @@ import { useQuery } from "@tanstack/react-query";
 import ErrorPage from "../components/ErrorPage";
 
 const guidesData = [
-  { name: "John Doe", address: "Downtown, City", price: "50 JOD", touristCount: "14/25" },
-  { name: "Jane Smith", address: "Beachside, City", price: "60 JOD", touristCount: "8/25" },
-  { name: "Mark Johnson", address: "Mountain View, City", price: "55 JOD", touristCount: "19/25" },
-  { name: "Emily Davis", address: "Old Town, City", price: "45 JOD", touristCount: "4/25" },
-  { name: "Michael Brown", address: "City Center, City", price: "70 JOD", touristCount: "20/25" },
+  {
+    id: 1,
+    name: "John Doe",
+    address: "Downtown, City",
+    price: 50,
+    touristCount: "14/25",
+  },
+  {
+    id: 2,
+    name: "Jane Smith",
+    address: "Beachside, City",
+    price: 60,
+    touristCount: "8/25",
+  },
+  {
+    id: 3,
+    name: "Mark Johnson",
+    address: "Mountain View, City",
+    price: 55,
+    touristCount: "19/25",
+  },
+  {
+    id: 4,
+    name: "Emily Davis",
+    address: "Old Town, City",
+    price: 45,
+    touristCount: "4/25",
+  },
+  {
+    id: 5,
+    name: "Michael Brown",
+    address: "City Center, City",
+    price: 70,
+    touristCount: "20/25",
+  },
 ];
-
 
 function GuidePage() {
   const location = useLocation();
@@ -81,7 +110,7 @@ function GuidePage() {
 
       <div className="guides-list mt-4">
         {guides.length > 0 ? (
-          guides.map((guide, index) => <GuideCard key={index} {...guide} />)
+          guides.map((guide, index) => <GuideCard key={index} guide={guide} />)
         ) : (
           <p className="text-center">
             No guides found matching your search criteria.

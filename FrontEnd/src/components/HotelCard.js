@@ -1,49 +1,63 @@
 import React from "react";
 import { FaMapMarkerAlt, FaStar } from "react-icons/fa";
 import defaultHotelImage from "../assets/hotel-default.jpg";
+import { useDispatch, useSelector } from "react-redux";
+import { setHotel } from "../redux/bookingSlice";
 
 function HotelCard({ hotel }) {
-    // Function to render star rating
-    const renderStars = (stars) => {
-        return Array(stars).fill().map((_, i) => (
-            <FaStar key={i} className="star-icon" />
-        ));
-    };
+  const dispatch = useDispatch();
+  const booking = useSelector((state) => state.booking);
+  const searchHotel = useSelector((state) => state.searchHotel);
+  const newHotel = { ...hotel, price: hotel.price * searchHotel.nights };
+  // Function to render star rating
+  const renderStars = (stars) => {
+    return Array(stars)
+      .fill()
+      .map((_, i) => <FaStar key={i} className="star-icon" />);
+  };
+  function handleAddHotel(hotel) {
+    dispatch(setHotel(hotel));
+    console.log(booking);
+  }
+  return (
+    <div className="hotel-card">
+      <div className="hotel-card-image">
+        <img
+          src={hotel.image || defaultHotelImage}
+          alt={hotel.name}
+          onError={(e) => {
+            e.target.src = defaultHotelImage;
+          }}
+        />
+      </div>
 
-    return (
-        <div className="hotel-card">
-            <div className="hotel-card-image">
-                <img 
-                    src={hotel.image || defaultHotelImage} 
-                    alt={hotel.name} 
-                    onError={(e) => { e.target.src = defaultHotelImage }}
-                />
-            </div>
-            
-            <div className="hotel-card-details">
-                <h3 className="hotel-name">{hotel.name}</h3>
-                
-                <div className="hotel-stars">
-                    {renderStars(hotel.stars)}
-                </div>
-                
-                <div className="hotel-address">
-                    <FaMapMarkerAlt className="address-icon" />
-                    <span>{hotel.address}</span>
-                </div>
-                
-                <div className="room-type">
-                    <span className="room-label">Room Type:</span>
-                    <span className="room-value">{hotel.roomType}</span>
-                </div>
-            </div>
-            
-            <div className="hotel-card-price">
-                <div className="price-amount">{hotel.price} JOD</div>
-                <button className="book-now-btn">Book Now</button>
-            </div>
+      <div className="hotel-card-details">
+        <h3 className="hotel-name">{newHotel.name}</h3>
+
+        <div className="hotel-stars">{renderStars(newHotel.stars)}</div>
+
+        <div className="hotel-address">
+          <FaMapMarkerAlt className="address-icon" />
+          <span>{newHotel.address}</span>
         </div>
-    );
+
+        <div className="room-type">
+          <span className="room-label">Room Type:</span>
+          <span className="room-value">{newHotel.room_type}</span>
+        </div>
+      </div>
+
+      <div className="hotel-card-price">
+        <div className="price-amount">{newHotel.price} JOD</div>
+        <button
+          className="book-now-btn"
+          onClick={() => handleAddHotel(newHotel)}
+        >
+          Book Now
+        </button>
+      </div>
+    </div>
+  );
 }
 
 export default HotelCard;
