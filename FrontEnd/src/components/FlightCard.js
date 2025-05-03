@@ -1,5 +1,7 @@
 import React from "react";
 import { FaPlane } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { setFlight } from "../redux/bookingSlice";
 // function formatDuration(duration) {
 //   return `${parseInt(duration.hours)}h ${parseInt(duration?.minutes ? )}m`;
 // }
@@ -16,7 +18,20 @@ function formatDuration({ hours, minutes }) {
 
   return durationString.trim(); // Remove extra space if there are no minutes
 }
+
 function FlightCard({ flight }) {
+  const dispatch = useDispatch();
+  const flightSearch = useSelector((state) => state.searchFlight);
+  function handleAddFlight(flight) {
+    dispatch(
+      setFlight({
+        flight,
+        departureDate: flightSearch.departureDate,
+        returnDate: flightSearch.returnDate,
+        city: flightSearch.arrivalCity,
+      })
+    );
+  }
   return (
     <div className="flight-card">
       <div className="flight-card-main">
@@ -113,7 +128,12 @@ function FlightCard({ flight }) {
 
       <div className="flight-card-price">
         <div className="price-amount">{flight.totalPrice} JOD</div>
-        <button className="book-now-btn">Book Now</button>
+        <button
+          className="book-now-btn"
+          onClick={() => handleAddFlight(flight)}
+        >
+          Book Now
+        </button>
       </div>
     </div>
   );

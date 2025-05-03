@@ -1,11 +1,14 @@
 import React from "react";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import { setCity } from "../redux/bookingSlice";
 
-const TurkeyCard = ({ id, name, image }) => {
+const CityCard = ({ id, name, image }) => {
   const navigate = useNavigate();
-
+  const dispatch = useDispatch();
   const handleClick = () => {
     // Navigate to the Trip Details Page
+    dispatch(setCity(name));
     navigate("/trip-details", { state: { cityId: id, cityName: name } });
   };
 
@@ -17,4 +20,4 @@ const TurkeyCard = ({ id, name, image }) => {
   );
 };
 
-export default TurkeyCard;
+export default CityCard;

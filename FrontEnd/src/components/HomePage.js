@@ -334,7 +334,7 @@ function HomePage() {
                   className="HomePage-form-control form-control m-2"
                   onChange={(e) => setGuideDate(e.target.value)}
                 />
-               <input
+                <input
                   type="number"
                   className="HomePage-form-control form-control m-2"
                   placeholder="Travellers"

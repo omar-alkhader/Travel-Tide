@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { addGuide, removeGuide } from "../redux/bookingSlice";
 
 function GuideCard({ guide }) {
-  const { name, address, touristCount, price } = guide;
+  const { name, site_name, max_limit, guide_price: price, travellers } = guide;
   const dispatch = useDispatch();
   const booking = useSelector((state) => state.booking);
   const [reserved, setReserved] = useState(false);
@@ -31,18 +31,16 @@ function GuideCard({ guide }) {
         <div className="GuidePage-guide-details">
           <h5>{name}</h5>
           <p>
-            <FaMapMarkerAlt /> {address}
-            {touristCount && (
-              <span
-                style={{
-                  marginLeft: "10px",
-                  color: "#007bff",
-                  fontWeight: "bold",
-                }}
-              >
-                {touristCount}
-              </span>
-            )}
+            <FaMapMarkerAlt /> {site_name}
+            <span
+              style={{
+                marginLeft: "10px",
+                color: "#007bff",
+                fontWeight: "bold",
+              }}
+            >
+              {travellers}:{max_limit}
+            </span>
           </p>
         </div>
       </div>

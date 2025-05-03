@@ -20,10 +20,12 @@ exports.getGuidesDailySitesByCityAndDate = catchAsync(
       gds.guide_id,
       g.price AS guide_price,
       gds.site_id,
+      g.name,
+      gds.travellers,
       s.name AS site_name,
       gds.visit_date,
       gds.max_limit
-    FROM Guides_daily_sites gds
+    FROM guides_daily_sites gds
     JOIN site s ON gds.site_id = s.id
     JOIN city c ON s.city_id = c.id
     JOIN Guide g ON gds.guide_id = g.id

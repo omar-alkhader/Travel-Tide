@@ -235,11 +235,15 @@ function FlightsPage() {
       <div className="flights-page-container">
         <div className="container mt-4">
           <FlightSearchBox
-            initialDepartureCity={initialDepartureCity}
-            initialArrivalCity={initialArrivalCity}
-            initialDepartureDate={initialDepartureDate}
-            initialReturnDate={initialReturnDate}
-            initialTravelers={initialTravelers}
+            initialDepartureCity={`${search.departureCity[0].toUpperCase()}${search.departureCity
+              .slice(1)
+              .toLowerCase()}`}
+            initialArrivalCity={`${search.arrivalCity[0].toUpperCase()}${search.arrivalCity
+              .slice(1)
+              .toLowerCase()}`}
+            initialDepartureDate={search.departureDate}
+            initialReturnDate={search.returnDate}
+            initialTravelers={search.travelers}
           />
 
           <div className="flights-content-container">

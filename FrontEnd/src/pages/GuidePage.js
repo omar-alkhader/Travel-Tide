@@ -9,7 +9,6 @@ import "../styles/global.css";
 import "../styles/GuidePage.css";
 import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
-import ErrorPage from "../components/ErrorPage";
 
 const guidesData = [
   {
@@ -52,20 +51,31 @@ const guidesData = [
     maxLimit: 25,
   },
 ];
-
+function capitalize(str) {
+  return str ? str[0].toUpperCase() + str.slice(1).toLowerCase() : "";
+}
 function GuidePage() {
   const location = useLocation();
   const navigate = useNavigate();
   const [guides, setGuides] = useState(guidesData);
-  const { city, date } = useSelector((state) => state.searchGuide);
+  const { city: citySearch, date } = useSelector((state) => state.searchGuide);
+  const { city: cityBooking } = useSelector((state) => state.booking);
+  console.log(citySearch);
+  const city = citySearch || cityBooking;
+  console.log(city);
   const { data, isError, isPending } = useQuery({
-    queryKey: ["guides", city, date],
+    queryKey: ["guides", citySearch, date],
     queryFn: async () => {
-      const res = await fetch(
-        `http://127.0.0.1:6600/api/guide-daily-sites/city/${city}/date/${date}`
-      );
-      const data = await res.json();
-      return data;
+      try {
+        if (!citySearch || !date) return;
+        const res = await fetch(
+          `http://127.0.0.1:6600/api/guide-daily-sites/city/${city}/date/${date}`
+        );
+        const data = await res.json();
+        return data;
+      } catch (err) {
+        throw err;
+      }
     },
   });
   console.log(data);
@@ -76,20 +86,19 @@ function GuidePage() {
 
   // Function to filter guides based on user input
   function handleSearch(query) {
-    const filteredGuides = guidesData.filter(
-      (guide) =>
-        guide.name.toLowerCase().includes(query.toLowerCase()) ||
-        guide.address.toLowerCase().includes(query.toLowerCase())
-    );
-    setGuides(filteredGuides);
-
-    // Update URL query parameters to reflect the current search
-    navigate(
-      `/guide?place=${encodeURIComponent(query)}&date=${encodeURIComponent(
-        initialDate
-      )}`,
-      { replace: true }
-    );
+    // const filteredGuides = guidesData.filter(
+    //   (guide) =>
+    //     guide.name.toLowerCase().includes(query.toLowerCase()) ||
+    //     guide.address.toLowerCase().includes(query.toLowerCase())
+    // );
+    // setGuides(filteredGuides);
+    // // Update URL query parameters to reflect the current search
+    // navigate(
+    //   `/guides?place=${encodeURIComponent(query)}&date=${encodeURIComponent(
+    //     initialDate
+    //   )}`,
+    //   { replace: true }
+    // );
   }
 
   // Initial search on component mount if search parameters exist
@@ -98,9 +107,6 @@ function GuidePage() {
       handleSearch(initialPlace);
     }
   }, []);
-  if (isError) {
-    return <ErrorPage />;
-  }
   if (isPending) {
     return <PreLoader />;
   }
@@ -108,13 +114,14 @@ function GuidePage() {
     <div className="container mt-4">
       <SearchBox
         onSearch={handleSearch}
-        initialPlace={initialPlace}
-        initialDate={initialDate}
+        initialPlace={`${capitalize(city)}`}
+        initialDate={date}
       />
-
       <div className="guides-list mt-4">
-        {guides.length > 0 ? (
-          guides.map((guide, index) => <GuideCard key={index} guide={guide} />)
+        {data?.guides?.length > 0 ? (
+          data?.guides.map((guide, index) => (
+            <GuideCard key={index} guide={guide} />
+          ))
         ) : (
           <p className="text-center">
             No guides found matching your search criteria.

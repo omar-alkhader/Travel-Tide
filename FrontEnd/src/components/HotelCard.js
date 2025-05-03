@@ -3,9 +3,11 @@ import { FaMapMarkerAlt, FaStar } from "react-icons/fa";
 import defaultHotelImage from "../assets/hotel-default.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { setHotel } from "../redux/bookingSlice";
+import { useNavigate } from "react-router-dom";
 
 function HotelCard({ hotel }) {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const booking = useSelector((state) => state.booking);
   const searchHotel = useSelector((state) => state.searchHotel);
   const newHotel = { ...hotel, price: hotel.price * searchHotel.nights };
@@ -16,8 +18,15 @@ function HotelCard({ hotel }) {
       .map((_, i) => <FaStar key={i} className="star-icon" />);
   };
   function handleAddHotel(hotel) {
-    dispatch(setHotel(hotel));
-    console.log(booking);
+    dispatch(
+      setHotel({
+        hotel,
+        checkIn: searchHotel.checkIn,
+        checkOut: searchHotel.checkOut,
+        city: searchHotel.city,
+      })
+    );
+    navigate("/booking");
   }
   return (
     <div className="hotel-card">

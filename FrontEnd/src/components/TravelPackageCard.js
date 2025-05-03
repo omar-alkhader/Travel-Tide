@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import { FaMapMarkerAlt, FaStar, FaPlane } from "react-icons/fa";
 import defaultHotelImage from "../assets/hotel-default.jpg";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setPackage } from "../redux/bookingSlice";
 import { Navigate, useNavigate } from "react-router-dom";
 function TravelPackageCard({ package: pkg, onViewFlight }) {
   const navigator = useNavigate();
   const [showPriceDetails, setShowPriceDetails] = useState(false);
   const dispatch = useDispatch();
+  const packageSearch = useSelector((state) => state.searchPackage);
   function handleClick(e, pkg) {
     e.preventDefault();
     console.log(pkg.flight);
@@ -16,6 +17,9 @@ function TravelPackageCard({ package: pkg, onViewFlight }) {
       setPackage({
         flight: pkg.flight,
         hotel: pkg.hotel,
+        fromDate: packageSearch.departureDate,
+        toDate: packageSearch.returnDate,
+        city: packageSearch.departureCity,
       })
     );
 

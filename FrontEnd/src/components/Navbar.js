@@ -73,7 +73,7 @@ function Navbar() {
             </Link>
           </li>
           <li>
-            <Link to="/booking">My Booking</Link>
+            <Link to={user == null ? "/SignIn" : "/booking"}>My Booking</Link>
           </li>
         </ul>
       </nav>

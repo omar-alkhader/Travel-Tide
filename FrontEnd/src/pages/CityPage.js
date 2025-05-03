@@ -9,7 +9,7 @@ const CityPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   console.log(searchParams.get("country_id"));
   const country_id = searchParams.get("country_id");
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading, isError, isPending } = useQuery({
     queryKey: ["city", country_id],
     queryFn: async () => {
       const res = await fetch(
@@ -26,11 +26,13 @@ const CityPage = () => {
   if (isError || !data.cities) {
     return <div>Failed to load cities.</div>;
   }
+  if (isPending) {
+    <PreLoader />;
+  }
   const { cities } = data;
   console.log(data);
   return (
     <>
-      <PreLoader />
       <Container className="text-center my-5">
         <h2>Choose Your Package</h2>
         <Row className="mt-4">

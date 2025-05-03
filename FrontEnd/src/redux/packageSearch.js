@@ -8,6 +8,7 @@ const initialState = {
   departureDate: "",
   hasGuide: false,
   returnDate: "",
+  city: "",
 };
 const searchPackageSlice = createSlice({
   name: "searchPackage",
@@ -22,6 +23,7 @@ const searchPackageSlice = createSlice({
         nights,
         hasGuide,
         returnDate,
+        city,
       } = action.payload;
       state.departureCity = departureCity;
       state.arrivalCity = arrivalCity;
@@ -30,6 +32,7 @@ const searchPackageSlice = createSlice({
       state.travellers = travellers;
       state.departureDate = departureDate;
       state.returnDate = returnDate;
+      state.city = city;
     },
   },
 });

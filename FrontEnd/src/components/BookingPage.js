@@ -2,16 +2,21 @@ import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "../styles/Booking.css";
 import cancelIcon from "../assets/cancel.png";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  clearBooking,
+  removeAllGuides,
+  removeGuide,
+} from "../redux/bookingSlice";
+import { setSearchGuide } from "../redux/guideSearchReducer";
 
 function BookingPage() {
-  const state = useSelector((state) => state.booking);
-  console.log(state);
   // Changed from hasGuide boolean to guides array
-  const [guides, setGuides] = useState([
-    { id: 1, name: "John Doe", price: 50 },
-    { id: 2, name: "Jane Smith", price: 50 },
-  ]);
+  // const [guides, setGuides] = useState([
+  //   { id: 1, name: "John Doe", price: 50 },
+  //   { id: 2, name: "Jane Smith", price: 50 },
+  // ]);
+  const dispatch = useDispatch();
   const [showCancelPopup, setShowCancelPopup] = useState(false);
   const [showGuidesPopup, setShowGuidesPopup] = useState(false);
   const navigate = useNavigate();
@@ -46,28 +51,34 @@ function BookingPage() {
     navigate("/pay");
   };
 
-  const handleRemoveGuide = (guideId) => {
-    setGuides(guides.filter((guide) => guide.id !== guideId));
+  const handleRemoveGuide = (id) => {
+    dispatch(removeGuide(id));
+    // setGuides(guides.filter((guide) => guide.id !== guideId));
   };
 
   const handleRemoveAllGuides = () => {
-    setGuides([]);
+    dispatch(removeAllGuides());
     closeGuidesPopup();
   };
 
   const handleDeleteTrip = () => {
+    dispatch(clearBooking());
     navigate("/");
   };
 
   const navigateToGuidePage = () => {
     navigate("/guides");
   };
-
+  const bookingDetails = useSelector((state) => state.booking);
+  const { guides } = bookingDetails;
   // Calculate total guide price
   const guidesTotalPrice = guides.reduce((sum, guide) => sum + guide.price, 0);
-  const basePrice = 250;
-  const tax = 35;
-  const totalPrice = basePrice + tax + guidesTotalPrice;
+  let basePrice = 0;
+  basePrice += bookingDetails.hasFlight ? bookingDetails.flight.price : 0;
+  basePrice += bookingDetails.hasHotel ? bookingDetails.hotel.price : 0;
+  const tax = parseFloat((basePrice * 0.16).toFixed(2));
+  const totalPrice = parseFloat(basePrice + tax + guidesTotalPrice).toFixed(2);
+  // const totalPrice = basePrice + tax + guidesTotalPrice;
 
   return (
     <div className="booking-page-container">
@@ -91,16 +102,16 @@ function BookingPage() {
             </thead>
             <tbody>
               <tr>
-                <td>Amman</td>
-                <td>2025-03-15</td>
-                <td>2025-03-22</td>
-                <td>2025-03-15</td>
-                <td>2025-03-21</td>
+                <td>{bookingDetails?.city}</td>
+                <td>{bookingDetails.departureDate}</td>
+                <td>{bookingDetails.returnDate}</td>
+                <td>{bookingDetails.checkIn}</td>
+                <td>{bookingDetails.checkOut}</td>
                 <td>2</td>
                 <td>
-                  {guides.length > 0 ? (
+                  {guides?.length > 0 ? (
                     <ul className="guides-list">
-                      {guides.map((guide) => (
+                      {guides?.map((guide) => (
                         <li key={guide.id}>{guide.name}</li>
                       ))}
                     </ul>
@@ -115,14 +126,10 @@ function BookingPage() {
             <button className="cancel-trip-button" onClick={handleCancelTrip}>
               Cancel Trip
             </button>
-            {guides.length > 0 && (
-              <button
-                className="manage-guides-button"
-                onClick={openGuidesPopup}
-              >
-                Manage Guides
-              </button>
-            )}
+
+            <button className="manage-guides-button" onClick={openGuidesPopup}>
+              Manage Guides
+            </button>
           </div>
         </div>
 
@@ -196,12 +203,12 @@ function BookingPage() {
             <h3 className="popup-title">Your Guides</h3>
             <div className="guides-popup-list">
               {guides.map((guide) => (
-                <div key={guide.id} className="guide-item">
+                <div key={guide.guide_id} className="guide-item">
                   <span>{guide.name}</span>
                   <span>{guide.price} JOD</span>
                   <button
                     className="remove-guide-btn"
-                    onClick={() => handleRemoveGuide(guide.id)}
+                    onClick={() => handleRemoveGuide(guide.guide_id)}
                   >
                     Remove
                   </button>

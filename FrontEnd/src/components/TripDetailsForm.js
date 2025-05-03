@@ -61,6 +61,7 @@ function TripDetailsForm() {
         nights,
         hasGuide,
         travellers,
+        city: cityName,
       })
     );
     dispatch(setGuide(hasGuide));
