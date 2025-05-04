@@ -8,6 +8,7 @@ const reviewRoute = require("./routes/reviewRoute");
 const countryRoute = require("./routes/countryRoute");
 const flightRoute = require("./routes/flightRoute");
 const hotelRoute = require("./routes/hotelRoute");
+const paymentRoute = require("./routes/paymentRoute");
 const siteRoute = require("./routes/siteRoute");
 const AppError = require("./utlis/AppError");
 const globalErrorHandler = require("./controllers/errorController");
@@ -32,6 +33,7 @@ app.use("/api/countries", countryRoute);
 app.use("/api/cities", cityRoute);
 app.use("/api/sites", siteRoute);
 app.use("/api/hotels", hotelRoute);
+app.use("/api/create-payment-intent", paymentRoute);
 app.all("*", (req, res, next) => {
   next(new AppError(`invalid url ${req.originalUrl} on this server !`, 404));
 });

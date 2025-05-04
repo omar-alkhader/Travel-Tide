@@ -76,8 +76,8 @@ function BookingPage() {
   let basePrice = 0;
   basePrice += bookingDetails.hasFlight ? bookingDetails.flight.price : 0;
   basePrice += bookingDetails.hasHotel ? bookingDetails.hotel.price : 0;
-  const tax = parseFloat((basePrice * 0.16).toFixed(2));
-  const totalPrice = parseFloat(basePrice + tax + guidesTotalPrice).toFixed(2);
+  const tax = parseFloat(basePrice * 0.16);
+  const totalPrice = parseFloat(basePrice + tax + guidesTotalPrice);
   // const totalPrice = basePrice + tax + guidesTotalPrice;
 
   return (
