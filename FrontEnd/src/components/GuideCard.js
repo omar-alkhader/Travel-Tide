@@ -6,6 +6,8 @@ import { addGuide, removeGuide } from "../redux/bookingSlice";
 
 function GuideCard({ guide }) {
   const { name, site_name, max_limit, guide_price: price, travellers } = guide;
+  console.log(price);
+  console.log(guide);
   const dispatch = useDispatch();
   const booking = useSelector((state) => state.booking);
   const [reserved, setReserved] = useState(false);

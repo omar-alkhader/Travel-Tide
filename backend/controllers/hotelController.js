@@ -130,7 +130,7 @@ exports.getHotelsWithFlight = catchAsync(async (req, res, next) => {
   console.log(ret.id);
   const flightInfo = {
     id: dep.id,
-    price: totalFlightPrice,
+    totalPrice: totalFlightPrice,
     airline: dep.airline_name,
     flightNumber: dep.flight_number,
     departure: {

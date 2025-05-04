@@ -1,7 +1,8 @@
 import React from "react";
 import { FaPlane } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
-import { setFlight } from "../redux/bookingSlice";
+import { setFlight, setTraveller } from "../redux/bookingSlice";
+import { useNavigate } from "react-router-dom";
 // function formatDuration(duration) {
 //   return `${parseInt(duration.hours)}h ${parseInt(duration?.minutes ? )}m`;
 // }
@@ -20,6 +21,7 @@ function formatDuration({ hours, minutes }) {
 }
 
 function FlightCard({ flight }) {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const flightSearch = useSelector((state) => state.searchFlight);
   function handleAddFlight(flight) {
@@ -31,6 +33,7 @@ function FlightCard({ flight }) {
         city: flightSearch.arrivalCity,
       })
     );
+    navigate("/booking");
   }
   return (
     <div className="flight-card">

@@ -13,6 +13,7 @@ const initialState = {
   hasGuide: false,
   city: "",
   guides: [],
+  travellers: 1,
 };
 
 const bookingSlice = createSlice({
@@ -21,7 +22,7 @@ const bookingSlice = createSlice({
   reducers: {
     setPackage(state, action) {
       console.log(action.payload);
-      const { flight, hotel, fromDate, toDate } = action.payload;
+      const { flight, hotel, fromDate, toDate, travellers } = action.payload;
       state.flight = flight;
       state.hotel = hotel;
       state.hasHotel = true;
@@ -30,6 +31,7 @@ const bookingSlice = createSlice({
       state.checkOut = toDate;
       state.departureDate = fromDate;
       state.returnDate = toDate;
+      state.travellers = travellers;
     },
     setCity(state, action) {
       state.city = action.payload;
@@ -51,8 +53,13 @@ const bookingSlice = createSlice({
       state.city = city;
       state.hasHotel = true;
     },
+    setTraveller(state, action) {
+      state.travellers = action.payload;
+    },
     addGuide(state, action) {
-      const exists = state.guides.find((g) => g.id === action.payload.id);
+      const exists = state.guides.find(
+        (g) => g.guide_daily_site_id === action.payload.guide_daily_site_id
+      );
       if (!exists) {
         state.guides.push(action.payload);
       }
@@ -61,7 +68,9 @@ const bookingSlice = createSlice({
       state.hasGuide = action.payload;
     },
     removeGuide(state, action) {
-      state.guides = state.guides.filter((g) => g.guide_id !== action.payload);
+      state.guides = state.guides.filter(
+        (g) => g.guide_daily_site_id !== action.payload
+      );
     },
     removeAllGuides(state, action) {
       state.guides = [];
@@ -82,6 +91,7 @@ export const {
   setGuide,
   removeAllGuides,
   setCity,
+  setTraveller,
 } = bookingSlice.actions;
 
 export default bookingSlice.reducer;

@@ -150,6 +150,8 @@ function FlightsPage() {
   const initialReturnDate = queryParams.get("returnDate") || "";
   const initialTravelers = queryParams.get("travelers") || "1";
   const search = useSelector((state) => state.searchFlight);
+  const bookingDetails = useSelector((state) => state.booking);
+  console.log(bookingDetails);
   const { data, isPending, isError } = useQuery({
     queryKey: ["flights", search],
     queryFn: () => fetchFlights(search),

@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import visaLogo from "../assets/visa.png";
 import "../styles/PaymentPage.css";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
+import { useSelector } from "react-redux";
 
 function PaymentForm() {
   const stripe = useStripe();
   const elements = useElements();
+
   const [formData, setFormData] = useState({
     cardName: "",
   });
@@ -18,7 +20,26 @@ function PaymentForm() {
     rewardPoints: 15,
     finalPrice: 320,
   };
-
+  const bookingDetails = useSelector((state) => state.booking);
+  console.log(bookingDetails);
+  const { guides } = bookingDetails;
+  // Calculate total guide price
+  console.log(guides);
+  const guidesTotalPrice = guides.reduce((sum, guide) => sum + guide.price, 0);
+  let flightPrice = 0;
+  let basePrice = 0;
+  let hotelPrice = 0;
+  if (bookingDetails.hasFlight) {
+    flightPrice = bookingDetails.flight.totalPrice;
+  }
+  if (bookingDetails.hasHotel) {
+    hotelPrice = bookingDetails.hotel.price;
+  }
+  basePrice += flightPrice;
+  basePrice += hotelPrice;
+  const tax = parseFloat(basePrice * 0.16);
+  const totalPrice = parseFloat(basePrice + tax + guidesTotalPrice);
+  const totalPriceAfterDiscount = totalPrice;
   const [paymentStatus, setPaymentStatus] = useState(null);
 
   const handleSubmit = async (e) => {
@@ -37,7 +58,7 @@ function PaymentForm() {
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ amount: 500 * 100 }), // Amount in cents
+          body: JSON.stringify({ amount: totalPriceAfterDiscount * 100 }), // Amount in cents
         }
       );
 
@@ -145,22 +166,20 @@ function PaymentForm() {
               </div>
 
               <div className="price-row">
-                <div className="price-amount">${priceDetails.rate}.00</div>
-                <div className="price-amount">${priceDetails.tax}.00</div>
+                <div className="price-amount">${basePrice.toFixed(2)}</div>
+                <div className="price-amount">${tax.toFixed(2)}</div>
               </div>
 
               <div className="price-row guide-row">
                 <div className="price-label">Guide Price</div>
                 <div className="price-amount">
-                  ${priceDetails.guidePrice}.00
+                  ${guidesTotalPrice.toFixed(2)}
                 </div>
               </div>
 
               <div className="price-row total-row">
                 <div className="price-label">Total Price</div>
-                <div className="price-amount">
-                  ${priceDetails.totalBeforeDiscount}.00
-                </div>
+                <div className="price-amount">${totalPrice.toFixed(2)}</div>
               </div>
 
               <div className="price-row reward-row">
@@ -173,7 +192,7 @@ function PaymentForm() {
               <div className="price-row final-row">
                 <div className="price-label">Final Price</div>
                 <div className="price-amount">
-                  ${priceDetails.finalPrice}.00
+                  ${totalPriceAfterDiscount.toFixed(2)}
                 </div>
               </div>
             </div>

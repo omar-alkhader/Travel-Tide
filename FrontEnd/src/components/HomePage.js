@@ -21,6 +21,7 @@ import { useDispatch } from "react-redux";
 import { setSearchFlight } from "../redux/flightSearchReducer";
 import { setSearchGuide } from "../redux/guideSearchReducer";
 import { setSearchHotel } from "../redux/hotelSearchReducer";
+import { setTraveller } from "../redux/bookingSlice";
 
 function HomePage() {
   const { setIsChatOpen } = useOutletContext();
@@ -33,10 +34,11 @@ function HomePage() {
   const [arrivalCity, setArrivalCity] = useState("");
   const [departureDate, setDepartureDate] = useState("");
   const [returnDate, setReturnDate] = useState("");
-  const [travelers, setTravelers] = useState(1);
+  const [flightTravellers, setFlightTravellers] = useState(1);
   // Guide State
   const [guideCity, setGuideCity] = useState("");
   const [guideDate, setGuideDate] = useState("");
+  const [guideTravellers, setGuideTravellers] = useState(1);
   // Hotel State
   const [hotelDestination, setHotelDestination] = useState("");
   const [checkIn, setCheckIn] = useState("");
@@ -265,10 +267,12 @@ function HomePage() {
                       arrivalCity,
                       departureDate,
                       returnDate,
-                      travelers,
+                      travelers: flightTravellers,
                     })
                   );
-                  navigate("flights");
+                  console.log(flightTravellers);
+                  dispatch(setTraveller(flightTravellers));
+                  navigate("/flights");
                 }}
               >
                 <input
@@ -297,7 +301,7 @@ function HomePage() {
                   type="number"
                   className="HomePage-form-control form-control m-2"
                   placeholder="Travellers"
-                  onChange={(e) => setTravelers(e.target.value)}
+                  onChange={(e) => setFlightTravellers(+e.target.value)}
                 />
                 <button
                   type="submit"
@@ -320,6 +324,7 @@ function HomePage() {
                       date: guideDate,
                     })
                   );
+                  dispatch(setTraveller(guideTravellers));
                   navigate("/guides");
                 }}
               >
@@ -338,7 +343,7 @@ function HomePage() {
                   type="number"
                   className="HomePage-form-control form-control m-2"
                   placeholder="Travellers"
-                  onChange={(e) => setTravelers(e.target.value)}
+                  onChange={(e) => setGuideTravellers(e.target.value)}
                 />
                 <button
                   type="submit"

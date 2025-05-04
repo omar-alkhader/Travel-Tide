@@ -70,13 +70,25 @@ function BookingPage() {
     navigate("/guides");
   };
   const bookingDetails = useSelector((state) => state.booking);
+  console.log(bookingDetails);
   const { guides } = bookingDetails;
+  console.log(guides);
   // Calculate total guide price
-  const guidesTotalPrice = guides.reduce((sum, guide) => sum + guide.price, 0);
+  const guidesTotalPrice = guides.reduce(
+    (sum, guide) => sum + guide.guide_price,
+    0
+  );
   let basePrice = 0;
-  basePrice += bookingDetails.hasFlight ? bookingDetails.flight.price : 0;
-  basePrice += bookingDetails.hasHotel ? bookingDetails.hotel.price : 0;
-  const tax = parseFloat(basePrice * 0.16);
+  let flightPrice = 0;
+  let hotelPrice = 0;
+  if (bookingDetails.hasFlight) {
+    flightPrice = bookingDetails.flight.totalPrice;
+  }
+  if (bookingDetails.hasHotel) {
+    hotelPrice = bookingDetails.hotel.price;
+  }
+  basePrice += flightPrice + hotelPrice;
+  const tax = parseFloat((basePrice * 0.16).toFixed(2));
   const totalPrice = parseFloat(basePrice + tax + guidesTotalPrice);
   // const totalPrice = basePrice + tax + guidesTotalPrice;
 
@@ -107,12 +119,12 @@ function BookingPage() {
                 <td>{bookingDetails.returnDate}</td>
                 <td>{bookingDetails.checkIn}</td>
                 <td>{bookingDetails.checkOut}</td>
-                <td>2</td>
+                <td>{bookingDetails.travellers}</td>
                 <td>
                   {guides?.length > 0 ? (
                     <ul className="guides-list">
                       {guides?.map((guide) => (
-                        <li key={guide.id}>{guide.name}</li>
+                        <li key={guide.guide_daily_site_id}>{guide.name}</li>
                       ))}
                     </ul>
                   ) : (
@@ -137,25 +149,25 @@ function BookingPage() {
           <h3 className="price-details-title">Price Details</h3>
           <div className="price-row">
             <span>Rate:</span>
-            <span>{basePrice} JOD</span>
+            <span>{basePrice.toFixed(2)} $</span>
           </div>
           <div className="price-row">
             <span>Tax:</span>
-            <span>{tax} JOD</span>
+            <span>{tax.toFixed(2)} $</span>
           </div>
           {guides.length > 0 && (
             <>
               {guides.map((guide) => (
                 <div key={guide.id} className="price-row guide-price-row">
                   <span>Guide: {guide.name}</span>
-                  <span>{guide.price} JOD</span>
+                  <span>{guide.guide_price.toFixed(2)} $</span>
                 </div>
               ))}
             </>
           )}
           <div className="price-row total">
             <span>Total Price:</span>
-            <span>{totalPrice} JOD</span>
+            <span>{totalPrice.toFixed(2)} $</span>
           </div>
           <button className="checkout-button" onClick={handleCheckout}>
             Checkout
@@ -205,10 +217,10 @@ function BookingPage() {
               {guides.map((guide) => (
                 <div key={guide.guide_id} className="guide-item">
                   <span>{guide.name}</span>
-                  <span>{guide.price} JOD</span>
+                  <span>{guide.guide_price.toFixed(2)} $</span>
                   <button
                     className="remove-guide-btn"
-                    onClick={() => handleRemoveGuide(guide.guide_id)}
+                    onClick={() => handleRemoveGuide(guide.guide_daily_site_id)}
                   >
                     Remove
                   </button>

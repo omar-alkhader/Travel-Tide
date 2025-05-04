@@ -120,7 +120,7 @@ function GuidePage() {
       <div className="guides-list mt-4">
         {data?.guides?.length > 0 ? (
           data?.guides.map((guide, index) => (
-            <GuideCard key={index} guide={guide} />
+            <GuideCard key={guide.guide_daily_site_id} guide={guide} />
           ))
         ) : (
           <p className="text-center">
