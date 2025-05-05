@@ -23,8 +23,9 @@ import ChatPage from "./pages/ChatPage";
 import FlightsPage from "./components/FlightsPage";
 import HotelsPage from "./components/HotelsPage";
 import TravelPackagePage from "./components/TravelPackagePage";
-import BookingPage from "./components/BookingPage";
+import Checkout from "./components/Checkout";
 import PackageDetailsPage from "./components/PackageDetailsPage";
+import Booking from "./components/Booking";
 
 import ErrorPage from "./components/ErrorPage";
 import PreLoader from "./components/PreLoader";
@@ -87,11 +88,12 @@ function App() {
               <Route path="/hotels" element={<HotelsPage />} />
               <Route path="/packages" element={<TravelPackagePage />} />
               <Route path="/cities" element={<CityPage />} />
-              <Route path="/booking" element={<BookingPage />} />
+              <Route path="/checkout" element={<Checkout />} />
               <Route path="/p" element={<PackageDetailsPage />} />
               <Route path="/p" element={<PackageDetailsPage />} />
               <Route path="/load" element={<PreLoader />} />
               <Route path="/error" element={<ErrorPage />} />
+              <Route path="/booking" element={<Booking />} />
               {/* <Route path="/turkey" element={<Turkey />} />
               <Route path="/egypt" element={<Egypt />} />
               <Route path="/cyprus" element={<Cyprus />} />
