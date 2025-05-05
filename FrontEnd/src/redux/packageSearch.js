@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   departureCity: "",
   arrivalCity: "",
-  travellers: "",
+  travellers: 1,
   nights: "",
   departureDate: "",
   hasGuide: false,

@@ -162,49 +162,40 @@ const packagesData = [
     
 */
 async function getPackages(data) {
-  try {
-    const {
-      arrivalCity,
-      departureCity,
-      returnDate,
-      travellers,
-      departureDate,
-    } = data;
-    console.log(
-      arrivalCity,
-      departureCity,
-      returnDate,
-      travellers,
-      departureDate
-    );
-    /*
+  const { arrivalCity, departureCity, returnDate, travellers, departureDate } =
+    data;
+  console.log(
+    arrivalCity,
+    departureCity,
+    returnDate,
+    travellers,
+    departureDate
+  );
+  /*
       http://127.0.0.1:6600/api/hotels/package?departure_city=dubai&arrival_city=amman&num_participant=2&departure_date=2025-04-22&return_date=2025-04-29
     */
-    //http://127.0.0.1:6600/api/hotels/package?departure_city=${arrivalCity}&arrival_city=${departureCity}&num_participant=${travellers}&departure_date=${departureDate}&return_date=${returnDate}
-    const res = await fetch(
-      `http://127.0.0.1:6600/api/hotels/package?departure_city=${arrivalCity}&arrival_city=${departureCity}&num_participant=${travellers}&departure_date=${departureDate}&return_date=${returnDate}`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
-    if (!res.ok) {
-      throw new Error("failed to fetch packages");
+  //http://127.0.0.1:6600/api/hotels/package?departure_city=${arrivalCity}&arrival_city=${departureCity}&num_participant=${travellers}&departure_date=${departureDate}&return_date=${returnDate}
+  const res = await fetch(
+    `http://127.0.0.1:6600/api/hotels/package?departure_city=${arrivalCity}&arrival_city=${departureCity}&num_participant=${travellers}&departure_date=${departureDate}&return_date=${returnDate}`,
+    {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
     }
-    return await res.json();
-  } catch (err) {
-    console.log(err);
-    throw err;
+  );
+  const dataResponse = await res.json();
+  if (!res.ok) {
+    throw new Error(dataResponse.message || "Failed to fetch flights");
   }
+  return dataResponse;
 }
 function TravelPackagePage() {
   const [selectedFlight, setSelectedFlight] = useState(null);
   const [showFlightModal, setShowFlightModal] = useState(false);
   // Handle flight selection for modal
   const packageSearch = useSelector((state) => state.searchPackage);
-  const { data, isError, isPending } = useQuery({
+  const { data, isError, isPending, error } = useQuery({
     queryKey: ["packages", packageSearch],
     queryFn: () => getPackages(packageSearch),
   });
@@ -225,7 +216,7 @@ function TravelPackagePage() {
   //   return <div>no packages</div>;
   // }
   if (isError) {
-    return <ErrorPage />;
+    return <ErrorPage message={error.message} />;
   }
   return (
     <div className="travel-packages-page-container">
@@ -250,7 +241,6 @@ function TravelPackagePage() {
       </div>
 
       {/* Flight Details Modal */}
-      {isError && <div></div>}
       {showFlightModal && selectedFlight && (
         <FlightDetailsModal
           flight={selectedFlight}

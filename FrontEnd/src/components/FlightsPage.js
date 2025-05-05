@@ -131,6 +131,10 @@ const fetchFlights = async (search) => {
     `http://127.0.0.1:6600/api/flights/roundtrips?departure_city=${departureCity}&arrival_city=${arrivalCity}&departure_date=${departureDate}&return_date=${returnDate}&num_participant=${travelers}`
   );
   const data = await response.json();
+  if (!response.ok) {
+    // Throw a new Error with the server's message
+    throw new Error(data.message || "Failed to fetch flights");
+  }
   return data;
 };
 
@@ -229,8 +233,9 @@ function FlightsPage() {
     return <PreLoader />;
   }
   if (isError) {
-    return <ErrorPage />;
+    return <ErrorPage message={isError.message} />;
   }
+
   return (
     <>
       <PreLoader />

@@ -129,7 +129,7 @@ function FlightDetailsModal({ flight, onClose }) {
           </div>
 
           <div className="flight-card-price">
-            <div className="price-amount">{flight.price} JOD</div>
+            <div className="price-amount">{flight.totalPrice} $</div>
           </div>
         </div>
       </div>

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { setSearchPackage } from "../redux/packageSearch";
-import { setGuide } from "../redux/bookingSlice";
+import { setCity, setGuide, setTraveller } from "../redux/bookingSlice";
 
 function TripDetailsForm() {
   const [rooms, setRooms] = useState(1);
@@ -64,7 +64,7 @@ function TripDetailsForm() {
         city: cityName,
       })
     );
-    dispatch(setGuide(hasGuide));
+    dispatch(setCity(cityName));
     navigate("/packages");
   };
   console.log(hasGuide);

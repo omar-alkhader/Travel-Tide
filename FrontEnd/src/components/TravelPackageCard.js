@@ -11,8 +11,6 @@ function TravelPackageCard({ package: pkg, onViewFlight }) {
   const packageSearch = useSelector((state) => state.searchPackage);
   function handleClick(e, pkg) {
     e.preventDefault();
-    console.log(pkg.flight);
-    console.log(pkg.hotel);
     dispatch(
       setPackage({
         flight: pkg.flight,
@@ -20,11 +18,11 @@ function TravelPackageCard({ package: pkg, onViewFlight }) {
         fromDate: packageSearch.departureDate,
         toDate: packageSearch.returnDate,
         city: packageSearch.departureCity,
+        travellers: packageSearch.travellers,
       })
     );
 
     navigator("/booking");
-    console.log(pkg);
   }
   // Function to render star rating
   const renderStars = (stars) => {

@@ -64,6 +64,10 @@ function HotelsPage() {
         `http://127.0.0.1:6600/api/hotels/city/${searchHotel.city}`
       );
       const data = await res.json();
+      if (!res.ok) {
+        // Throw a new Error with the server's message
+        throw new Error(data.message || "Failed to fetch flights");
+      }
       return data;
     },
   });
@@ -123,12 +127,11 @@ function HotelsPage() {
   }
 
   if (isError) {
-    return <ErrorPage />;
+    return <ErrorPage message={isError.message} />;
   }
 
   return (
     <>
-      <PreLoader />
       <div className="hotels-page-container">
         <div className="container mt-4">
           <HotelSearchBox

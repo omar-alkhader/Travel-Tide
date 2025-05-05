@@ -21,7 +21,8 @@ async function signUp(data) {
     }
     return await res.json();
   } catch (err) {
-    console.log(err);
+    alert("password or email is wrong");
+    throw err;
   }
 }
 const SignUp = () => {
