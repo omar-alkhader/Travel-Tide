@@ -26,7 +26,7 @@ function HotelCard({ hotel }) {
         city: searchHotel.city,
       })
     );
-    navigate("/booking");
+    navigate("/checkout");
   }
   return (
     <div className="hotel-card">

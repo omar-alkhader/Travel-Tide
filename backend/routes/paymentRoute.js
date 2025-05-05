@@ -6,6 +6,7 @@ const stripe = new Stripe(process.env.STRIP_SECRET_KEY);
 
 router.post("/", async (req, res) => {
   const { amount } = req.body;
+  console.log(amount);
   if (!amount || typeof amount !== "number" || amount <= 0) {
     return res.status(400).json({ error: "Invalid amount" });
   }

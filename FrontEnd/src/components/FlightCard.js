@@ -24,16 +24,22 @@ function FlightCard({ flight }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const flightSearch = useSelector((state) => state.searchFlight);
+  const user = useSelector((state) => state.user.user);
   function handleAddFlight(flight) {
+    if (user === null) {
+      navigate("/SignIn");
+      return;
+    }
     dispatch(
       setFlight({
         flight,
         departureDate: flightSearch.departureDate,
         returnDate: flightSearch.returnDate,
         city: flightSearch.arrivalCity,
+        travellers: flightSearch.travelers,
       })
     );
-    navigate("/booking");
+    navigate("/checkout");
   }
   return (
     <div className="flight-card">

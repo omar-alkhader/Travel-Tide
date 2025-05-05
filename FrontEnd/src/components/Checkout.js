@@ -70,6 +70,7 @@ function Checkout() {
     navigate("/guides");
   };
   const bookingDetails = useSelector((state) => state.booking);
+  const user = useSelector((state) => state.user);
   console.log(bookingDetails);
   const { guides } = bookingDetails;
   console.log(guides);

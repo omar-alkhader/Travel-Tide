@@ -10,13 +10,13 @@ function TripDetailsForm() {
   const [departureDate, setDepartureDate] = useState("");
   const [nights, setNights] = useState(0);
   const [arrivalCity, setArrivalCity] = useState("");
-  // const [departureCity, setDepartureCity] = useState("");
   const [hasGuide, setHasGuide] = useState(true);
   const [travellers, setTravellers] = useState(1);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const location = useLocation();
   const { cityName } = location.state || { cityName: "Unknown City" };
+  const [country, setCountry] = useState(cityName);
   // const handleRoomChange = (e) => {
   //   setRooms(e.target.value);
   // };
@@ -54,7 +54,7 @@ function TripDetailsForm() {
     console.log(test);
     dispatch(
       setSearchPackage({
-        departureCity: cityName,
+        departureCity: country,
         arrivalCity,
         returnDate: departureDate, // correct now
         departureDate: arrivalDate, // correct now
@@ -76,7 +76,12 @@ function TripDetailsForm() {
       <div className="TripDetails-row">
         <div className="TripDetails-group">
           <label htmlFor="arrivalCity">Arrival City</label>
-          <input type="text" id="arrivalCity" defaultValue={cityName} />
+          <input
+            type="text"
+            id="arrivalCity"
+            defaultValue={country}
+            onChange={(e) => setCountry(e.target.value)}
+          />
         </div>
         <div className="TripDetails-group">
           <label htmlFor="departureCity">Departure City</label>

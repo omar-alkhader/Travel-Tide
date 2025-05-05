@@ -26,8 +26,8 @@ exports.searchRoundTripFlights = catchAsync(async (req, res, next) => {
 
   const query = `
     SELECT * FROM flights
-    WHERE LOWER(departure_city) = $1 
-      AND LOWER(arrival_city) = $2
+    WHERE LOWER(departure_city) = LOWER($1) 
+      AND LOWER(arrival_city) = LOWER($2)
       AND departure_date = $3
       AND seats >= $4
     ORDER BY departure_time ASC
@@ -49,6 +49,14 @@ exports.searchRoundTripFlights = catchAsync(async (req, res, next) => {
   const { rows: departureFlights } = await db.query(query, departureValues);
   const { rows: returnFlights } = await db.query(query, returnValues); // same query for return
 
+  if (departureFlights.length == 0 || returnFlights.length == 0) {
+    return res.status(200).json({
+      status: "success",
+      results: 0,
+      flights: [],
+      message: "there are no flights with dates you specified",
+    });
+  }
   const matchedFlights = [];
   const integerNumParticipant = parseInt(numParticipants);
   for (const dep of departureFlights) {

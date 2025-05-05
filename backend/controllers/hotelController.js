@@ -37,17 +37,26 @@ exports.getHotel = catchAsync(async (req, res, next) => {
 exports.getHotelByCity = catchAsync(async (req, res, next) => {
   const { cityName } = req.params;
   if (!cityName) {
-    return next(new AppError("pleave provide valid city_id"), 404);
+    return next(new AppError("pleave provide valid city"), 404);
   }
   const cityResult = await db.query(
     `SELECT id FROM city WHERE LOWER(name) = LOWER($1)`,
     [cityName]
   );
   if (cityResult.rows.length === 0) {
-    return next(new AppError("City not found", 404));
+    return next(
+      new AppError(`there are no hotels in ${cityName || "unkown city"}`, 404)
+    );
   }
   const cityId = cityResult.rows[0].id;
   const hotels = await hotelModel.getHotelsByCity(cityId);
+  if (hotels.length === 0) {
+    return res.status(200).json({
+      status: "success",
+      hotels,
+      message: "there are no hotels with this city",
+    });
+  }
   res.status(200).json({
     status: "success",
     hotels,
@@ -94,7 +103,11 @@ exports.getHotelsWithFlight = catchAsync(async (req, res, next) => {
   );
 
   if (departureFlights.length === 0) {
-    return next(new AppError("No departure flights found", 404));
+    return res.status(200).json({
+      status: "success",
+      packages: [],
+      message: `there are no flights with input you entered`,
+    });
   }
 
   const dep = departureFlights[0];
@@ -119,7 +132,11 @@ exports.getHotelsWithFlight = catchAsync(async (req, res, next) => {
   );
 
   if (returnFlights.length === 0) {
-    return next(new AppError("No return flights found", 404));
+    return res.status(200).json({
+      status: "success",
+      packages: [],
+      message: `there are no flights with input you entered`,
+    });
   }
 
   const ret = returnFlights[0];
@@ -174,7 +191,13 @@ exports.getHotelsWithFlight = catchAsync(async (req, res, next) => {
     `,
     [arrival_city]
   );
-
+  if (hotels.length == 0) {
+    return res.status(200).json({
+      status: "success",
+      packages: [],
+      message: `there are no hotels in ${arrival_city}`,
+    });
+  }
   const start = new Date(dep.departure_date);
   const end = new Date(ret.departure_date);
   const timeDiff = Math.abs(end - start);
@@ -188,6 +211,7 @@ exports.getHotelsWithFlight = catchAsync(async (req, res, next) => {
   // 3. Combine hotels with flight
   const result = hotels.map((hotel) => ({
     hotel: {
+      id: hotel.id,
       name: hotel.name,
       address: hotel.address,
       stars: hotel.stars,

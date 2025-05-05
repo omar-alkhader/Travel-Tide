@@ -9,8 +9,13 @@ function TravelPackageCard({ package: pkg, onViewFlight }) {
   const [showPriceDetails, setShowPriceDetails] = useState(false);
   const dispatch = useDispatch();
   const packageSearch = useSelector((state) => state.searchPackage);
+  const user = useSelector((state) => state.user.user);
   function handleClick(e, pkg) {
     e.preventDefault();
+    if (user === null) {
+      navigator("/SignIn");
+      return;
+    }
     dispatch(
       setPackage({
         flight: pkg.flight,
@@ -22,7 +27,7 @@ function TravelPackageCard({ package: pkg, onViewFlight }) {
       })
     );
 
-    navigator("/booking");
+    navigator("/checkout");
   }
   // Function to render star rating
   const renderStars = (stars) => {

@@ -6,6 +6,7 @@ import "../styles/auth.css";
 import { useMutation } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../redux/userSlice";
+import toast from "react-hot-toast";
 const loginUser = async (data) => {
   const res = await fetch(`http://127.0.0.1:6600/api/users/login`, {
     method: "POST",
@@ -30,11 +31,28 @@ const SignIn = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const mutation = useMutation({
+    mutationKey: ["user"],
     mutationFn: loginUser,
     onSuccess: (data) => {
-      console.log(data);
+      toast.success("Login successful", {
+        style: {
+          backgroundColor: "#4BB543",
+          color: "#fff",
+        },
+      });
       dispatch(loginSuccess(data.user));
-      console.log(document.cookie);
+      navigate(-1, {
+        replace: false,
+      });
+    },
+    onError: (err) => {
+      console.log("hello");
+      toast.error(err.message || "login failed", {
+        style: {
+          backgroundColor: "#F56260",
+          color: "#fff",
+        },
+      });
     },
   });
   const handleSubmit = (e) => {
@@ -50,8 +68,6 @@ const SignIn = () => {
     //   email,
     //   userType,
     // });
-
-    navigate("/");
   };
 
   return (

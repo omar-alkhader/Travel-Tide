@@ -5,6 +5,7 @@ import "../styles/TravelPackagePage.css";
 import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import ErrorPage from "./ErrorPage";
+import PreLoader from "./PreLoader";
 import { setPackage } from "../redux/bookingSlice";
 
 // Sample package data (combining hotels and flights)
@@ -210,13 +211,13 @@ function TravelPackagePage() {
     setSelectedFlight(null);
   };
   if (isPending) {
-    return <div>is Loading</div>;
+    return <PreLoader />;
   }
   // if (isError) {
   //   return <div>no packages</div>;
   // }
-  if (isError) {
-    return <ErrorPage message={error.message} />;
+  if (isError || data?.packages?.length === 0) {
+    return <ErrorPage message={data?.message || error.message} />;
   }
   return (
     <div className="travel-packages-page-container">

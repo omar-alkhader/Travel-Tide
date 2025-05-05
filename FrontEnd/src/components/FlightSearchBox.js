@@ -1,71 +1,40 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setSearchFlight } from "../redux/flightSearchReducer";
 import { FaPlane, FaCalendar, FaUsers } from "react-icons/fa";
 
-function FlightSearchBox({
-  initialDepartureCity = "",
-  initialArrivalCity = "",
-  initialDepartureDate = "",
-  initialReturnDate = "",
-  initialTravelers = "1",
-}) {
-  const [departureCity, setDepartureCity] = useState(initialDepartureCity);
-  const [arrivalCity, setArrivalCity] = useState(initialArrivalCity);
-  const [departureDate, setDepartureDate] = useState(initialDepartureDate);
-  const [returnDate, setReturnDate] = useState(initialReturnDate);
-  const [travelers, setTravelers] = useState(initialTravelers);
-  const [showSearchForm, setShowSearchForm] = useState(false);
-  const navigate = useNavigate();
+function FlightSearchBox() {
+  const dispatch = useDispatch();
+  const search = useSelector((state) => state.searchFlight);
 
-  // Update state when props change
+  const [localSearch, setLocalSearch] = useState(search);
+  const [showSearchForm, setShowSearchForm] = useState(false);
+
   useEffect(() => {
-    setDepartureCity(initialDepartureCity);
-    setArrivalCity(initialArrivalCity);
-    setDepartureDate(initialDepartureDate);
-    setReturnDate(initialReturnDate);
-    setTravelers(initialTravelers);
-  }, [
-    initialDepartureCity,
-    initialArrivalCity,
-    initialDepartureDate,
-    initialReturnDate,
-    initialTravelers,
-  ]);
+    setLocalSearch(search);
+  }, [search]);
 
   const handleSearch = () => {
+    const { departureCity, arrivalCity, departureDate, returnDate, travelers } =
+      localSearch;
     if (!departureCity || !arrivalCity || !departureDate || !returnDate) {
       alert("Please fill in all required fields.");
       return;
     }
 
-    // Navigate with updated search parameters
-    navigate(
-      `/flights?departureCity=${encodeURIComponent(
-        departureCity
-      )}&arrivalCity=${encodeURIComponent(
-        arrivalCity
-      )}&departureDate=${encodeURIComponent(
-        departureDate
-      )}&returnDate=${encodeURIComponent(
-        returnDate
-      )}&travelers=${encodeURIComponent(travelers)}`,
-      { replace: true }
-    );
-
-    // Close the search form after searching
+    dispatch(setSearchFlight(localSearch)); // Triggers React Query refetch
     setShowSearchForm(false);
   };
 
   return (
     <div className="flight-search-container">
-      {/* Main search info rectangle */}
       <div className="flight-search-info">
         <div className="flight-search-details">
           <div className="flight-info-group">
             <label>Destination</label>
             <span>
-              {departureCity && arrivalCity
-                ? `${departureCity} - ${arrivalCity}`
+              {localSearch.departureCity && localSearch.arrivalCity
+                ? `${localSearch.departureCity} - ${localSearch.arrivalCity}`
                 : "Not selected"}
             </span>
           </div>
@@ -73,9 +42,11 @@ function FlightSearchBox({
           <div className="flight-info-group">
             <label>Dates</label>
             <span>
-              {departureDate && returnDate
-                ? `${new Date(departureDate).toLocaleDateString()} - ${new Date(
-                    returnDate
+              {localSearch.departureDate && localSearch.returnDate
+                ? `${new Date(
+                    localSearch.departureDate
+                  ).toLocaleDateString()} - ${new Date(
+                    localSearch.returnDate
                   ).toLocaleDateString()}`
                 : "Not selected"}
             </span>
@@ -84,7 +55,8 @@ function FlightSearchBox({
           <div className="flight-info-group">
             <label>Travelers</label>
             <span>
-              {travelers} {parseInt(travelers) === 1 ? "Traveler" : "Travelers"}
+              {localSearch.travelers}{" "}
+              {parseInt(localSearch.travelers) === 1 ? "Traveler" : "Travelers"}
             </span>
           </div>
         </div>
@@ -97,7 +69,6 @@ function FlightSearchBox({
         </button>
       </div>
 
-      {/* Expandable search form */}
       {showSearchForm && (
         <div className="flight-search-form">
           <div className="flight-form-content">
@@ -106,8 +77,13 @@ function FlightSearchBox({
               <input
                 type="text"
                 className="flight-input"
-                value={departureCity}
-                onChange={(e) => setDepartureCity(e.target.value)}
+                value={localSearch.departureCity}
+                onChange={(e) =>
+                  setLocalSearch({
+                    ...localSearch,
+                    departureCity: e.target.value,
+                  })
+                }
                 placeholder="Departure City"
               />
             </div>
@@ -117,8 +93,13 @@ function FlightSearchBox({
               <input
                 type="text"
                 className="flight-input"
-                value={arrivalCity}
-                onChange={(e) => setArrivalCity(e.target.value)}
+                value={localSearch.arrivalCity}
+                onChange={(e) =>
+                  setLocalSearch({
+                    ...localSearch,
+                    arrivalCity: e.target.value,
+                  })
+                }
                 placeholder="Arrival City"
               />
             </div>
@@ -128,8 +109,13 @@ function FlightSearchBox({
               <input
                 type="date"
                 className="flight-input"
-                value={departureDate}
-                onChange={(e) => setDepartureDate(e.target.value)}
+                value={localSearch.departureDate}
+                onChange={(e) =>
+                  setLocalSearch({
+                    ...localSearch,
+                    departureDate: e.target.value,
+                  })
+                }
                 placeholder="Departure Date"
               />
             </div>
@@ -139,8 +125,10 @@ function FlightSearchBox({
               <input
                 type="date"
                 className="flight-input"
-                value={returnDate}
-                onChange={(e) => setReturnDate(e.target.value)}
+                value={localSearch.returnDate}
+                onChange={(e) =>
+                  setLocalSearch({ ...localSearch, returnDate: e.target.value })
+                }
                 placeholder="Return Date"
               />
             </div>
@@ -151,14 +139,16 @@ function FlightSearchBox({
                 type="number"
                 className="flight-input"
                 min="1"
-                value={travelers}
-                onChange={(e) => setTravelers(e.target.value)}
+                value={localSearch.travelers}
+                onChange={(e) =>
+                  setLocalSearch({ ...localSearch, travelers: e.target.value })
+                }
                 placeholder="Travelers"
               />
             </div>
 
             <button className="flight-search-button" onClick={handleSearch}>
-              Searchss
+              Search
             </button>
           </div>
         </div>

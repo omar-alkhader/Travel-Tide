@@ -1,340 +1,198 @@
 import React, { useState, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import FlightSearchBox from "../components/FlightSearchBox";
-import FlightCard from "../components/FlightCard";
-import "../styles/FlightsPage.css";
+import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
+import FlightSearchBox from "../components/FlightSearchBox";
+import FlightCard from "../components/FlightCard";
 import PreLoader from "../components/PreLoader";
 import ErrorPage from "./ErrorPage";
+import "../styles/FlightsPage.css";
 
-// Sample flight data
-const flightsData = [
-  {
-    id: 1,
-    price: 350,
-    airline: "Royal Jordanian",
-    flightNumber: "RJ507",
-    departure: {
-      city: "Amman",
-      time: "08:30",
-      date: "2025-03-15",
-    },
-    arrival: {
-      city: "Dubai",
-      time: "12:45",
-      date: "2025-03-15",
-    },
-    stops: 0,
-    duration: "4h 15m",
-    returnFlight: {
-      airline: "Royal Jordanian",
-      flightNumber: "RJ508",
-      departure: {
-        city: "Dubai",
-        time: "14:30",
-        date: "2025-03-22",
-      },
-      arrival: {
-        city: "Amman",
-        time: "16:45",
-        date: "2025-03-22",
-      },
-      stops: 0,
-      duration: "2h 15m",
-    },
-  },
-  {
-    id: 2,
-    price: 425,
-    airline: "Emirates",
-    flightNumber: "EK908",
-    departure: {
-      city: "Amman",
-      time: "10:15",
-      date: "2025-03-15",
-    },
-    arrival: {
-      city: "Dubai",
-      time: "15:30",
-      date: "2025-03-15",
-    },
-    stops: 1,
-    duration: "5h 15m",
-    returnFlight: {
-      airline: "Emirates",
-      flightNumber: "EK909",
-      departure: {
-        city: "Dubai",
-        time: "09:45",
-        date: "2025-03-22",
-      },
-      arrival: {
-        city: "Amman",
-        time: "12:00",
-        date: "2025-03-22",
-      },
-      stops: 0,
-      duration: "2h 15m",
-    },
-  },
-  {
-    id: 3,
-    price: 310,
-    airline: "FlyDubai",
-    flightNumber: "FZ632",
-    departure: {
-      city: "Amman",
-      time: "06:20",
-      date: "2025-03-15",
-    },
-    arrival: {
-      city: "Dubai",
-      time: "10:40",
-      date: "2025-03-15",
-    },
-    stops: 0,
-    duration: "4h 20m",
-    returnFlight: {
-      airline: "FlyDubai",
-      flightNumber: "FZ633",
-      departure: {
-        city: "Dubai",
-        time: "23:55",
-        date: "2025-03-22",
-      },
-      arrival: {
-        city: "Amman",
-        time: "02:15",
-        date: "2025-03-23",
-      },
-      stops: 0,
-      duration: "2h 20m",
-    },
-  },
-];
-
-// Available airlines
-const airlines = [
-  { name: "Royal Jordanian", code: "RJ", price: "From 350 JOD" },
-  { name: "Emirates", code: "EK", price: "From 425 JOD" },
-  { name: "FlyDubai", code: "FZ", price: "From 310 JOD" },
-  { name: "Qatar Airways", code: "QR", price: "From 390 JOD" },
-  { name: "Turkish Airlines", code: "TK", price: "From 380 JOD" },
-];
-// هاظ الفنكشن اللي برسل للسيرفر عشان يجيب الطيارات
+// Fetch flights
 const fetchFlights = async (search) => {
   const { arrivalCity, departureCity, departureDate, returnDate, travelers } =
     search;
-
   const response = await fetch(
     `http://127.0.0.1:6600/api/flights/roundtrips?departure_city=${departureCity}&arrival_city=${arrivalCity}&departure_date=${departureDate}&return_date=${returnDate}&num_participant=${travelers}`
   );
   const data = await response.json();
-  if (!response.ok) {
-    // Throw a new Error with the server's message
-    throw new Error(data.message || "Failed to fetch flights");
-  }
+  if (!response.ok) throw new Error(data.message || "Failed to fetch flights");
   return data;
 };
 
 function FlightsPage() {
-  const location = useLocation();
   const navigate = useNavigate();
-  const [flights, setFlights] = useState(flightsData);
-  const [priceRange, setPriceRange] = useState([300, 500]);
-  const [selectedAirlines, setSelectedAirlines] = useState({});
-  const [isInitialLoad, setIsInitialLoad] = useState(true);
-  const [test, setTest] = useState(null);
-  // Get search parameters from URL query
-  const queryParams = new URLSearchParams(location.search);
-  const initialDepartureCity = queryParams.get("departureCity") || "";
-  const initialArrivalCity = queryParams.get("arrivalCity") || "";
-  const initialDepartureDate = queryParams.get("departureDate") || "";
-  const initialReturnDate = queryParams.get("returnDate") || "";
-  const initialTravelers = queryParams.get("travelers") || "1";
   const search = useSelector((state) => state.searchFlight);
-  const bookingDetails = useSelector((state) => state.booking);
-  console.log(bookingDetails);
-  const { data, isPending, isError } = useQuery({
+
+  const [flights, setFlights] = useState([]);
+  const [filteredFlights, setFilteredFlights] = useState([]);
+  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [selectedAirlines, setSelectedAirlines] = useState({});
+  const [airlineOptions, setAirlineOptions] = useState([]);
+
+  const { data, isPending, isError, error } = useQuery({
     queryKey: ["flights", search],
     queryFn: () => fetchFlights(search),
   });
-  // console.log(flightsData);
-  useEffect(() => {
-    // Check if this is a page refresh by examining the navigation type
-    const isPageRefresh =
-      window.performance &&
-      window.performance.navigation &&
-      window.performance.navigation.type === 1;
 
-    // Alternative method for newer browsers
-    const navEntries = performance.getEntriesByType("navigation");
-    const isRefresh = navEntries.length > 0 && navEntries[0].type === "reload";
-
-    if (isPageRefresh || isRefresh) {
-      // This is a page refresh, clear URL parameters
-      navigate("/flights", { replace: true });
-      setIsInitialLoad(true);
-    }
-  }, []);
+  // Extract airlines and set filters
   useEffect(() => {
-    setTest(data?.flights);
+    if (!data?.flights) return;
+
+    const flightsData = data.flights;
+    setFlights(flightsData);
+    setFilteredFlights(flightsData);
+
+    const airlineMap = {};
+
+    flightsData.forEach((flight) => {
+      const name = flight.airline;
+      const price = parseFloat(flight.totalPrice);
+
+      if (!airlineMap[name] || price < airlineMap[name]) {
+        airlineMap[name] = price;
+      }
+    });
+
+    const options = Object.entries(airlineMap).map(([name, price]) => ({
+      name,
+      price,
+    }));
+
+    setAirlineOptions(options);
+    setPriceRange([
+      Math.min(...flightsData.map((f) => parseFloat(f.totalPrice))),
+      Math.max(...flightsData.map((f) => parseFloat(f.totalPrice))),
+    ]);
   }, [data]);
-  console.log(test);
-  console.log(isPending);
-  if (isPending) {
-    console.log("HEllo");
-  }
-  console.log(data);
-  // Function to filter flights
-  const filterFlights = () => {
-    let filtered = [...flightsData];
 
-    // Filter by price
-    filtered = filtered.filter(
-      (flight) => flight.price >= priceRange[0] && flight.price <= priceRange[1]
-    );
+  // Apply filters
+  useEffect(() => {
+    if (!flights.length) return;
 
-    // Filter by selected airlines
-    const selectedAirlinesList = Object.entries(selectedAirlines)
+    const selectedNames = Object.entries(selectedAirlines)
       .filter(([_, selected]) => selected)
-      .map(([airline, _]) => airline);
+      .map(([name]) => name);
 
-    if (selectedAirlinesList.length > 0) {
+    let filtered = [...flights];
+
+    if (selectedNames.length > 0) {
       filtered = filtered.filter((flight) =>
-        selectedAirlinesList.includes(flight.airline)
+        selectedNames.includes(flight.airline)
       );
     }
 
-    setFlights(filtered);
-  };
-
-  // Reset all filters
-  const resetFilters = () => {
-    setPriceRange([300, 500]);
-    setSelectedAirlines({});
-    setFlights(flightsData);
-  };
-
-  // Handle airline selection
-  const handleAirlineChange = (airline) => {
-    setSelectedAirlines({
-      ...selectedAirlines,
-      [airline]: !selectedAirlines[airline],
+    filtered = filtered.filter((flight) => {
+      const price = parseFloat(flight.totalPrice);
+      return price >= priceRange[0] && price <= priceRange[1];
     });
+
+    setFilteredFlights(filtered);
+  }, [selectedAirlines, priceRange, flights]);
+
+  const resetFilters = () => {
+    setSelectedAirlines({});
+    setPriceRange([
+      Math.min(...flights.map((f) => parseFloat(f.totalPrice))),
+      Math.max(...flights.map((f) => parseFloat(f.totalPrice))),
+    ]);
+    setFilteredFlights(flights);
   };
 
-  // Apply filters when they change
-  useEffect(() => {
-    filterFlights();
-  }, [priceRange, selectedAirlines]);
-  if (isPending) {
-    return <PreLoader />;
-  }
-  if (isError) {
-    return <ErrorPage message={isError.message} />;
-  }
+  const handleAirlineChange = (airline) => {
+    setSelectedAirlines((prev) => ({
+      ...prev,
+      [airline]: !prev[airline],
+    }));
+  };
+
+  if (isPending) return <PreLoader />;
+  if (isError || data?.flights?.length === 0)
+    return <ErrorPage message={data?.message || error.message} />;
 
   return (
-    <>
-      <PreLoader />
-      <div className="flights-page-container">
-        <div className="container mt-4">
-          <FlightSearchBox
-            initialDepartureCity={`${search.departureCity[0].toUpperCase()}${search.departureCity
-              .slice(1)
-              .toLowerCase()}`}
-            initialArrivalCity={`${search.arrivalCity[0].toUpperCase()}${search.arrivalCity
-              .slice(1)
-              .toLowerCase()}`}
-            initialDepartureDate={search.departureDate}
-            initialReturnDate={search.returnDate}
-            initialTravelers={search.travelers}
-          />
+    <div className="flights-page-container">
+      <div className="container mt-4">
+        <FlightSearchBox />
 
-          <div className="flights-content-container">
-            {/* Filters Section */}
-            <div className="flights-filters">
-              <div className="filters-header">
-                <h4>Filters</h4>
-                <button className="reset-filters" onClick={resetFilters}>
-                  Reset All
-                </button>
-              </div>
+        <div className="flights-content-container">
+          <div className="flights-filters">
+            <div className="filters-header">
+              <h4>Filters</h4>
+              <button className="reset-filters" onClick={resetFilters}>
+                Reset All
+              </button>
+            </div>
 
-              {/* Price Range Filter */}
-              <div className="filter-section">
-                <h5>Price Range</h5>
-                <div className="price-slider-container">
-                  <div className="price-display">
-                    <span>{priceRange[0]} JOD</span>
-                    <span>{priceRange[1]} JOD</span>
-                  </div>
-                  <div className="dual-slider">
-                    <input
-                      type="range"
-                      min="300"
-                      max="500"
-                      value={priceRange[0]}
-                      onChange={(e) =>
-                        setPriceRange([parseInt(e.target.value), priceRange[1]])
-                      }
-                      className="slider min-slider"
-                    />
-                    <input
-                      type="range"
-                      min="300"
-                      max="500"
-                      value={priceRange[1]}
-                      onChange={(e) =>
-                        setPriceRange([priceRange[0], parseInt(e.target.value)])
-                      }
-                      className="slider max-slider"
-                    />
-                  </div>
+            <div className="filter-section">
+              <h5>Price Range</h5>
+              <div className="price-slider-container">
+                <div className="price-display">
+                  <span>{priceRange[0]} JOD</span>
+                  <span>{priceRange[1]} JOD</span>
                 </div>
-              </div>
-
-              {/* Airlines Filter */}
-              <div className="filter-section">
-                <h5>Airlines</h5>
-                {airlines.map((airline) => (
-                  <div key={airline.code} className="airline-option">
-                    <label className="checkbox-container">
-                      <input
-                        type="checkbox"
-                        checked={!!selectedAirlines[airline.name]}
-                        onChange={() => handleAirlineChange(airline.name)}
-                      />
-                      <span className="checkmark"></span>
-                      <div className="airline-info">
-                        <span className="airline-name">{airline.name}</span>
-                        <span className="airline-price">{airline.price}</span>
-                      </div>
-                    </label>
-                  </div>
-                ))}
+                <div className="dual-slider">
+                  <input
+                    type="range"
+                    min="0"
+                    max="1000"
+                    value={priceRange[0]}
+                    onChange={(e) =>
+                      setPriceRange([parseFloat(e.target.value), priceRange[1]])
+                    }
+                    className="slider min-slider"
+                  />
+                  <input
+                    type="range"
+                    min="0"
+                    max="1000"
+                    value={priceRange[1]}
+                    onChange={(e) =>
+                      setPriceRange([priceRange[0], parseFloat(e.target.value)])
+                    }
+                    className="slider max-slider"
+                  />
+                </div>
               </div>
             </div>
 
-            {/* Flight Results */}
-            <div className="flights-results">
-              {test?.length > 0 ? (
-                test.map((flight) => (
-                  <FlightCard key={flight.id} flight={flight} />
-                ))
-              ) : (
-                <div className="no-flights">
-                  <p>No flights match your search criteria.</p>
-                  <p>Try adjusting your filters or search parameters.</p>
+            <div className="filter-section">
+              <h5>Airlines</h5>
+              {airlineOptions.map((airline) => (
+                <div key={airline.name} className="airline-option">
+                  <label className="checkbox-container">
+                    <input
+                      type="checkbox"
+                      checked={!!selectedAirlines[airline.name]}
+                      onChange={() => handleAirlineChange(airline.name)}
+                    />
+                    <span className="checkmark"></span>
+                    <div className="airline-info">
+                      <span className="airline-name">{airline.name}</span>
+                      <span className="airline-price">
+                        From {airline.price} JOD
+                      </span>
+                    </div>
+                  </label>
                 </div>
-              )}
+              ))}
             </div>
+          </div>
+
+          <div className="flights-results">
+            {filteredFlights.length > 0 ? (
+              filteredFlights.map((flight) => (
+                <FlightCard key={flight.id} flight={flight} />
+              ))
+            ) : (
+              <div className="no-flights">
+                <p>No flights match your search criteria.</p>
+              </div>
+            )}
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 }
 

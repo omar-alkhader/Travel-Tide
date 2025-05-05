@@ -22,7 +22,69 @@ import { setSearchFlight } from "../redux/flightSearchReducer";
 import { setSearchGuide } from "../redux/guideSearchReducer";
 import { setSearchHotel } from "../redux/hotelSearchReducer";
 import { setTraveller } from "../redux/bookingSlice";
+import toast from "react-hot-toast";
 
+function validateFlightSearch({
+  departureCity,
+  arrivalCity,
+  departureDate,
+  returnDate,
+  travelers,
+}) {
+  console.log("hello");
+  const now = new Date();
+  const depDate = new Date(departureDate);
+  const retDate = new Date(returnDate);
+  const oneDayInMs = 24 * 60 * 60 * 1000;
+
+  if (
+    !departureCity ||
+    !arrivalCity ||
+    !departureDate ||
+    !returnDate ||
+    !travelers
+  ) {
+    toast.error("All fields are required.", {
+      style: {
+        backgroundColor: "#F56260",
+        color: "#fff",
+      },
+    });
+    return false;
+  }
+
+  if (departureCity === arrivalCity) {
+    toast.error("Departure and arrival cities must be different.", {
+      style: {
+        backgroundColor: "#F56260",
+        color: "#fff",
+      },
+    });
+    return false;
+  }
+
+  if (depDate <= now) {
+    toast.error("Departure date must be in the future.", {
+      style: {
+        backgroundColor: "#F56260",
+        color: "#fff",
+      },
+    });
+    return false;
+  }
+
+  if (retDate - depDate < oneDayInMs) {
+    toast.error("Return date must be at least one day after departure.", {
+      style: {
+        backgroundColor: "#F56260",
+        color: "#fff",
+      },
+    });
+    return false;
+  }
+
+  return true;
+}
 function HomePage() {
   const { setIsChatOpen } = useOutletContext();
   const [activeTab, setActiveTab] = useState("flights");
@@ -47,7 +109,6 @@ function HomePage() {
   const [rooms, setRooms] = useState(1);
   const [guestsPerRoom, setGuestsPerRoom] = useState([2]);
   const [nationality, setNationality] = useState("Jordanian");
-
   // Handle Check-in Change
   const handleCheckInChange = (e) => {
     setCheckIn(e.target.value);
@@ -201,6 +262,21 @@ function HomePage() {
                 className="HomePage-form-inline form-inline justify-content-center"
                 onSubmit={(e) => {
                   e.preventDefault();
+                  const today = new Date().setHours(0, 0, 0, 0);
+                  const checkInDate = new Date(checkIn).setHours(0, 0, 0, 0);
+
+                  if (checkInDate < today) {
+                    toast.error(
+                      "Check-in date must be today or in the future.",
+                      {
+                        style: {
+                          backgroundColor: "#F56260",
+                          color: "#fff",
+                        },
+                      }
+                    );
+                    return;
+                  }
                   dispatch(
                     setSearchHotel({
                       city: hotelDestination,
@@ -261,6 +337,16 @@ function HomePage() {
                 className="HomePage-form-inline form-inline justify-content-center"
                 onSubmit={(e) => {
                   e.preventDefault();
+                  // const isValid = validateFlightSearch({
+                  //   departureCity,
+                  //   arrivalCity,
+                  //   departureDate,
+                  //   returnDate,
+                  //   travelers: flightTravellers,
+                  // });
+                  // console.log(isValid);
+                  // if (!isValid) return;
+                  console.log("hello");
                   dispatch(
                     setSearchFlight({
                       departureCity,
@@ -270,8 +356,6 @@ function HomePage() {
                       travelers: flightTravellers,
                     })
                   );
-                  console.log(flightTravellers);
-                  dispatch(setTraveller(flightTravellers));
                   navigate("/flights");
                 }}
               >
@@ -318,6 +402,24 @@ function HomePage() {
                 className="HomePage-form-inline form-inline justify-content-center"
                 onSubmit={(e) => {
                   e.preventDefault();
+
+                  const currentDate = new Date(); // Get the current date and time
+                  const guideDateValue = new Date(guideDate); // Convert guideDate to a Date object
+
+                  // Check if guideDate is in the future (strictly greater than current date and time)
+                  if (guideDateValue <= currentDate) {
+                    toast.error(
+                      "Check-in date must be today or in the future.",
+                      {
+                        style: {
+                          backgroundColor: "#F56260",
+                          color: "#fff",
+                        },
+                      }
+                    );
+                    return; // Prevent navigation if the date is invalid
+                  }
+
                   dispatch(
                     setSearchGuide({
                       city: guideCity,
