@@ -1,3 +1,4 @@
+// ... imports stay the same
 import React, { useState } from "react";
 import visaLogo from "../assets/visa.png";
 import "../styles/PaymentPage.css";
@@ -32,11 +33,16 @@ function PaymentForm() {
   const hasDiscount = user?.points >= 1000;
   const discount = hasDiscount ? Math.floor((-basePrice - tax) * 0.25) : 0;
   const priceAfterDiscount = totalPrice + discount;
-  const amount = Math.round(priceAfterDiscount * 100); // Stripe in cents
+  const amount = Math.round(priceAfterDiscount * 100);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    if (!formData?.cardName) {
+      toast.error("please provide name", {
+        style: { backgroundColor: "#F56260", color: "#fff" },
+      });
+      return;
+    }
     if (!user?.id || !stripe || !elements) {
       toast.error("You must be logged in and Stripe must be ready.", {
         style: { backgroundColor: "#F56260", color: "#fff" },
@@ -70,7 +76,6 @@ function PaymentForm() {
     let bookingId = null;
 
     try {
-      // Step 1: Book first
       const bookingRes = await fetch("http://127.0.0.1:6600/api/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -81,7 +86,6 @@ function PaymentForm() {
       if (!bookingRes.ok) throw new Error(bookingData.message);
       bookingId = bookingData.booking.id;
 
-      // Step 2: Create Stripe payment intent
       const paymentIntentRes = await fetch(
         "http://127.0.0.1:6600/api/create-payment-intent",
         {
@@ -93,7 +97,6 @@ function PaymentForm() {
       const { clientSecret } = await paymentIntentRes.json();
       if (!clientSecret) throw new Error("Failed to get client secret.");
 
-      // Step 3: Confirm payment
       const cardElement = elements.getElement(CardElement);
       const { error, paymentIntent } = await stripe.confirmCardPayment(
         clientSecret,
@@ -110,7 +113,6 @@ function PaymentForm() {
           style: { backgroundColor: "#F56260", color: "#fff" },
         });
 
-        // Step 4: Revert booking if payment fails
         if (bookingId) {
           await fetch(`http://127.0.0.1:6600/api/bookings/${bookingId}`, {
             method: "DELETE",
@@ -120,7 +122,11 @@ function PaymentForm() {
         return;
       }
 
-      // Success
+      // ✅ Confirm the booking after successful payment
+      await fetch(`http://127.0.0.1:6600/api/bookings/confirm/${bookingId}`, {
+        method: "PATCH",
+      });
+
       toast.success("Payment successful!", {
         style: { backgroundColor: "#4BB543", color: "#fff" },
       });
@@ -162,7 +168,6 @@ function PaymentForm() {
                     id="cardName"
                     value={formData.cardName}
                     onChange={(e) => setFormData({ cardName: e.target.value })}
-                    required
                   />
                 </div>
               </div>

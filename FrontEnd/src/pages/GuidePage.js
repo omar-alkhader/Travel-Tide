@@ -58,7 +58,11 @@ function GuidePage() {
   const location = useLocation();
   const navigate = useNavigate();
   const [guides, setGuides] = useState(guidesData);
-  const { city: citySearch, date } = useSelector((state) => state.searchGuide);
+  const {
+    city: citySearch,
+    date,
+    travellers,
+  } = useSelector((state) => state.searchGuide);
   const { city: cityBooking } = useSelector((state) => state.booking);
   console.log(citySearch);
   const city = citySearch || cityBooking;

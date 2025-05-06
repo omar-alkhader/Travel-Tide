@@ -26,14 +26,12 @@ const sendErrorDev = (err, req, res) => {
 };
 
 const sendErrorProd = (err, res) => {
-  // Operational errors (AppError): show to user
-  if (err.Operational) {
+  if (err.isOperational) {
     res.status(err.statusCode).json({
       status: err.status,
       message: err.message,
     });
   } else {
-    // Programming or unknown errors
     console.error("🔴 ERROR:", err);
     res.status(500).json({
       status: "error",
@@ -54,6 +52,7 @@ const errorController = (err, req, res, next) => {
   if (process.env.NODE_ENV === "development") {
     sendErrorDev(error, res);
   } else {
+    console.log("hello from dev");
     sendErrorProd(error, res);
   }
 };

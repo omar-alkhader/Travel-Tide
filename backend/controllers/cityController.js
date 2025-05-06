@@ -15,6 +15,10 @@ const processPhotoUrl = (city) => {
 // Get all cities
 exports.getAllCities = catchAsync(async (req, res, next) => {
   const cities = await cityModel.findAllCities();
+  if (!cities.length) {
+    return next(new AppError("No cities found for the specified country", 404));
+  }
+
   const processedCities = cities.map(processPhotoUrl); // Process all cities
   res.status(200).json({
     status: "success",
@@ -117,19 +121,14 @@ exports.createCity = catchAsync(async (req, res, next) => {
   });
 });
 
-// Get cities by country
 exports.getCitiesByCountry = catchAsync(async (req, res, next) => {
   const { country_id } = req.params;
-
   const cities = await cityModel.findCityByCountry(country_id);
 
   if (!cities.length) {
+    console.log("hello");
     return next(new AppError("No cities found for the specified country", 404));
   }
 
-  const processedCities = cities.map(processPhotoUrl); // Process all cities in the country
-  res.status(200).json({
-    status: "success",
-    cities: processedCities,
-  });
+  res.status(200).json({ cities });
 });

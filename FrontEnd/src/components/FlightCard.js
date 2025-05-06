@@ -35,7 +35,7 @@ function FlightCard({ flight }) {
         flight,
         departureDate: flightSearch.departureDate,
         returnDate: flightSearch.returnDate,
-        city: flightSearch.arrivalCity,
+        city: flightSearch.city,
         travellers: flightSearch.travelers,
       })
     );

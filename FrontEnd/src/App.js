@@ -92,7 +92,6 @@ function App() {
               <Route path="/checkout" element={<Checkout />} />
               <Route path="/p" element={<PackageDetailsPage />} />
               <Route path="/p" element={<PackageDetailsPage />} />
-              <Route path="/load" element={<PreLoader />} />
               <Route path="/error" element={<ErrorPage />} />
               <Route path="/booking" element={<Booking />} />
               {/* <Route path="/turkey" element={<Turkey />} />

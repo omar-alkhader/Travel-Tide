@@ -124,14 +124,14 @@ const bookingSlice = createSlice({
     },
 
     setHotel(state, action) {
-      const { hotel, checkIn, checkOut, city } = action.payload;
+      const { hotel, checkIn, checkOut, city, travellers } = action.payload;
 
       // Reset flight-related data to initial state
       state.flight = initialState.flight;
       state.hasFlight = initialState.hasFlight;
       state.departureDate = initialState.departureDate;
       state.returnDate = initialState.returnDate;
-
+      state.travellers = travellers;
       // Set hotel-related data
       state.hotel = hotel;
       state.checkIn = checkIn;

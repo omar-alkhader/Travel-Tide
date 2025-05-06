@@ -116,10 +116,10 @@ function Checkout() {
             <tbody>
               <tr>
                 <td>{bookingDetails?.city}</td>
-                <td>{bookingDetails.departureDate}</td>
-                <td>{bookingDetails.returnDate}</td>
-                <td>{bookingDetails.checkIn}</td>
-                <td>{bookingDetails.checkOut}</td>
+                <td>{bookingDetails.departureDate || "None"}</td>
+                <td>{bookingDetails.returnDate || "None"}</td>
+                <td>{bookingDetails.checkIn || "None"}</td>
+                <td>{bookingDetails.checkOut || "None"}</td>
                 <td>{bookingDetails.travellers}</td>
                 <td>
                   {guides?.length > 0 ? (

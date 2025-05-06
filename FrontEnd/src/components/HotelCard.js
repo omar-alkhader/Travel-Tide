@@ -24,6 +24,7 @@ function HotelCard({ hotel }) {
         checkIn: searchHotel.checkIn,
         checkOut: searchHotel.checkOut,
         city: searchHotel.city,
+        travellers: searchHotel.travellers,
       })
     );
     navigate("/checkout");

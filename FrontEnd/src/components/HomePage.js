@@ -283,6 +283,7 @@ function HomePage() {
                       checkIn,
                       checkOut,
                       nights,
+                      travellers: 1,
                     })
                   );
                   navigate("/hotels");
@@ -354,6 +355,7 @@ function HomePage() {
                       departureDate,
                       returnDate,
                       travelers: flightTravellers,
+                      city: arrivalCity,
                     })
                   );
                   navigate("/flights");
@@ -407,23 +409,24 @@ function HomePage() {
                   const guideDateValue = new Date(guideDate); // Convert guideDate to a Date object
 
                   // Check if guideDate is in the future (strictly greater than current date and time)
-                  if (guideDateValue <= currentDate) {
-                    toast.error(
-                      "Check-in date must be today or in the future.",
-                      {
-                        style: {
-                          backgroundColor: "#F56260",
-                          color: "#fff",
-                        },
-                      }
-                    );
-                    return; // Prevent navigation if the date is invalid
-                  }
+                  // if (guideDateValue <= currentDate) {
+                  //   toast.error(
+                  //     "Check-in date must be today or in the future.",
+                  //     {
+                  //       style: {
+                  //         backgroundColor: "#F56260",
+                  //         color: "#fff",
+                  //       },
+                  //     }
+                  //   );
+                  //   return; // Prevent navigation if the date is invalid
+                  // }
 
                   dispatch(
                     setSearchGuide({
                       city: guideCity,
                       date: guideDate,
+                      travellers: guideTravellers,
                     })
                   );
                   dispatch(setTraveller(guideTravellers));

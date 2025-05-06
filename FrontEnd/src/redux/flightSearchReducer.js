@@ -6,6 +6,7 @@ const initialState = {
   departureDate: "",
   returnDate: "",
   travelers: 1,
+  city: "",
 };
 function setInput(string) {
   return string.split(" ").join("-").toLowerCase();
@@ -21,12 +22,14 @@ const searchFlightSlice = createSlice({
         departureDate,
         returnDate,
         travelers,
+        city,
       } = action.payload;
       state.departureCity = departureCity;
       state.arrivalCity = arrivalCity;
       state.departureDate = departureDate;
       state.returnDate = returnDate;
       state.travelers = +travelers;
+      state.city = city;
     },
   },
 });
