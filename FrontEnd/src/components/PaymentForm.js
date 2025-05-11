@@ -15,7 +15,7 @@ function PaymentForm() {
   const [formData, setFormData] = useState({ cardName: "" });
   const bookingDetails = useSelector((state) => state.booking);
   const user = useSelector((state) => state.user.user);
-
+  console.log(bookingDetails);
   const guidesTotalPrice =
     bookingDetails.guides?.reduce(
       (sum, guide) => sum + (guide.guide_price || 0),
@@ -58,6 +58,7 @@ function PaymentForm() {
       checkin: bookingDetails.hasHotel ? bookingDetails.checkIn : null,
       checkout: bookingDetails.hasHotel ? bookingDetails.checkOut : null,
       hasDiscount,
+      city: bookingDetails.city,
       flight_dep_id: bookingDetails.hasFlight
         ? bookingDetails.flight?.id
         : null,

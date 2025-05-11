@@ -16,7 +16,7 @@ const searchHotelSlice = createSlice({
   reducers: {
     setSearchHotel: (state, action) => {
       const { city, checkIn, checkOut, nights, travellers } = action.payload;
-      state.city = setInput(city);
+      state.city = city;
       state.checkIn = checkIn;
       state.checkOut = checkOut;
       state.nights = +nights;

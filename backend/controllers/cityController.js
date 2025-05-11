@@ -1,14 +1,15 @@
 const AppError = require("../utlis/AppError");
 const catchAsync = require("../utlis/catchAsync");
 const cityModel = require("../models/CityModel");
+const db = require("../db");
 
 const BASE_URL = process.env.BASE_URL || "http://localhost:6600/images/cities/";
 
-const processPhotoUrl = (city) => {
+const processPhotoUrl = (city, country) => {
   if (!city || !city.photo) return city;
   return {
     ...city,
-    photo: `${BASE_URL}${city.photo}`, // Replace photo with the full URL
+    photo: `${BASE_URL}/${country.toLowerCase()}/${city.photo}`, // Replace photo with the full URL
   };
 };
 
@@ -123,12 +124,22 @@ exports.createCity = catchAsync(async (req, res, next) => {
 
 exports.getCitiesByCountry = catchAsync(async (req, res, next) => {
   const { country_id } = req.params;
+  if (!country_id) {
+    return next(new AppError("pleave provide country id", 404));
+  }
+  const country = await db.query(`SELECT name FROM country WHERE id = $1`, [
+    country_id,
+  ]);
+  console.log(country.rows[0].name);
   const cities = await cityModel.findCityByCountry(country_id);
+  const processedCities = cities.map((city) =>
+    processPhotoUrl(city, country?.rows?.[0]?.name)
+  ); // Process all cities
 
   if (!cities.length) {
     console.log("hello");
     return next(new AppError("No cities found for the specified country", 404));
   }
 
-  res.status(200).json({ cities });
+  res.status(200).json({ status: "success", cities: processedCities });
 });

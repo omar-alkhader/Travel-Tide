@@ -100,7 +100,7 @@ function HomePage() {
   // Guide State
   const [guideCity, setGuideCity] = useState("");
   const [guideDate, setGuideDate] = useState("");
-  const [guideTravellers, setGuideTravellers] = useState(1);
+  const [guideTravellers, setGuideTravellers] = useState(0);
   // Hotel State
   const [hotelDestination, setHotelDestination] = useState("");
   const [checkIn, setCheckIn] = useState("");
@@ -338,15 +338,15 @@ function HomePage() {
                 className="HomePage-form-inline form-inline justify-content-center"
                 onSubmit={(e) => {
                   e.preventDefault();
-                  // const isValid = validateFlightSearch({
-                  //   departureCity,
-                  //   arrivalCity,
-                  //   departureDate,
-                  //   returnDate,
-                  //   travelers: flightTravellers,
-                  // });
-                  // console.log(isValid);
-                  // if (!isValid) return;
+                  const isValid = validateFlightSearch({
+                    departureCity,
+                    arrivalCity,
+                    departureDate,
+                    returnDate,
+                    travelers: flightTravellers,
+                  });
+                  console.log(isValid);
+                  if (!isValid) return;
                   console.log("hello");
                   dispatch(
                     setSearchFlight({
@@ -407,20 +407,22 @@ function HomePage() {
 
                   const currentDate = new Date(); // Get the current date and time
                   const guideDateValue = new Date(guideDate); // Convert guideDate to a Date object
-
+                  console.log(guideTravellers);
                   // Check if guideDate is in the future (strictly greater than current date and time)
-                  // if (guideDateValue <= currentDate) {
-                  //   toast.error(
-                  //     "Check-in date must be today or in the future.",
-                  //     {
-                  //       style: {
-                  //         backgroundColor: "#F56260",
-                  //         color: "#fff",
-                  //       },
-                  //     }
-                  //   );
-                  //   return; // Prevent navigation if the date is invalid
-                  // }
+                  if (
+                    guideDateValue <= currentDate ||
+                    !guideCity ||
+                    !guideDate ||
+                    !guideTravellers
+                  ) {
+                    toast.error("please add propriate data", {
+                      style: {
+                        backgroundColor: "#F56260",
+                        color: "#fff",
+                      },
+                    });
+                    return; // Prevent navigation if the date is invalid
+                  }
 
                   dispatch(
                     setSearchGuide({

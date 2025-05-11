@@ -15,6 +15,7 @@ exports.createBooking = catchAsync(async (req, res, next) => {
     travellers,
     total_price,
     hasDiscount,
+    city,
     guide_daily_site_ids: guides,
   } = req.body;
 
@@ -41,9 +42,9 @@ exports.createBooking = catchAsync(async (req, res, next) => {
     `
     INSERT INTO Booking (
       tourist_id, flight_dep_id, flight_ret_id, departure_date, return_date,
-      hotel_id, checkin, checkout, travellers, total_price, has_discount, status
+      hotel_id, checkin, checkout, travellers, total_price, has_discount, status,city
     )
-    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12)
+    VALUES ($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12,$13)
     RETURNING *`,
     [
       tourist_id,
@@ -58,6 +59,7 @@ exports.createBooking = catchAsync(async (req, res, next) => {
       parsedTotalPrice,
       hasDiscount,
       "pending", // initially pending
+      city,
     ]
   );
 
@@ -174,23 +176,75 @@ exports.deleteBooking = catchAsync(async (req, res, next) => {
   }
 });
 // bookingController.js
+// exports.getLatestBookingForUser = catchAsync(async (req, res, next) => {
+//   const { tourist_id } = req.params;
+//   const isThereUser = (
+//     await db.query(`SELECT * FROM users WHERE id = $1`, [tourist_id])
+//   ).rows;
+//   console.log(isThereUser);
+//   if (isThereUser.length == 0) {
+//     console.log("hello");
+//     return next(new AppError("we dont have uesr please relog in", 404));
+//   }
+//   const result = await db.query(
+//     `SELECT * FROM booking WHERE tourist_id = $1 ORDER BY id DESC LIMIT 1`,
+//     [tourist_id]
+//   );
+//   console.log(result.rows);
+//   if (result.rows.length === 0) {
+//     return res.status(200).json({
+//       status: "success",
+//       booking: [],
+//     });
+//   }
+
+//   res.status(200).json({
+//     status: "success",
+//     booking: result.rows[0],
+//   });
+// });
 exports.getLatestBookingForUser = catchAsync(async (req, res, next) => {
   const { tourist_id } = req.params;
 
-  const result = await db.query(
+  // Check if the user exists
+  const isThereUser = (
+    await db.query(`SELECT * FROM users WHERE id = $1`, [tourist_id])
+  ).rows;
+
+  if (isThereUser.length === 0) {
+    return next(new AppError("We don't have this user, please relog in", 404));
+  }
+
+  // Get the latest booking
+  const bookingResult = await db.query(
     `SELECT * FROM booking WHERE tourist_id = $1 ORDER BY id DESC LIMIT 1`,
     [tourist_id]
   );
 
-  if (result.rows.length === 0) {
-    return res.status(404).json({
-      status: "fail",
-      message: "No bookings found for this user",
+  if (bookingResult.rows.length === 0) {
+    return res.status(200).json({
+      status: "success",
+      booking: [],
+      guides: [],
     });
   }
 
+  const booking = bookingResult.rows[0];
+
+  // Fetch all guides associated with the booking
+  const guidesResult = await db.query(
+    `SELECT gds.*, g.name as guide_name 
+     FROM booking_guide gb
+     JOIN guides_daily_sites gds ON gb.guide_daily_site = gds.id
+     JOIN guide g ON g.id = gds.guide_id
+     WHERE gb.booking_id = $1`,
+    [booking.id]
+  );
+
+  // Attach guides to the booking response
   res.status(200).json({
     status: "success",
-    booking: result.rows[0],
+    booking: booking,
+    guides: guidesResult.rows,
   });
 });

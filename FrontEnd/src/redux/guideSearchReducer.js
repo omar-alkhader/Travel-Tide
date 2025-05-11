@@ -14,7 +14,7 @@ const searchGuideSlice = createSlice({
   reducers: {
     setSearchGuide: (state, action) => {
       const { date, city, travellers } = action?.payload;
-      state.city = setInput(city);
+      state.city = city;
       state.date = date;
       state.travellers = travellers;
     },

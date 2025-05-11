@@ -16,14 +16,17 @@ function GuideCard({ guide }) {
 
   const dispatch = useDispatch();
   const booking = useSelector((state) => state.booking);
-  const travellersFromSearch = useSelector(
-    (state) => state.searchGuide.travellers
+  const travellersFromSearch = parseInt(
+    useSelector((state) => state.booking.travellers)
   );
   const [reserved, setReserved] = useState(false);
 
   function handleAddGuide(guide) {
     const totalAfterBooking = currentTravellers + travellersFromSearch;
-
+    console.log("max limit = " + max_limit);
+    console.log("currentTravellers = " + currentTravellers);
+    console.log("travellers from search = " + travellersFromSearch);
+    console.log("all = " + totalAfterBooking);
     if (totalAfterBooking > max_limit) {
       toast.error("Cannot reserve: maximum guide capacity exceeded", {
         style: { backgroundColor: "#F56260", color: "#fff" },
@@ -39,7 +42,7 @@ function GuideCard({ guide }) {
   }
 
   function handleDeleteGuide(guide) {
-    dispatch(removeGuide(guide));
+    dispatch(removeGuide(guide.guide_daily_site_id));
     setReserved(false);
     toast("Guide reservation removed", {
       icon: "🗑️",
@@ -49,9 +52,11 @@ function GuideCard({ guide }) {
 
   useEffect(() => {
     booking.guides.forEach((el) => {
-      if (el.id === guide.id) setReserved(true);
+      if (el.guide_daily_site_id === guide.guide_daily_site_id) {
+        setReserved(true);
+      }
     });
-  }, [guide.id, booking.guides]);
+  }, [guide.guide_daily_site_id, booking.guides]);
 
   return (
     <div className="GuidePage-guide-card d-flex justify-content-between align-items-center">
