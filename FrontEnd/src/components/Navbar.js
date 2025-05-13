@@ -98,6 +98,9 @@ function Navbar() {
                 <Link to="/review" onClick={() => setDropdownOpen(false)}>
                   Review
                 </Link>
+                <Link to="/checkout" onClick={() => setDropdownOpen(false)}>
+                  Booking
+                </Link>
                 <button onClick={handleSignOut}>Sign out</button>
               </div>
             )}
