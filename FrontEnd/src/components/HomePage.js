@@ -315,14 +315,12 @@ function HomePage() {
                   value={nights}
                   onChange={handleNightsChange}
                 />
-                <select
+                <input
+                  type="number"
                   className="HomePage-form-control form-control m-2"
-                  value={nationality}
-                  onChange={(e) => setNationality(e.target.value)}
-                >
-                  <option>Jordanian</option>
-                  <option>Foreign</option>
-                </select>
+                  placeholder="Travellers"
+                  onChange={(e) => setFlightTravellers(+e.target.value)}
+                />
                 <button
                   type="submit"
                   className="HomePage-btn HomePage-btn-custom m-2"
