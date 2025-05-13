@@ -108,11 +108,11 @@ function TravelPackageCard({ package: pkg, onViewFlight }) {
             <div className="price-details-content">
               <div className="price-detail-item">
                 <span>Hotel ({pkg.totalNights} nights):</span>
-                <span>{pkg.price - pkg.flight.price} JOD</span>
+                <span>{pkg.hotel.price} JOD</span>
               </div>
               <div className="price-detail-item">
                 <span>Flight:</span>
-                <span>{pkg.flight.price} JOD</span>
+                <span>{pkg.flight.totalPrice} JOD</span>
               </div>
               <div className="price-detail-item total">
                 <span>Total per person:</span>
