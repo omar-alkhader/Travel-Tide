@@ -37,7 +37,7 @@ const ChatButton = ({ isOpen: externalIsOpen, setIsOpen: setExternalIsOpen }) =>
         setTimeout(() => {
             const guideResponses = [
                 "I can definitely help you with that!",
-                "mhm"
+                "mhm",
             ];
             const randomResponse = guideResponses[Math.floor(Math.random() * guideResponses.length)];
             const guideMessage = { id: messages.length + 2, text: randomResponse, sender: 'guide' };
