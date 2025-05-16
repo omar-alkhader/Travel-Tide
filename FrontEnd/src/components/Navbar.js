@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
-import logo from "../assets/logo.png"; 
+import logo from "../assets/logo.png";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../redux/userSlice";
 import "../styles/NavBar.css";
@@ -12,7 +12,7 @@ function Navbar() {
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef(null);
-  
+
   useEffect(() => {
     function handleClickOutside(event) {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
