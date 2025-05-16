@@ -147,3 +147,56 @@
   }
 }
 
+.reward-points-container {
+  margin-right: 15px;
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.user-controls {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.reward-points {
+  color: white;
+  font-size: 16px;
+  cursor: default;
+  position: relative;
+  border-radius: 0;
+  background-color: transparent;
+  padding: 0;
+  font-weight: normal;
+}
+
+.reward-points:hover {
+  background-color: transparent;
+  color: #00bcd4;
+}
+
+.reward-tooltip {
+  width: 220px;
+  background-color: #333;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 8px;
+  position: absolute;
+  z-index: 1;
+  top: 125%; 
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s;
+  font-weight: normal;
+  font-size: 12px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.reward-points:hover .reward-tooltip {
+  visibility: visible;
+  opacity: 1;
+}
