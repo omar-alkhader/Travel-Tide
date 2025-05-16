@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
 import React, { useState, useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaUserCircle } from "react-icons/fa";
@@ -100,18 +101,16 @@ function Navbar() {
                   <Link to="/home" onClick={() => setDropdownOpen(false)}>
                     Profile
                   </Link>
-                  <Link to="/" onClick={() => setDropdownOpen(false)}>
+                  <Link to="/checkout" onClick={() => setDropdownOpen(false)}>
+                    Checkout
+                  </Link>
+                  <Link to="/booking" onClick={() => setDropdownOpen(false)}>
                     My Booking
                   </Link>
                   <Link to="/review" onClick={() => setDropdownOpen(false)}>
                     Review
                   </Link>
-                  <Link to="/booking" onClick={() => setDropdownOpen(false)}>
-                    Booking
-                  </Link>
-                  <Link to="/rewards" onClick={() => setDropdownOpen(false)}>
-                    My Rewards
-                  </Link>
+                  
                   <button onClick={handleSignOut}>Sign out</button>
                 </div>
               )}
