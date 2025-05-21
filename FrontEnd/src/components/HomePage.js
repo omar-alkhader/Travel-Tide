@@ -1,6 +1,5 @@
-import React, { useState } from "react";
-import { useNavigate, useOutletContext } from "react-router-dom";
-import background from "../assets/dead-sea.jpg";
+import React, { useState, useEffect } from "react";
+import { useNavigate, useOutletContext, useLocation } from "react-router-dom";
 import cyprus from "../assets/cyprus.jpg";
 import petra from "../assets/petra.jpg";
 import bulgaria from "../assets/bulgaria.jpg";
@@ -8,6 +7,7 @@ import alexandria from "../assets/alexandria.jpg";
 import antalya from "../assets/antalya.jpg";
 import wadirum from "../assets/Wadi-Rum.jpg";
 import deadsea from "../assets/dead-sea.jpg";
+import aqaba from "../assets/aqaba.jpg";
 import {
   FaGlobe,
   FaPlane,
@@ -85,12 +85,101 @@ function validateFlightSearch({
 
   return true;
 }
+
 function HomePage() {
   const { setIsChatOpen } = useOutletContext();
-  const [activeTab, setActiveTab] = useState("flights");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [currentTestimonialIndex, setCurrentTestimonialIndex] = useState(0);
+  // active tab
+  const location = useLocation();
+
+  const [activeTab, setActiveTab] = useState(() => {
+    return location.state?.activeTab || "flights";
+  });
+
+  // Update the tab when location state changes
+  useEffect(() => {
+    if (location.state?.activeTab) {
+      setActiveTab(location.state.activeTab);
+    }
+  }, [location.state]);
+  // Carousel state
+  const [activeSlide, setActiveSlide] = useState(0);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  // Image data array with location information
+  const carouselImages = [
+    {
+      id: 1,
+      src: aqaba,
+      name: "Aqaba",
+      info: "Jordan's coastal paradise on the Red Sea, featuring vibrant coral reefs, crystal-clear waters, and world-class diving experiences."
+    },
+    {
+      id: 2,
+      src: alexandria,
+      name: "Alexandria",
+      info: "Historic Mediterranean gem founded by Alexander the Great, home to ancient wonders, stunning corniche, and rich Greco-Roman heritage."
+    },
+    {
+      id: 3,
+      src: antalya,
+      name: "Antalya",
+      info: "Turkish Riviera's jewel with pristine beaches, turquoise waters, ancient ruins, and dramatic backdrop of the Taurus Mountains."
+    },
+    {
+      id: 4,
+      src: cyprus,
+      name: "Cyprus",
+      info: "Mediterranean island known for ancient ruins, beaches and delicious cuisine."
+    },
+    {
+      id: 5,
+      src: bulgaria,
+      name: "Bulgaria",
+      info: "Rich history, stunning mountains and beautiful Black Sea coastline."
+    }
+  ];
+
+  // Set up automatic slide transition
+  useEffect(() => {
+    const timer = setInterval(() => {
+      nextSlide();
+    }, 7000); // Change slide every 7 seconds
+
+    return () => clearInterval(timer);
+  }, [activeSlide]);
+
+  // Navigation functions for carousel
+  const nextSlide = () => {
+
+    setIsTransitioning(false);
+
+    // Use requestAnimationFrame to ensure UI updates before starting the transition
+    requestAnimationFrame(() => {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setActiveSlide((prev) => (prev + 1) % carouselImages.length);
+        setIsTransitioning(false);
+      }, 500);
+    });
+  };
+
+  const prevSlide = () => {
+
+    setIsTransitioning(false);
+
+    // Use requestAnimationFrame to ensure UI updates before starting the transition
+    requestAnimationFrame(() => {
+      setIsTransitioning(true);
+      setTimeout(() => {
+        setActiveSlide((prev) => (prev === 0 ? carouselImages.length - 1 : prev - 1));
+        setIsTransitioning(false);
+      }, 500);
+    });
+  };
+
   // flight STATE
   const [departureCity, setDepartureCity] = useState("");
   const [arrivalCity, setArrivalCity] = useState("");
@@ -109,6 +198,7 @@ function HomePage() {
   const [rooms, setRooms] = useState(1);
   const [guestsPerRoom, setGuestsPerRoom] = useState([2]);
   const [nationality, setNationality] = useState("Jordanian");
+
   // Handle Check-in Change
   const handleCheckInChange = (e) => {
     setCheckIn(e.target.value);
@@ -194,18 +284,76 @@ function HomePage() {
 
   return (
     <div className="homepage-container">
-      {/* Hero Section */}
+      {/* Hero Section with Carousel */}
       <div className="hero-wrapper">
-        <div
-          className="HomePage-hero-section"
-          style={{ backgroundImage: `url(${background})` }}
-        >
+        <div className="HomePage-hero-section">
+          {/* Use a container for both background and content */}
+          <div className="carousel-container">
+            {/* Active slide serves as background */}
+            {carouselImages.map((image, index) => (
+              <div
+                key={image.id}
+                className={`full-slide-background ${index === activeSlide ? 'active' : ''} ${isTransitioning ? 'transitioning' : ''}`}
+                style={{
+                  backgroundImage: `url(${image.src})`,
+                  opacity: index === activeSlide ? 1 : 0
+                }}
+              >
+                {/* Location Information - only render for active slide */}
+                {index === activeSlide && (
+                  <div className={`location-info ${index === activeSlide ? 'active' : ''} ${isTransitioning && index === activeSlide ? 'fade-out' : ''}`}>
+                    <h2>{image.name}</h2>
+                    <p>{image.info}</p>
+                  </div>
+                )}
+              </div>
+            ))}
+
+            {/* Horizontal Stacked Carousel */}
+            <div className="stacked-carousel horizontal">
+              {carouselImages.map((image, index) => {
+                const position = (index - activeSlide + carouselImages.length) % carouselImages.length;
+                return (
+                  <div
+                    key={image.id}
+                    className={`carousel-card ${position === 0 ? 'active' : ''} ${isTransitioning && index === activeSlide ? 'fade-out' : ''}`}
+                    style={{
+                      transform: `translateX(${position * 80 - 20}px) scale(${position === 0 ? 1 : 0.85 - position * 0.05})`,
+                      opacity: position > 4 ? 0 : 1 - position * 0.2,
+                      zIndex: carouselImages.length - position
+                    }}
+                    onClick={() => {
+                      if (position !== 0) {
+                        setIsTransitioning(true);
+                        setTimeout(() => {
+                          setActiveSlide(index);
+                          setIsTransitioning(false);
+                        }, 800);
+                      }
+                    }}
+                  >
+                    <img src={image.src} alt={image.name} />
+                  </div>
+                );
+              })}
+
+              {/* Carousel Navigation */}
+              <div className="carousel-controls">
+                <button className="carousel-arrow prev" onClick={prevSlide}>
+                  <FaChevronLeft />
+                </button>
+                <button className="carousel-arrow next" onClick={nextSlide}>
+                  <FaChevronRight />
+                </button>
+              </div>
+            </div>
+          </div>
+
           <ul className="HomePage-nav-tabs nav justify-content-center">
             <li className="nav-item">
               <button
-                className={`HomePage-nav-link nav-link ${
-                  activeTab === "packages" ? "HomePage-active" : ""
-                }`}
+                className={`HomePage-nav-link nav-link ${activeTab === "packages" ? "HomePage-active" : ""
+                  }`}
                 onClick={() => {
                   setActiveTab("packages");
                   navigate("/package");
@@ -216,9 +364,8 @@ function HomePage() {
             </li>
             <li className="nav-item">
               <button
-                className={`HomePage-nav-link nav-link ${
-                  activeTab === "flights" ? "HomePage-active" : ""
-                }`}
+                className={`HomePage-nav-link nav-link ${activeTab === "flights" ? "HomePage-active" : ""
+                  }`}
                 onClick={() => setActiveTab("flights")}
               >
                 Flights
@@ -226,9 +373,8 @@ function HomePage() {
             </li>
             <li className="nav-item">
               <button
-                className={`HomePage-nav-link nav-link ${
-                  activeTab === "hotels" ? "HomePage-active" : ""
-                }`}
+                className={`HomePage-nav-link nav-link ${activeTab === "hotels" ? "HomePage-active" : ""
+                  }`}
                 onClick={() => setActiveTab("hotels")}
               >
                 Hotels
@@ -236,9 +382,8 @@ function HomePage() {
             </li>
             <li className="nav-item">
               <button
-                className={`HomePage-nav-link nav-link ${
-                  activeTab === "guide" ? "HomePage-active" : ""
-                }`}
+                className={`HomePage-nav-link nav-link ${activeTab === "guide" ? "HomePage-active" : ""
+                  }`}
                 onClick={() => setActiveTab("guide")}
               >
                 Guide
@@ -247,12 +392,6 @@ function HomePage() {
           </ul>
         </div>
 
-        {/*
-          const [hotelDestination, setHotelDestination] = useState("");
-  const [checkIn, setCheckIn] = useState("");
-  const [checkOut, setCheckOut] = useState("");
-  const [nights, setNights] = useState(1);
-         */}
         {/* Booking options */}
         <div className="HomePage-booking-options ">
           <div className="tab-content">
@@ -595,7 +734,7 @@ function HomePage() {
             {/* Fourth rectangle */}
             <div
               className="position-absolute"
-              style={{ top: "420px", left: "25%", width: "295px" }}
+              style={{ top: "420px", left: "26%", width: "280px" }}
             >
               <div className="rectangle fourth-rectangle">
                 <div className="icon">
@@ -654,8 +793,14 @@ function HomePage() {
                   </div>
                   <div className="tour-price">
                     <p>Starts from</p>
-                    <h4>499 JOD</h4>
+                    <h4>499$</h4>
                   </div>
+                  <button
+                    className="tour-book-btn"
+                    onClick={() => navigate('/package')}
+                  >
+                    Book Now
+                  </button>
                 </div>
               </div>
             </div>
@@ -688,8 +833,14 @@ function HomePage() {
                   </div>
                   <div className="tour-price">
                     <p>Starts from</p>
-                    <h4>510 JOD</h4>
+                    <h4>510$</h4>
                   </div>
+                  <button
+                    className="tour-book-btn"
+                    onClick={() => navigate('/package')}
+                  >
+                    Book Now
+                  </button>
                 </div>
               </div>
             </div>
@@ -701,10 +852,10 @@ function HomePage() {
             <div className="col-md-6 mb-4">
               <div className="tour-card">
                 <div className="tour-image">
-                  <img src={wadirum} alt="Wadi Rum" />
+                  <img src={bulgaria} alt="Bulgaria" />
                 </div>
                 <div className="tour-details">
-                  <h3>Wadi Rum,Jordan</h3>
+                  <h3>Bulgaria</h3>
                   <br />
                   <br />
                   <div className="tour-meta">
@@ -725,8 +876,14 @@ function HomePage() {
                   </div>
                   <div className="tour-price">
                     <p>Starts from</p>
-                    <h4>359 JOD</h4>
+                    <h4>359$</h4>
                   </div>
+                  <button
+                    className="tour-book-btn"
+                    onClick={() => navigate('/package')}
+                  >
+                    Book Now
+                  </button>
                 </div>
               </div>
             </div>
@@ -735,10 +892,10 @@ function HomePage() {
             <div className="col-md-6 mb-4">
               <div className="tour-card">
                 <div className="tour-image">
-                  <img src={deadsea} alt="Dead Sea" />
+                  <img src={aqaba} alt="Aqaba" />
                 </div>
                 <div className="tour-details">
-                  <h3>Dead Sea,Jordan</h3>
+                  <h3>Aqaba,Jordan</h3>
                   <br />
                   <br />
                   <div className="tour-meta">
@@ -759,8 +916,14 @@ function HomePage() {
                   </div>
                   <div className="tour-price">
                     <p>Starts from</p>
-                    <h4>299 JOD</h4>
+                    <h4>299$</h4>
                   </div>
+                  <button
+                    className="tour-book-btn"
+                    onClick={() => navigate('/packages')}
+                  >
+                    Book Now
+                  </button>
                 </div>
               </div>
             </div>
