@@ -8,7 +8,7 @@ class Review {
     return result.rows;
   }
   static async createReview(rating, description, user_id) {
-    const query = `INSERT INTO review(rating,description,user_id)
+    const query = `INSERT INTO review(rating,comment,user_id)
         VALUES($1,$2,$3) RETURNING *;
         `;
     const params = [rating, description, user_id];
@@ -21,10 +21,11 @@ class Review {
             SELECT *
             FROM review
             WHERE user_id = $1
+            LIMIT 1
         `;
     const params = [id];
     const result = await db.query(query, params);
-    return result.rows;
+    return result.rows[0];
   }
 }
 module.exports = Review;

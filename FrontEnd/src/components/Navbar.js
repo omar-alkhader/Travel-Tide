@@ -40,6 +40,7 @@ function Navbar() {
     }
     navigate("/");
   };
+  console.log(user);
 
   return (
     <header className="navbar">
@@ -82,9 +83,10 @@ function Navbar() {
           <div className="user-controls">
             <div className="reward-points-container">
               <div className="reward-points">
-                Reward Point({user.rewardPoints || 0})
+                Reward Point({user.points || 0})
                 <div className="reward-tooltip">
-                  Earn points on completed trips. Use points for discounts on future bookings!
+                  Earn points on completed trips. Use points for discounts on
+                  future bookings!
                 </div>
               </div>
             </div>
@@ -110,7 +112,7 @@ function Navbar() {
                   <Link to="/review" onClick={() => setDropdownOpen(false)}>
                     Review
                   </Link>
-                  
+
                   <button onClick={handleSignOut}>Sign out</button>
                 </div>
               )}

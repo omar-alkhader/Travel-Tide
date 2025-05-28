@@ -2,12 +2,11 @@ const db = require("../db");
 const bcrypt = require("bcryptjs");
 class User {
   static async createUser(name, email, password) {
-    const hashedPassword = await bcrypt.hash(password, 10);
     const query = `
       INSERT INTO users (name, email, password)
       VALUES ($1, $2, $3) RETURNING *;
     `;
-    const values = [name, email, hashedPassword];
+    const values = [name, email, password];
     const result = await db.query(query, values);
     return result;
   }
@@ -17,6 +16,14 @@ class User {
         `;
     const result = await db.query(query);
     return result;
+  }
+  static async getUser(id) {
+    const query = `SELECT *
+    FROM users
+    WHERE id = $1`;
+    const params = [id];
+    const result = await db.query(query, params);
+    return result.rows[0];
   }
   static async getUserByEmail(email) {
     const query = `

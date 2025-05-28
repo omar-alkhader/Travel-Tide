@@ -21,7 +21,7 @@ import { useDispatch } from "react-redux";
 import { setSearchFlight } from "../redux/flightSearchReducer";
 import { setSearchGuide } from "../redux/guideSearchReducer";
 import { setSearchHotel } from "../redux/hotelSearchReducer";
-import { setTraveller } from "../redux/bookingSlice";
+import { setCity, setTraveller } from "../redux/bookingSlice";
 import toast from "react-hot-toast";
 
 function validateFlightSearch({
@@ -114,32 +114,32 @@ function HomePage() {
       id: 1,
       src: aqaba,
       name: "Aqaba",
-      info: "Jordan's coastal paradise on the Red Sea, featuring vibrant coral reefs, crystal-clear waters, and world-class diving experiences."
+      info: "Jordan's coastal paradise on the Red Sea, featuring vibrant coral reefs, crystal-clear waters, and world-class diving experiences.",
     },
     {
       id: 2,
       src: alexandria,
       name: "Alexandria",
-      info: "Historic Mediterranean gem founded by Alexander the Great, home to ancient wonders, stunning corniche, and rich Greco-Roman heritage."
+      info: "Historic Mediterranean gem founded by Alexander the Great, home to ancient wonders, stunning corniche, and rich Greco-Roman heritage.",
     },
     {
       id: 3,
       src: antalya,
       name: "Antalya",
-      info: "Turkish Riviera's jewel with pristine beaches, turquoise waters, ancient ruins, and dramatic backdrop of the Taurus Mountains."
+      info: "Turkish Riviera's jewel with pristine beaches, turquoise waters, ancient ruins, and dramatic backdrop of the Taurus Mountains.",
     },
     {
       id: 4,
       src: cyprus,
       name: "Cyprus",
-      info: "Mediterranean island known for ancient ruins, beaches and delicious cuisine."
+      info: "Mediterranean island known for ancient ruins, beaches and delicious cuisine.",
     },
     {
       id: 5,
       src: bulgaria,
       name: "Bulgaria",
-      info: "Rich history, stunning mountains and beautiful Black Sea coastline."
-    }
+      info: "Rich history, stunning mountains and beautiful Black Sea coastline.",
+    },
   ];
 
   // Set up automatic slide transition
@@ -153,7 +153,6 @@ function HomePage() {
 
   // Navigation functions for carousel
   const nextSlide = () => {
-
     setIsTransitioning(false);
 
     // Use requestAnimationFrame to ensure UI updates before starting the transition
@@ -167,14 +166,15 @@ function HomePage() {
   };
 
   const prevSlide = () => {
-
     setIsTransitioning(false);
 
     // Use requestAnimationFrame to ensure UI updates before starting the transition
     requestAnimationFrame(() => {
       setIsTransitioning(true);
       setTimeout(() => {
-        setActiveSlide((prev) => (prev === 0 ? carouselImages.length - 1 : prev - 1));
+        setActiveSlide((prev) =>
+          prev === 0 ? carouselImages.length - 1 : prev - 1
+        );
         setIsTransitioning(false);
       }, 500);
     });
@@ -293,15 +293,23 @@ function HomePage() {
             {carouselImages.map((image, index) => (
               <div
                 key={image.id}
-                className={`full-slide-background ${index === activeSlide ? 'active' : ''} ${isTransitioning ? 'transitioning' : ''}`}
+                className={`full-slide-background ${
+                  index === activeSlide ? "active" : ""
+                } ${isTransitioning ? "transitioning" : ""}`}
                 style={{
                   backgroundImage: `url(${image.src})`,
-                  opacity: index === activeSlide ? 1 : 0
+                  opacity: index === activeSlide ? 1 : 0,
                 }}
               >
                 {/* Location Information - only render for active slide */}
                 {index === activeSlide && (
-                  <div className={`location-info ${index === activeSlide ? 'active' : ''} ${isTransitioning && index === activeSlide ? 'fade-out' : ''}`}>
+                  <div
+                    className={`location-info ${
+                      index === activeSlide ? "active" : ""
+                    } ${
+                      isTransitioning && index === activeSlide ? "fade-out" : ""
+                    }`}
+                  >
                     <h2>{image.name}</h2>
                     <p>{image.info}</p>
                   </div>
@@ -312,15 +320,23 @@ function HomePage() {
             {/* Horizontal Stacked Carousel */}
             <div className="stacked-carousel horizontal">
               {carouselImages.map((image, index) => {
-                const position = (index - activeSlide + carouselImages.length) % carouselImages.length;
+                const position =
+                  (index - activeSlide + carouselImages.length) %
+                  carouselImages.length;
                 return (
                   <div
                     key={image.id}
-                    className={`carousel-card ${position === 0 ? 'active' : ''} ${isTransitioning && index === activeSlide ? 'fade-out' : ''}`}
+                    className={`carousel-card ${
+                      position === 0 ? "active" : ""
+                    } ${
+                      isTransitioning && index === activeSlide ? "fade-out" : ""
+                    }`}
                     style={{
-                      transform: `translateX(${position * 80 - 20}px) scale(${position === 0 ? 1 : 0.85 - position * 0.05})`,
+                      transform: `translateX(${position * 80 - 20}px) scale(${
+                        position === 0 ? 1 : 0.85 - position * 0.05
+                      })`,
                       opacity: position > 4 ? 0 : 1 - position * 0.2,
-                      zIndex: carouselImages.length - position
+                      zIndex: carouselImages.length - position,
                     }}
                     onClick={() => {
                       if (position !== 0) {
@@ -352,8 +368,9 @@ function HomePage() {
           <ul className="HomePage-nav-tabs nav justify-content-center">
             <li className="nav-item">
               <button
-                className={`HomePage-nav-link nav-link ${activeTab === "packages" ? "HomePage-active" : ""
-                  }`}
+                className={`HomePage-nav-link nav-link ${
+                  activeTab === "packages" ? "HomePage-active" : ""
+                }`}
                 onClick={() => {
                   setActiveTab("packages");
                   navigate("/package");
@@ -364,8 +381,9 @@ function HomePage() {
             </li>
             <li className="nav-item">
               <button
-                className={`HomePage-nav-link nav-link ${activeTab === "flights" ? "HomePage-active" : ""
-                  }`}
+                className={`HomePage-nav-link nav-link ${
+                  activeTab === "flights" ? "HomePage-active" : ""
+                }`}
                 onClick={() => setActiveTab("flights")}
               >
                 Flights
@@ -373,8 +391,9 @@ function HomePage() {
             </li>
             <li className="nav-item">
               <button
-                className={`HomePage-nav-link nav-link ${activeTab === "hotels" ? "HomePage-active" : ""
-                  }`}
+                className={`HomePage-nav-link nav-link ${
+                  activeTab === "hotels" ? "HomePage-active" : ""
+                }`}
                 onClick={() => setActiveTab("hotels")}
               >
                 Hotels
@@ -382,8 +401,9 @@ function HomePage() {
             </li>
             <li className="nav-item">
               <button
-                className={`HomePage-nav-link nav-link ${activeTab === "guide" ? "HomePage-active" : ""
-                  }`}
+                className={`HomePage-nav-link nav-link ${
+                  activeTab === "guide" ? "HomePage-active" : ""
+                }`}
                 onClick={() => setActiveTab("guide")}
               >
                 Guide
@@ -797,7 +817,10 @@ function HomePage() {
                   </div>
                   <button
                     className="tour-book-btn"
-                    onClick={() => navigate('/package')}
+                    onClick={() => {
+                      dispatch(setCity("Alexandria"));
+                      navigate("/trip-details");
+                    }}
                   >
                     Book Now
                   </button>
@@ -837,7 +860,10 @@ function HomePage() {
                   </div>
                   <button
                     className="tour-book-btn"
-                    onClick={() => navigate('/package')}
+                    onClick={() => {
+                      dispatch(setCity("Antalya"));
+                      navigate("/trip-details");
+                    }}
                   >
                     Book Now
                   </button>
@@ -880,7 +906,10 @@ function HomePage() {
                   </div>
                   <button
                     className="tour-book-btn"
-                    onClick={() => navigate('/package')}
+                    onClick={() => {
+                      dispatch(setCity("Bulgaria"));
+                      navigate("/trip-details");
+                    }}
                   >
                     Book Now
                   </button>
@@ -920,7 +949,10 @@ function HomePage() {
                   </div>
                   <button
                     className="tour-book-btn"
-                    onClick={() => navigate('/packages')}
+                    onClick={() => {
+                      dispatch(setCity("Aqaba"));
+                      navigate("/trip-details");
+                    }}
                   >
                     Book Now
                   </button>

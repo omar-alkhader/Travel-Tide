@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { setSearchPackage } from "../redux/packageSearch";
 import { setCity, setGuide, setTraveller } from "../redux/bookingSlice";
@@ -16,7 +16,8 @@ function TripDetailsForm() {
   const navigate = useNavigate();
   const location = useLocation();
   const { cityName } = location.state || { cityName: "Unknown City" };
-  const [country, setCountry] = useState(cityName);
+  const { city } = useSelector((state) => state.booking);
+  const [country, setCountry] = useState(city);
   // const handleRoomChange = (e) => {
   //   setRooms(e.target.value);
   // };
@@ -47,10 +48,11 @@ function TripDetailsForm() {
       arrivalCity,
       arrivalDate,
       nights,
-      departureCity: cityName,
+      departureCity: country,
       hasGuide,
       travellers,
     };
+    console.log();
     console.log(test);
     dispatch(
       setSearchPackage({
@@ -61,17 +63,23 @@ function TripDetailsForm() {
         nights,
         hasGuide,
         travellers,
-        city: cityName,
+        city,
       })
     );
-    dispatch(setCity(cityName));
+    dispatch(setCity(country));
     navigate("/packages");
   };
   console.log(hasGuide);
   return (
-    <form id="tripForm" className="TripDetails-form">
+    <form
+      id="tripForm"
+      className="TripDetails-form"
+      onSubmit={(e) => {
+        e.preventDefault();
+      }}
+    >
       <h1>Trip Details</h1>
-      <h2>Destination: {cityName}</h2>
+      <h2>Destination: {city}</h2>
 
       <div className="TripDetails-row">
         <div className="TripDetails-group">

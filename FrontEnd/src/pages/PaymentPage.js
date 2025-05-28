@@ -9,7 +9,6 @@ import "../styles/PaymentPage.css";
 function Payment() {
   return (
     <>
-      <PreLoader />
       <div>
         <PaymentForm />
       </div>
@@ -18,5 +17,3 @@ function Payment() {
 }
 
 export default Payment;
-
-

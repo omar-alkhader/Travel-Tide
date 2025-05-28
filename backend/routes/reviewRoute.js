@@ -3,7 +3,7 @@ const route = express.Router();
 const authController = require("../controllers/authUsers");
 const reviewController = require("../controllers/reviewController");
 route.get("/", authController.isLoggedIn);
-route.post("/", authController.isLoggedIn, reviewController.createReview);
-route.get("/:id", authController.isLoggedIn, reviewController.getReviewById);
+route.post("/", reviewController.createReview);
+route.get("/me", reviewController.getReviewById);
 
 module.exports = route;
