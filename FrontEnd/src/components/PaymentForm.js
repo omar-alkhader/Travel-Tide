@@ -3,15 +3,16 @@ import React, { useState } from "react";
 import visaLogo from "../assets/visa.png";
 import "../styles/PaymentPage.css";
 import { useStripe, useElements, CardElement } from "@stripe/react-stripe-js";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
+import { loginSuccess } from "../redux/userSlice";
 
 function PaymentForm() {
   const stripe = useStripe();
   const elements = useElements();
   const queryClient = useQueryClient();
-
+  const dispatch = useDispatch();
   const [formData, setFormData] = useState({ cardName: "" });
   const bookingDetails = useSelector((state) => state.booking);
   const user = useSelector((state) => state.user.user);
@@ -123,7 +124,6 @@ function PaymentForm() {
         return;
       }
 
-      // ✅ Confirm the booking after successful payment
       await fetch(`http://127.0.0.1:6600/api/bookings/confirm/${bookingId}`, {
         method: "PATCH",
       });
@@ -132,8 +132,18 @@ function PaymentForm() {
         style: { backgroundColor: "#4BB543", color: "#fff" },
       });
 
-      queryClient.invalidateQueries(["guides_daily_sites"]);
-      queryClient.invalidateQueries(["user"]);
+      // ✅ Refresh user points and update Redux
+      const userResponse = await fetch(
+        `http://127.0.0.1:6600/api/users/${user?.id}`,
+        {
+          credentials: "include",
+        }
+      );
+      const userData = await userResponse.json();
+      if (userData?.user) dispatch(loginSuccess(userData.user));
+      console.log(userData);
+      await queryClient.invalidateQueries(["guides_daily_sites"]);
+      await queryClient.invalidateQueries(["user"]);
     } catch (err) {
       console.error("Payment/booking error:", err);
 

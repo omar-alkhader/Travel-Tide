@@ -13,9 +13,8 @@ exports.getUserById = async (req, res, next) => {
   const user = await userModel.getUser(id);
   res.status(200).json({
     status: "success",
-    data: {
-      user,
-    },
+
+    user,
   });
 };
 exports.updateUser = async (req, res, next) => {
