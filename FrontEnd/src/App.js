@@ -29,6 +29,7 @@ import Booking from "./components/Booking";
 
 import ErrorPage from "./components/ErrorPage";
 import PreLoader from "./components/PreLoader";
+import ReviewPage from "./pages/ReviewPage"; 
 
 import "./styles/global.css";
 import "./styles/NavBar.css";
@@ -79,7 +80,7 @@ function App() {
               <Route path="/chat/:touristName" element={<ChatPage />} />
               <Route path="/home" element={<ProfileForm />} />
               <Route path="/pay" element={<PaymentPage />} />
-              <Route path="/review" element={<RatingForm />} />
+              <Route path="/review" element={<ReviewPage />} />
               <Route path="/trip-details" element={<TripDetailsForm />} />
               <Route path="/about" element={<AboutPage />} />
               <Route path="/signin" element={<SignIn />} />
@@ -127,3 +128,4 @@ function App() {
 }
 
 export default App;
+
