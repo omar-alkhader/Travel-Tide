@@ -7,15 +7,18 @@ class Review {
     const result = await db.query(query);
     return result.rows;
   }
-  static async createReview(rating, description, user_id) {
-    const query = `INSERT INTO review(rating,comment,user_id)
-        VALUES($1,$2,$3) RETURNING *;
-        `;
-    const params = [rating, description, user_id];
-    const result = await db.query(query, params);
-    console.log(result);
-    return result.rows;
-  }
+static async createReview(rating, description, user_id) {
+  const query = `
+    INSERT INTO review (rating, comment, user_id)
+    VALUES ($1, $2, $3)
+    ON CONFLICT (user_id) 
+    DO UPDATE SET rating = EXCLUDED.rating, comment = EXCLUDED.comment
+    RETURNING *;
+  `;
+  const params = [rating, description, user_id];
+  const result = await db.query(query, params);
+  return result.rows;
+}
   static async getReviewById(id) {
     const query = `
             SELECT *
@@ -29,3 +32,4 @@ class Review {
   }
 }
 module.exports = Review;
+
