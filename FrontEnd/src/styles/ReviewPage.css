@@ -77,3 +77,49 @@
   bottom: 0;
   width: 100%;
 }
+
+.existing-review {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px 30px;
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+.existing-review h2 {
+  font-size: 28px;
+  color: #1b2b40;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.existing-review p {
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 10px 0;
+}
+
+.existing-review p strong {
+  color: #1b2b40;
+  font-weight: 600;
+}
+
+.existing-review button {
+  margin-top: 20px;
+  background-color: #1b2b40;
+  color: #fff;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.existing-review button:hover {
+  background-color: #00bcd4;
+}
