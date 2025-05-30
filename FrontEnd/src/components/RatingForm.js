@@ -1,15 +1,15 @@
+// RatingForm.js
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import toast from "react-hot-toast";
 
-// Fetch existing review
 const fetchReview = async (id) => {
   const response = await fetch(
     `http://127.0.0.1:6600/api/reviews/me?id=${id}`,
     {
       method: "GET",
-      credentials: "include", // send cookie
+      credentials: "include",
     }
   );
 
@@ -21,7 +21,6 @@ const fetchReview = async (id) => {
   return data;
 };
 
-// Post new review
 const postReview = async ({ review, rating, id }) => {
   const response = await fetch("http://127.0.0.1:6600/api/reviews", {
     method: "POST",
@@ -40,17 +39,17 @@ const postReview = async ({ review, rating, id }) => {
   return data;
 };
 
-function RatingComponent() {
+function RatingComponent({ newReviewMode, setNewReviewMode }) {
   const queryClient = useQueryClient();
-  const user = useSelector((state) => state.user.user); // from Redux
+  const user = useSelector((state) => state.user.user);
 
   const { data, isLoading, isError, error } = useQuery({
     queryKey: ["review"],
     queryFn: () => {
-      console.log(user.id);
+      console.log(user?.id);
       return fetchReview(user?.id);
     },
-    enabled: !!user, // skip fetch if not logged in
+    enabled: !!user,
   });
 
   const review = data?.review;
@@ -58,17 +57,18 @@ function RatingComponent() {
   const mutation = useMutation({
     mutationFn: ({ review, rating, id }) => postReview({ review, rating, id }),
     onSuccess: () => {
-      toast.success("thank you for your feedback", {
+      toast.success("Thank you for your feedback", {
         style: {
           backgroundColor: "#4BB543",
           color: "#fff",
         },
       });
-      queryClient.invalidateQueries(["review"]);
+      queryClient.invalidateQueries(["review"]); // Refresh the review data
+      setNewReviewMode(false); // Go back to view mode after submission
     },
     onError: (err) => {
       console.log(err);
-      toast.error(err.message || "something went wrong", {
+      toast.error(err.message || "Something went wrong", {
         style: {
           backgroundColor: "#F56260",
           color: "#fff",
@@ -84,19 +84,19 @@ function RatingComponent() {
   if (!user) return <p>Please log in to submit a review.</p>;
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>{error.message || "Error fetching review."}</p>;
-  console.log(review);
+
   return (
     <div className="rating-wrapper">
-      {review ? (
+      {review && !newReviewMode ? (
         <div className="existing-review">
-          <h2>Your Previous Review</h2>
-          <p>
-            <strong>Rating:</strong> {review.rating} ★
-          </p>
-          <p>
-            <strong>Review:</strong> {review.comment}
-          </p>
-        </div>
+  <h2>My Review</h2>
+  <p><strong>Rating:</strong> {review.rating} ★</p>
+  <p><strong>Review:</strong> {review.comment}</p>
+  <button className="btn-primary" onClick={() => setNewReviewMode(true)}>
+    Write New Review
+  </button>
+</div>
+
       ) : (
         <RatingForm onSubmit={handleSubmit} isSubmitting={mutation.isLoading} />
       )}
@@ -155,3 +155,4 @@ function RatingForm({ onSubmit, isSubmitting }) {
 }
 
 export default RatingComponent;
+
