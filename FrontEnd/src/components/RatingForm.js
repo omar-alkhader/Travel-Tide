@@ -43,14 +43,15 @@ function RatingComponent({ newReviewMode, setNewReviewMode }) {
   const queryClient = useQueryClient();
   const user = useSelector((state) => state.user.user);
 
-  const { data, isLoading, isError, error } = useQuery({
-    queryKey: ["review"],
-    queryFn: () => {
-      console.log(user?.id);
-      return fetchReview(user?.id);
-    },
-    enabled: !!user,
-  });
+const { data, isLoading, isError, error } = useQuery({
+  queryKey: ["review", user?.id],  // Add user ID as part of the key
+  queryFn: () => {
+    console.log(user?.id);
+    return fetchReview(user?.id);
+  },
+  enabled: !!user,
+});
+
 
   const review = data?.review;
 
