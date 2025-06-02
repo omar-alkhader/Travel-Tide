@@ -5,6 +5,7 @@ const storedUser = localStorage.getItem("user");
 
 const initialState = {
   user: storedUser ? JSON.parse(storedUser) : null,
+  role: "",
 };
 
 const userSlice = createSlice({
@@ -12,7 +13,9 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     loginSuccess: (state, action) => {
-      state.user = action.payload;
+      const { user, role } = action.payload;
+      state.user = user;
+      state.role = role;
       localStorage.setItem("user", JSON.stringify(action.payload));
     },
     logout: (state) => {

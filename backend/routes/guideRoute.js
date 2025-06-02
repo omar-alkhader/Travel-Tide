@@ -1,11 +1,12 @@
 const express = require("express");
 const guideController = require("../controllers/guideController");
-const authController = require("../controllers/authUsers");
+const authController = require("../controllers/authGuides");
 const route = express.Router();
 route.get("/", guideController.getAllGuides);
 route.post("/signup", guideController.insertGuide);
 route.post("/login", authController.login);
 route.get("/:id", guideController.getGuideById);
+route.get("/:id/bookers", guideController.getBookers);
 route.patch("/:id", guideController.updateGuide);
 route.delete("/:id", guideController.deleteGuide);
 module.exports = route;

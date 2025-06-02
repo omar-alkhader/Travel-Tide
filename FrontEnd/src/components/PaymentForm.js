@@ -144,6 +144,7 @@ function PaymentForm() {
       console.log(userData);
       await queryClient.invalidateQueries(["guides_daily_sites"]);
       await queryClient.invalidateQueries(["user"]);
+      await queryClient.invalidateQueries(["tourists"]);
     } catch (err) {
       console.error("Payment/booking error:", err);
 

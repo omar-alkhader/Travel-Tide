@@ -1,5 +1,6 @@
 const validate = require("email-validator");
 const guideModel = require("../models/guideModel");
+const pool = require("../db");
 const bcrypt = require("bcryptjs");
 const catchAsync = require("../utlis/catchAsync");
 const AppError = require("../utlis/AppError");
@@ -22,6 +23,26 @@ exports.getGuideById = async (req, res, next) => {
     },
   });
 };
+exports.getBookers = catchAsync(async (req, res) => {
+  const guideId = req.params.id;
+
+  const result = await pool.query(
+    `
+      SELECT DISTINCT u.name, u.email
+      FROM booking_guide bg
+      JOIN booking b ON bg.booking_id = b.id
+      JOIN users u ON b.tourist_id = u.id
+      JOIN guides_daily_sites gds ON bg.guide_daily_site = gds.id
+      WHERE gds.guide_id = $1
+      `,
+    [guideId]
+  );
+
+  res.json({
+    status: "success",
+    bookers: result.rows,
+  });
+});
 exports.updateGuide = catchAsync(async (req, res, next) => {
   const { id } = req.params;
   const updates = req.body;

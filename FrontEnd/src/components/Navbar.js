@@ -8,7 +8,8 @@ import { logout } from "../redux/userSlice";
 import "../styles/NavBar.css";
 
 function Navbar() {
-  const user = useSelector((state) => state.user.user);
+  const { user, role } = useSelector((state) => state.user);
+  console.log(role);
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);
@@ -83,7 +84,7 @@ function Navbar() {
           <div className="user-controls">
             <div className="reward-points-container">
               <div className="reward-points">
-                Reward Point({user.points || 0})
+                {role === "client" && `Reward Point(${user.points || 0})`}
                 <div className="reward-tooltip">
                   Earn points on completed trips. Use points for discounts on
                   future bookings!
@@ -103,15 +104,21 @@ function Navbar() {
                   <Link to="/home" onClick={() => setDropdownOpen(false)}>
                     Profile
                   </Link>
-                  <Link to="/checkout" onClick={() => setDropdownOpen(false)}>
-                    Checkout
-                  </Link>
-                  <Link to="/booking" onClick={() => setDropdownOpen(false)}>
-                    My Booking
-                  </Link>
-                  <Link to="/review" onClick={() => setDropdownOpen(false)}>
-                    Review
-                  </Link>
+                  {role === "client" && (
+                    <Link to="/checkout" onClick={() => setDropdownOpen(false)}>
+                      Checkout
+                    </Link>
+                  )}
+                  {role === "client" && (
+                    <Link to="/booking" onClick={() => setDropdownOpen(false)}>
+                      My Booking
+                    </Link>
+                  )}
+                  {role === "client" && (
+                    <Link to="/review" onClick={() => setDropdownOpen(false)}>
+                      Review
+                    </Link>
+                  )}
 
                   <button onClick={handleSignOut}>Sign out</button>
                 </div>

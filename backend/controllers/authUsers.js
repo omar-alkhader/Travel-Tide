@@ -79,8 +79,8 @@ exports.login = catchAsync(async (req, res, next) => {
   console.log(user);
   if (!user) return next(new AppError("there is no user with that email", 400));
   const checkPassword = await bcrypt.compare(password, user.password);
-  console.log(password);
-  console.log(checkPassword);
+  console.log(password + " password");
+  console.log(user.password + " check password");
   if (!checkPassword) return next(new AppError("password is wrong", 400));
   createSendToken(res, 200, user);
 });

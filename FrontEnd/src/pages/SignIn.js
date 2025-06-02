@@ -7,15 +7,20 @@ import { useMutation } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../redux/userSlice";
 import toast from "react-hot-toast";
-const loginUser = async (data) => {
-  const res = await fetch(`http://127.0.0.1:6600/api/users/login`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    credentials: "include",
-    body: JSON.stringify(data),
-  });
+const loginUser = async (data, type) => {
+  console.log(type);
+  console.log(data);
+  const res = await fetch(
+    `http://127.0.0.1:6600/api/${type === "client" ? "users" : "guides"}/login`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+      body: JSON.stringify(data),
+    }
+  );
   if (!res.ok) {
     const errorData = await res.json();
     throw new Error(errorData.message || "login failed");
@@ -32,18 +37,27 @@ const SignIn = () => {
   const dispatch = useDispatch();
   const mutation = useMutation({
     mutationKey: ["user"],
-    mutationFn: loginUser,
-    onSuccess: (data) => {
+    mutationFn: ({ data, type }) => loginUser(data, type),
+    onSuccess: (data, { type }) => {
       toast.success("Login successful", {
         style: {
           backgroundColor: "#4BB543",
           color: "#fff",
         },
       });
-      dispatch(loginSuccess(data.user));
-      navigate(-1, {
-        replace: false,
-      });
+      dispatch(
+        loginSuccess({
+          user: data.user,
+          role: type === "client" ? "client" : "guide",
+        })
+      );
+      if (userType === "client") {
+        navigate(-1, {
+          replace: false,
+        });
+      } else {
+        navigate("/request");
+      }
     },
     onError: (err) => {
       console.log("hello");
@@ -61,7 +75,8 @@ const SignIn = () => {
       email,
       password,
     };
-    mutation.mutate(data);
+    console.log(userType);
+    mutation.mutate({ data, type: userType });
     //simulation
     // login({
     //   name: email.split("@")[0],

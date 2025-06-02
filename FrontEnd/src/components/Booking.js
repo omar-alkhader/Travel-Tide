@@ -2,6 +2,7 @@ import React from "react";
 import { useSelector } from "react-redux";
 import { useQuery } from "@tanstack/react-query";
 import "../styles/Checkout.css";
+import ErrorPage from "./ErrorPage";
 
 function formatDate(dateString) {
   if (!dateString || dateString === "None") return "None";
@@ -25,10 +26,14 @@ function Booking() {
     enabled: Boolean(user?.id), // ✅ Cleaner than !!
   });
 
-  if (!user) return <p>Please login to see your bookings.</p>;
+  if (!user) return <ErrorPage message="please log in to see booking" />;
   if (isLoading) return <p>Loading...</p>;
   if (isError)
-    return <p>{error.message ? error.message : "Error loading bookings."}</p>;
+    return (
+      <ErrorPage
+        message={error.message ? error.message : "Error loading bookings."}
+      ></ErrorPage>
+    );
 
   const booking = data?.booking || {};
   const guides = data?.guides;
