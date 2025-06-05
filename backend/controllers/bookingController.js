@@ -88,7 +88,7 @@ exports.createBooking = catchAsync(async (req, res, next) => {
   );
 
   if (hasDiscount) {
-    await db.query(`UPDATE Users SET points = points - 1000 WHERE id = $1`, [
+    await db.query(`UPDATE Users SET points = points - 500 WHERE id = $1`, [
       tourist_id,
     ]);
   }
