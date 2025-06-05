@@ -3,7 +3,68 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useLocation } from "react-router-dom";
 import { setSearchPackage } from "../redux/packageSearch";
 import { setCity, setGuide, setTraveller } from "../redux/bookingSlice";
+import toast from "react-hot-toast";
+function validateFlightSearch({
+  departureCity,
+  arrivalCity,
+  departureDate,
+  returnDate,
+  travelers,
+}) {
+  console.log("hello");
+  const now = new Date();
+  const depDate = new Date(departureDate);
+  const retDate = new Date(returnDate);
+  const oneDayInMs = 24 * 60 * 60 * 1000;
 
+  if (
+    !departureCity ||
+    !arrivalCity ||
+    !departureDate ||
+    !returnDate ||
+    !travelers
+  ) {
+    toast.error("All fields are required.", {
+      style: {
+        backgroundColor: "#F56260",
+        color: "#fff",
+      },
+    });
+    return false;
+  }
+  console.log(returnDate, departureDate);
+  if (departureCity === arrivalCity) {
+    toast.error("Departure and arrival cities must be different.", {
+      style: {
+        backgroundColor: "#F56260",
+        color: "#fff",
+      },
+    });
+    return false;
+  }
+
+  if (depDate <= now) {
+    toast.error("Departure date must be in the future.", {
+      style: {
+        backgroundColor: "#F56260",
+        color: "#fff",
+      },
+    });
+    return false;
+  }
+
+  if (retDate - depDate < oneDayInMs) {
+    toast.error("Return date must be at least one day after departure.", {
+      style: {
+        backgroundColor: "#F56260",
+        color: "#fff",
+      },
+    });
+    return false;
+  }
+
+  return true;
+}
 function TripDetailsForm() {
   const [rooms, setRooms] = useState(1);
   const [arrivalDate, setArrivalDate] = useState("");
@@ -52,6 +113,14 @@ function TripDetailsForm() {
       hasGuide,
       travellers,
     };
+    const isValid = validateFlightSearch({
+      travelers: travellers,
+      departureCity: arrivalCity,
+      arrivalCity: country,
+      returnDate: departureDate,
+      departureDate: arrivalDate,
+    });
+    if (!isValid) return;
     console.log();
     console.log(test);
     dispatch(

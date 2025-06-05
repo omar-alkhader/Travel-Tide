@@ -7,11 +7,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-hot-toast";
 import { useQueryClient } from "@tanstack/react-query";
 import { loginSuccess } from "../redux/userSlice";
+import { clearBooking } from "../redux/bookingSlice";
+import { useNavigate } from "react-router-dom";
 
 function PaymentForm() {
   const stripe = useStripe();
   const elements = useElements();
   const queryClient = useQueryClient();
+  const naviagate = useNavigate();
   const dispatch = useDispatch();
   const [formData, setFormData] = useState({ cardName: "" });
   const bookingDetails = useSelector((state) => state.booking);
@@ -31,7 +34,7 @@ function PaymentForm() {
   const tax = parseFloat((basePrice * 0.16).toFixed(2));
   const totalPrice = parseFloat(basePrice + tax + guidesTotalPrice);
 
-  const hasDiscount = user?.points >= 1000;
+  const hasDiscount = user?.points >= 500;
   const discount = hasDiscount ? Math.floor((-basePrice - tax) * 0.25) : 0;
   const priceAfterDiscount = totalPrice + discount;
   const amount = Math.round(priceAfterDiscount * 100);
@@ -131,6 +134,11 @@ function PaymentForm() {
       toast.success("Payment successful!", {
         style: { backgroundColor: "#4BB543", color: "#fff" },
       });
+      // ✅ Clear form fields after successful payment
+      setFormData({ cardName: "" });
+      if (cardElement) {
+        cardElement.clear();
+      }
 
       // ✅ Refresh user points and update Redux
       const userResponse = await fetch(
@@ -140,11 +148,15 @@ function PaymentForm() {
         }
       );
       const userData = await userResponse.json();
-      if (userData?.user) dispatch(loginSuccess(userData.user));
+      if (userData?.user)
+        dispatch(loginSuccess({ user: userData.user, role: "client" }));
+
       console.log(userData);
       await queryClient.invalidateQueries(["guides_daily_sites"]);
       await queryClient.invalidateQueries(["user"]);
       await queryClient.invalidateQueries(["tourists"]);
+      dispatch(clearBooking());
+      naviagate("/booking");
     } catch (err) {
       console.error("Payment/booking error:", err);
 
