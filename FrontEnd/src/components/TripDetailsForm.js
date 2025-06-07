@@ -194,16 +194,7 @@ function TripDetailsForm() {
       </div>
 
       <div className="TripDetails-row">
-        <div className="TripDetails-group">
-          <label htmlFor="guide">Guide</label>
-          <select
-            id="guide"
-            onChange={(e) => setHasGuide(e.target.value === "true")}
-          >
-            <option value="true">Yes</option>
-            <option value="false">No</option>
-          </select>
-        </div>
+
         <div className="TripDetails-group">
           <label htmlFor="traveller">Traveller</label>
           <input
