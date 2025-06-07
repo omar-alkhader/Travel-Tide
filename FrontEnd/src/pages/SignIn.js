@@ -150,9 +150,11 @@ const SignIn = () => {
         </div>
       </form>
 
-      <p>
-        Don't have an account? <Link to="/signup">Sign up</Link>
-      </p>
+      {userType === "client" && (
+        <p>
+          Don't have an account? <Link to="/signup">Sign up</Link>
+        </p>
+      )}
     </div>
   );
 };
