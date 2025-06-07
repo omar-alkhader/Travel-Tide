@@ -38,9 +38,9 @@
     display: flex;
     justify-content: center;
     margin-bottom: 20px;
-    border: 2px solid #2c3e50; /* Border color */
-    border-radius: 30px; /* Rounded edges */
-    overflow: hidden; /* Ensures smooth edges */
+    border: 2px solid #2c3e50; 
+    border-radius: 30px; 
+    overflow: hidden; 
     background: white;
     width: fit-content;
     margin: auto;
@@ -60,31 +60,31 @@
 
 .toggle-switch .active {
     background: #2c3e50;
-    color: white; /* Ensures smooth curve on selection */
+    color: white; 
 }
 
 .toggle-switch button:first-child.active {
-    border-radius: 10px 0 0 10px; /* Left button rounded */
+    border-radius: 10px 0 0 10px; 
 }
 
 .toggle-switch button:last-child.active {
-    border-radius: 0 10px 10px 0; /* Right button rounded */
+    border-radius: 0 10px 10px 0; 
 }
 
 /* Adding an animated background for smooth selection */
 .toggle-switch::before {
     content: "";
     position: absolute;
-    width: 50%; /* Half of the switch */
+    width: 50%; 
     height: 100%;
     background: #2c3e50;
     border-radius: 10px;
     transition: all 0.3s ease;
-    left: 0; /* Default position */
+    left: 0;
     z-index: 0;
 }
 .toggle-switch.guide-active::before {
-    left: 50%; /* Moves to the right */
+    left: 50%; 
 }
 .options {
     display: flex;
@@ -94,7 +94,7 @@
 .options label {
     display: flex;
     align-items: center;
-    gap: 8px; /* Adjust spacing between checkbox and text */
+    gap: 8px; 
     cursor: pointer;
 }
 .auth-container a {
@@ -126,7 +126,7 @@ font-size: 18px;
 
 .input-container input {
 width: 100%;
-padding: 10px 10px 10px 35px; /* Left padding for icon */
+padding: 10px 10px 10px 35px;
 border: 1px solid #ccc;
 border-radius: 5px;
 font-size: 16px;
@@ -140,7 +140,7 @@ font-size: 16px;
 }
 
 .signin-options button {
-    width: 40%; /* Adjust width as needed */
+    width: 40%; 
     padding: 12px;
     
 }
