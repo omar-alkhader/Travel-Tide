@@ -7,7 +7,7 @@ function HotelSearchBox({
   initialDestination = "",
   initialCheckIn = "",
   initialCheckOut = "",
-  initialTravelers = "1",
+  initialTravelers = 1,
 }) {
   const [destination, setDestination] = useState(initialDestination);
   const [checkIn, setCheckIn] = useState(initialCheckIn);

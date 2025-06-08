@@ -196,6 +196,8 @@ function HomePage() {
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [nights, setNights] = useState(1);
+  const [hotelTravellers, setHotelTravellers] = useState(1);
+
   const [rooms, setRooms] = useState(1);
   const [guestsPerRoom, setGuestsPerRoom] = useState([2]);
   const [nationality, setNationality] = useState("Jordanian");
@@ -437,13 +439,14 @@ function HomePage() {
                     );
                     return;
                   }
+                  console.log(hotelTravellers);
                   dispatch(
                     setSearchHotel({
                       city: hotelDestination,
                       checkIn,
                       checkOut,
                       nights,
-                      travellers: 1,
+                      travellers: hotelTravellers || 1,
                     })
                   );
                   navigate("/hotels");
@@ -479,7 +482,7 @@ function HomePage() {
                   type="number"
                   className="HomePage-form-control form-control m-2"
                   placeholder="Travellers"
-                  onChange={(e) => setFlightTravellers(+e.target.value)}
+                  onChange={(e) => setHotelTravellers(+e.target.value)}
                 />
                 <button
                   type="submit"

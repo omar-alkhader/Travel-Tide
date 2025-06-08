@@ -9,6 +9,7 @@ function HotelCard({ hotel }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const booking = useSelector((state) => state.booking);
+  const user = useSelector((state) => state.user.user);
   const searchHotel = useSelector((state) => state.searchHotel);
   const newHotel = { ...hotel, price: hotel.price * searchHotel.nights };
   // Function to render star rating
@@ -27,6 +28,10 @@ function HotelCard({ hotel }) {
         travellers: searchHotel.travellers,
       })
     );
+    if (user === null) {
+      navigate("/SignIn");
+      return;
+    }
     navigate("/checkout");
   }
   return (
