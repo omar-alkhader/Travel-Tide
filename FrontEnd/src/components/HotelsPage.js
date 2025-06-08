@@ -111,10 +111,10 @@ function HotelsPage() {
             <div className="filter-section">
               <h5>Price Range</h5>
               <div className="price-slider-container">
-                <div className="price-display">
-                  <span>{priceRange[0]} JOD</span>
-                  <span>{priceRange[1]} JOD</span>
-                </div>
+<div className="price-display">
+  <span>{priceRange[0]} JOD</span>
+  <span>1000 JOD</span>
+</div>
                 <div className="dual-slider">
                   <input
                     type="range"
