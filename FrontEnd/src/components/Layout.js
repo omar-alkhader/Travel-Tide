@@ -17,7 +17,7 @@ const Layout = () => {
         <Outlet context={{ setIsChatOpen }} /> 
       </div>
       <Footer />
-      <ChatButton isOpen={isChatOpen} setIsOpen={setIsChatOpen} />
+      
     </div>
   );
 };

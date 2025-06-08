@@ -16,14 +16,14 @@
 
 .TripDetails-row {
   display: flex;
-  gap: 40px; /* This controls the spacing between inputs in each row */
+  gap: 40px; 
   flex-wrap: wrap;
   margin-bottom: 20px; 
 }
 
 .TripDetails-group {
   flex: 1;
-  min-width: 200px; /* Ensures each input has a reasonable minimum size */
+  min-width: 200px;
   margin-bottom: 10px;
 }
 

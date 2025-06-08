@@ -634,12 +634,6 @@ function HomePage() {
                 There are many gorgeous places to visit and see, and here are
                 some photos of them.
               </p>
-              <button
-                className="HomePage-btn btn btn-outline-dark"
-                onClick={() => setIsChatOpen((prevState) => !prevState)}
-              >
-                ➤ Guide
-              </button>
             </div>
             <div
               className="col-md-7 position-relative"

@@ -1,6 +1,6 @@
 .review-page-submit-container-left {
   display: flex;
-  justify-content: flex-start; /* Ensures the button stays on the left */
+  justify-content: flex-start; 
   margin-top: 20px;
 }
 
@@ -19,7 +19,7 @@
   text-align: center;
   font-size: 24px;
   font-weight: bold;
-  margin-top: 50px; /* Add more margin on top */
+  margin-top: 50px; 
   margin-bottom: 20px;
 }
 

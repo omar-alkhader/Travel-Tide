@@ -57,7 +57,7 @@ const RequestPage = () => {
           <TouristCard
             key={index}
             tourist={tourist}
-            onChat={() => navigate(`/chat/${tourist.name}`)}
+          
           />
         ))}
       </div>

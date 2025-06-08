@@ -112,7 +112,7 @@
 
 /* Reserve Button */
 .GuidePage-btn-reserve {
-  background-color: #00bcd4;
+  background-color: #007bff;
   color: white;
   border-radius: 5px;
   padding: 8px 16px;
@@ -145,9 +145,9 @@
 
 .guide-search-details {
   display: flex;
-  gap: 200px; /* Increased gap between Place and Date */
-  align-items: center; /* Center vertically */
-  margin-left: 100px; /* Center horizontally by adding margin */
+  gap: 200px; 
+  align-items: center; 
+  margin-left: 100px; 
 }
 
 .guide-info-group {
@@ -168,7 +168,7 @@
 }
 
 .guide-modify-btn {
-  background-color: #00bcd4;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 20px;
@@ -178,7 +178,7 @@
 }
 
 .guide-modify-btn:hover {
-  background-color: #0097a7;
+  background-color: #0056b3;
 }
 
 /* Expandable search form */
@@ -193,7 +193,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 20px; /* Increased gap between inputs */
+  gap: 20px; 
   padding: 10px 0;
   flex-wrap: wrap;
 }
@@ -201,9 +201,7 @@
 
 .guide-input-group {
   position: relative;
-  flex: 0 0 auto; /* Don't grow or shrink */
-   /* Fixed width for consistency */
-  
+  flex: 0 0 auto;   
 }
 .guide-icon {
   position: absolute;
@@ -229,7 +227,7 @@
 .guide-search-button {
   height: 40px;
   min-width: 120px;
-  background-color: #00bcd4;
+  background-color: #007bff;
   color: white;
   border: none;
   border-radius: 20px;
