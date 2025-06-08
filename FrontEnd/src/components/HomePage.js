@@ -876,7 +876,7 @@ function HomePage() {
                   <img src={varna} alt="Varna" />
                 </div>
                 <div className="tour-details">
-                  <h3>Bulgaria</h3>
+                  <h3>Varna</h3>
                   <br />
                   <br />
                   <div className="tour-meta">
