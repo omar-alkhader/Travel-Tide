@@ -905,7 +905,7 @@ function HomePage() {
                   <button
                     className="tour-book-btn"
                     onClick={() => {
-                      dispatch(setCity("Bulgaria"));
+                      dispatch(setCity("Varna"));
                       navigate("/trip-details");
                     }}
                   >
