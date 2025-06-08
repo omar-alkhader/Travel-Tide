@@ -4,6 +4,7 @@ import cyprus from "../assets/cyprus.jpg";
 import petra from "../assets/petra.jpg";
 import bulgaria from "../assets/bulgaria.jpg";
 import alexandria from "../assets/alexandria.jpg";
+import varna from "../assets/varna.jpg";
 import antalya from "../assets/antalya.jpg";
 import wadirum from "../assets/Wadi-Rum.jpg";
 import deadsea from "../assets/dead-sea.jpg";
@@ -872,7 +873,7 @@ function HomePage() {
             <div className="col-md-6 mb-4">
               <div className="tour-card">
                 <div className="tour-image">
-                  <img src={bulgaria} alt="Bulgaria" />
+                  <img src={varna} alt="Varna" />
                 </div>
                 <div className="tour-details">
                   <h3>Bulgaria</h3>
