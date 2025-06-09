@@ -4,10 +4,12 @@ import defaultHotelImage from "../assets/hotel-default.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { setHotel } from "../redux/bookingSlice";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 function HotelCard({ hotel }) {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const userType = localStorage.getItem("userType");
   const booking = useSelector((state) => state.booking);
   const user = useSelector((state) => state.user.user);
   const searchHotel = useSelector((state) => state.searchHotel);
@@ -30,6 +32,15 @@ function HotelCard({ hotel }) {
     );
     if (user === null) {
       navigate("/SignIn");
+      return;
+    }
+    if (userType !== "client") {
+      toast.error("you are  not allowed to book", {
+        style: {
+          backgroundColor: "#F56260",
+          color: "#fff",
+        },
+      });
       return;
     }
     navigate("/checkout");

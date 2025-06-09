@@ -3,6 +3,7 @@ import { FaPlane } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { setFlight, setTraveller } from "../redux/bookingSlice";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 // function formatDuration(duration) {
 //   return `${parseInt(duration.hours)}h ${parseInt(duration?.minutes ? )}m`;
 // }
@@ -23,11 +24,21 @@ function formatDuration({ hours, minutes }) {
 function FlightCard({ flight }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const userType = localStorage.getItem("userType");
   const flightSearch = useSelector((state) => state.searchFlight);
   const user = useSelector((state) => state.user.user);
   function handleAddFlight(flight) {
     if (user === null) {
       navigate("/SignIn");
+      return;
+    }
+    if (userType !== "client") {
+      toast.error("you are  not allowed to book", {
+        style: {
+          backgroundColor: "#F56260",
+          color: "#fff",
+        },
+      });
       return;
     }
     dispatch(

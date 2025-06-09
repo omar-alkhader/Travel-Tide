@@ -4,16 +4,28 @@ import defaultHotelImage from "../assets/hotel-default.jpg";
 import { useDispatch, useSelector } from "react-redux";
 import { setPackage } from "../redux/bookingSlice";
 import { Navigate, useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 function TravelPackageCard({ package: pkg, onViewFlight }) {
   const navigator = useNavigate();
+  const userType = localStorage.getItem("userType");
   const [showPriceDetails, setShowPriceDetails] = useState(false);
   const dispatch = useDispatch();
   const packageSearch = useSelector((state) => state.searchPackage);
   const user = useSelector((state) => state.user.user);
   function handleClick(e, pkg) {
     e.preventDefault();
+
     if (user === null) {
       navigator("/SignIn");
+      return;
+    }
+    if (userType !== "client") {
+      toast.error("you are  not allowed to book", {
+        style: {
+          backgroundColor: "#F56260",
+          color: "#fff",
+        },
+      });
       return;
     }
     dispatch(
