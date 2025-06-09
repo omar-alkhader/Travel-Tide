@@ -27,6 +27,7 @@ function FlightsPage() {
   const [flights, setFlights] = useState([]);
   const [filteredFlights, setFilteredFlights] = useState([]);
   const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [maxPrice, setMaxPrice] = useState(1000);
   const [selectedAirlines, setSelectedAirlines] = useState({});
   const [airlineOptions, setAirlineOptions] = useState([]);
 
@@ -44,26 +45,24 @@ function FlightsPage() {
     setFilteredFlights(flightsData);
 
     const airlineMap = {};
-
     flightsData.forEach((flight) => {
       const name = flight.airline;
       const price = parseFloat(flight.totalPrice);
-
       if (!airlineMap[name] || price < airlineMap[name]) {
         airlineMap[name] = price;
       }
     });
-
     const options = Object.entries(airlineMap).map(([name, price]) => ({
       name,
       price,
     }));
-
     setAirlineOptions(options);
-    setPriceRange([
-      Math.min(...flightsData.map((f) => parseFloat(f.totalPrice))),
-      Math.max(...flightsData.map((f) => parseFloat(f.totalPrice))),
-    ]);
+
+    const highestPrice = Math.max(
+      ...flightsData.map((f) => parseFloat(f.totalPrice))
+    );
+    setMaxPrice(highestPrice);
+    setPriceRange([0, highestPrice]);
   }, [data]);
 
   // Apply filters
@@ -92,10 +91,7 @@ function FlightsPage() {
 
   const resetFilters = () => {
     setSelectedAirlines({});
-    setPriceRange([
-      Math.min(...flights.map((f) => parseFloat(f.totalPrice))),
-      Math.max(...flights.map((f) => parseFloat(f.totalPrice))),
-    ]);
+    setPriceRange([0, maxPrice]);
     setFilteredFlights(flights);
   };
 
@@ -135,7 +131,7 @@ function FlightsPage() {
                   <input
                     type="range"
                     min="0"
-                    max="1000"
+                    max={maxPrice}
                     value={priceRange[0]}
                     onChange={(e) =>
                       setPriceRange([parseFloat(e.target.value), priceRange[1]])
@@ -145,7 +141,7 @@ function FlightsPage() {
                   <input
                     type="range"
                     min="0"
-                    max="1000"
+                    max={maxPrice}
                     value={priceRange[1]}
                     onChange={(e) =>
                       setPriceRange([priceRange[0], parseFloat(e.target.value)])

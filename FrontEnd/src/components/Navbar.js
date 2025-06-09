@@ -8,8 +8,9 @@ import { logout } from "../redux/userSlice";
 import "../styles/NavBar.css";
 
 function Navbar() {
-  const { user, role } = useSelector((state) => state.user);
-  console.log(role);
+  const { user } = useSelector((state) => state.user);
+  console.log(user);
+  const role = localStorage.getItem("userType");
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [dropdownOpen, setDropdownOpen] = useState(false);

@@ -47,6 +47,7 @@ const SignUp = () => {
       return;
     }
 
+    
     mutation.mutate({ name, email, password, confirmPassword });
 
     //simulation
