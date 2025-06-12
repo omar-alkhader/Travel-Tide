@@ -127,8 +127,8 @@ function TripDetailsForm() {
       setSearchPackage({
         departureCity: country,
         arrivalCity,
-        returnDate: departureDate, // correct now
-        departureDate: arrivalDate, // correct now
+        returnDate: departureDate,
+        departureDate: arrivalDate,
         nights,
         hasGuide,
         travellers,
@@ -194,7 +194,6 @@ function TripDetailsForm() {
       </div>
 
       <div className="TripDetails-row">
-
         <div className="TripDetails-group">
           <label htmlFor="traveller">Traveller</label>
           <input

@@ -6,6 +6,7 @@ import "../styles/auth.css";
 import { useMutation } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { loginSuccess } from "../redux/userSlice";
+import toast from "react-hot-toast";
 async function signUp(data) {
   console.log(data);
   try {
@@ -21,7 +22,6 @@ async function signUp(data) {
     }
     return await res.json();
   } catch (err) {
-    alert("password or email is wrong");
     throw err;
   }
 }
@@ -30,29 +30,44 @@ const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
-  const [error, setError] = useState("");
+  const [error, setError] = useState(null);
+
   const { login } = useAuth();
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const mutation = useMutation({
     mutationFn: signUp,
     onSuccess: (data) => {
-      dispatch(loginSuccess(data.user));
+      dispatch(loginSuccess({ user: data.user, role: "client" }));
+      navigate("/");
+    },
+    onError: (err) => {
+      console.log("hello");
+      setError(err.message || "Signup failed");
+      toast.error(err.message || "Signup failed", {
+        style: {
+          backgroundColor: "#F56260",
+          color: "#fff",
+        },
+      });
     },
   });
   const handleSubmit = (e) => {
     e.preventDefault();
     if (password.length < 6) {
-      setError("Password must be at least 6 characters");
+      // setError("Password must be at least 6 characters");
+      toast.error("Password must be at least 6 characters", {
+        style: {
+          backgroundColor: "#F56260",
+          color: "#fff",
+        },
+      });
       return;
     }
 
-    
     mutation.mutate({ name, email, password, confirmPassword });
-
+    console.log(error);
     //simulation
-
-    navigate("/");
   };
 
   return (

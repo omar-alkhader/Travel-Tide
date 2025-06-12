@@ -6,7 +6,7 @@ const storedType = localStorage.getItem("userType");
 
 const initialState = {
   user: storedUser ? JSON.parse(storedUser) : null,
-  role: "",
+  role: storedType ? storedType : "",
 };
 
 const userSlice = createSlice({

@@ -22,6 +22,8 @@ const RequestPage = () => {
   // Get user role and guideId from Redux store
   const role = useSelector((state) => state.user.role);
   const guideId = useSelector((state) => state.user.user?.id);
+  const test = useSelector((state) => state.user);
+  console.log(test);
 
   const isGuide = role === "guide";
 
@@ -54,11 +56,7 @@ const RequestPage = () => {
       <h3 className="customization-title">Tourists who booked with you:</h3>
       <div className="row">
         {tourists.map((tourist, index) => (
-          <TouristCard
-            key={index}
-            tourist={tourist}
-          
-          />
+          <TouristCard key={index} tourist={tourist} />
         ))}
       </div>
     </div>
